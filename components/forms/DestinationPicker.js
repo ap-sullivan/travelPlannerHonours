@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import Colors from "../../constants/Colors";
+import LabelText from "../ui/textStyles/LabelText";
 
 function DestinationPicker({}) {
 
@@ -9,26 +11,26 @@ function DestinationPicker({}) {
     <View style={styles.row}>
       {/* Destination */}
       <View style={styles.destination}>
-        <Text style={styles.label}>Destination 1/2/3 etc...</Text>
+        <LabelText style={{ paddingLeft: 3 }}>Destination 1/2/3 etc...</LabelText>
         <View style={styles.inputWrapper}>
           <TextInput
             // value={destination}
             // onChangeText={onDestinationChange}
             placeholder="Enter destination"
-            placeholderTextColor="#9AA3B2"
+            placeholderTextColor={Colors.gray500}
             style={styles.input}
             returnKeyType="search"
           />
-          <Feather name="search" size={18} color="#5B667A" />
+          <Feather name="search" size={18} color={Colors.gray700} />
         </View>
       </View>
 
       {/* Days */}
       <View style={styles.days}>
-        <Text style={styles.label}>Days</Text>
+        <LabelText style={{ paddingLeft: 3 }}>Days</LabelText>
         <View style={styles.stepper}>
           <Pressable style={styles.stepButton} hitSlop={8}>
-            <Feather name="minus" size={16} color="#2F3A4D" />
+            <Feather name="minus" size={16} color={Colors.primary800} />
           </Pressable>
 
           <View style={styles.valueBox}>
@@ -36,7 +38,7 @@ function DestinationPicker({}) {
           </View>
 
           <Pressable style={styles.stepButton} hitSlop={8}>
-            <Feather name="plus" size={16} color="#2F3A4D" />
+            <Feather name="plus" size={16} color={Colors.primary800} />
           </Pressable>
         </View>
       </View>
@@ -53,12 +55,7 @@ const styles = StyleSheet.create({
     gap: 12,
     alignItems: "flex-end",
   },
-  label: {
-    fontSize: 12,
-    color: "#5B667A",
-    marginBottom: 6,
-     paddingLeft: 3,
-  },
+ 
   destination: {
     flex: 1,
     marginVertical: 6,
@@ -70,14 +67,15 @@ const styles = StyleSheet.create({
     height: 44,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: "#C9D1E0",
+    borderColor: Colors.gray400,
     borderRadius: 8,
     backgroundColor: "#FFF"
   },
+
   input: {
     flex: 1,
     fontSize: 14,
-    color: "#1F2A3A",
+    color: Colors.primary900,
     paddingVertical: 0,
     marginRight: 8,
   },
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#C9D1E0",
+    borderColor: Colors.gray400,
     borderRadius: 8,
     backgroundColor: "#FFF",
     overflow: "hidden"

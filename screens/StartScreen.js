@@ -2,6 +2,7 @@ import { View, Image, StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DestinationPicker from '../components/forms/DestinationPicker'
 import SeasonPicker from '../components/forms/SeasonPicker'
+import AppText from '../components/ui/textStyles/AppText'
 
 function StartScreen() {
 
@@ -19,7 +20,7 @@ function StartScreen() {
     {/* TODO : add in ability to add more destinations dynamically*/}
         <Text style={{color: '', marginTop: 14}} >Placeholder for 'add more destinations</Text>
 
-    <Text> When are you planning on travelling?</Text>
+    <AppText>When are you planning on travelling?</AppText> 
 <View style={style.seasonPickerContainer} >
         <SeasonPicker >
             Spring

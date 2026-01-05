@@ -1,5 +1,5 @@
 import { Text, StyleSheet } from 'react-native';
-import Colors from '../../constants/Colors';
+import Colors from '../../../constants/Colors';
 
 export default function AppText({ style, children, ...props }) {
   return (
@@ -11,7 +11,7 @@ export default function AppText({ style, children, ...props }) {
 
 const styles = StyleSheet.create({
   text: {
-    color: Colors.gray700,
-    fontSize: 14,
+    color: Colors.gray900,
+    fontSize: 15,
   },
 });
