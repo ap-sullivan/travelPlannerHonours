@@ -34,9 +34,7 @@ export default function App() {
   return (
     <View style={styles.rootScreen} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
-        <SafeAreaView style={styles.safeArea}>
           <StartScreen />
-        </SafeAreaView>
       </SafeAreaProvider>
     </View>
   );

@@ -1,15 +1,21 @@
 import { View, Text, StyleSheet, Pressable } from "react-native"
 import Colors from "../../constants/Colors"
+import { FontSize } from "../../constants/Typography";
 
 
-function SeasonPicker({children, onPress}) {
+function SeasonPicker({children, onPress, isSelected}) {
   return (
       <View style={styles.buttonOuterContainer}>
-        <Pressable style={({pressed}) => pressed ? [styles.buttonInnerContainer, styles.pressed] : styles.buttonInnerContainer}
+        <Pressable
+        onPress={onPress}
         android_ripple={{color: Colors.primary600}}
-        onPress={onPress}>
-
-            <Text style={styles.buttonText}>{children}</Text>
+        style={({ pressed }) => [
+          styles.buttonInnerContainer,
+          isSelected && styles.selected,
+          pressed && styles.pressed,
+        ]}>
+                    <Text style={[styles.buttonText, isSelected && styles.selectedText]}>
+                {children}</Text>
 
         </Pressable>
         </View>
@@ -22,28 +28,45 @@ export default SeasonPicker
 const styles = StyleSheet.create({
 
     buttonOuterContainer: {
-        borderRadius: 28,
+        flex: 1,
+        borderRadius: 14,
         margin: 4,
         overflow: 'hidden',
     },
 
     buttonInnerContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: Colors.gray400,
-        paddingVertical: 8,
-        paddingHorizontal: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 8,
         elevation: 2,
+        // IOS shadow
+        shadowColor: Colors.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
 
+      selected: {
+    backgroundColor: Colors.primary500,
+  },
+
     buttonText : {
-        color: Colors.backgroundColor,
-        fontSize: 16,
+        color: Colors.primary900,
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: FontSize.body,
         textAlign: 'center',
     },
+
+      selectedText: {
+        color: Colors.white,
+
+  },
 
     pressed: {
         opacity: 0.6,
     }
-
 
 
 });

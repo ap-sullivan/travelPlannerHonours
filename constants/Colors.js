@@ -1,3 +1,5 @@
+import { withSafeAreaInsets } from "react-native-safe-area-context";
+
 const Colors = {
 
   primary400: '#3A6073',
@@ -35,6 +37,8 @@ const Colors = {
 
   background: '#e8eaec',
   backgroundAccent: '#FFECE1',
+
+  white: '#FFFFFF',
  
 
 };
