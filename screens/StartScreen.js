@@ -6,7 +6,7 @@ import {
   Image,
   StyleSheet,
   Text,
-  Pressable
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DestinationPicker from "../components/forms/DestinationPicker";
@@ -19,6 +19,7 @@ import Colors from "../constants/Colors";
 const MIN_DAYS = 1;
 const MAX_DAYS = 8;
 const MAX_DESTINATIONS = 4;
+const MIN_DESTINATIONS = 1;
 
 function StartScreen() {
   const [season, setSeason] = useState(null);
@@ -27,22 +28,30 @@ function StartScreen() {
     { id: "2", name: "", days: 1 },
   ]);
 
-const addDestination = () => {
-  setDestinations((prev) => {
-    if (prev.length >= MAX_DESTINATIONS) {
-      return prev;
-    }
+  const addDestination = () => {
+    setDestinations((prev) => {
+      if (prev.length >= MAX_DESTINATIONS) {
+        return prev;
+      }
 
-    return [
-      ...prev,
-      {
-        id: String(Date.now()),
-        name: "",
-        days: MIN_DAYS,
-      },
-    ];
-  });
-};
+      return [
+        ...prev,
+        {
+          id: String(Date.now()),
+          name: "",
+          days: MIN_DAYS,
+        },
+      ];
+    });
+  };
+
+  const removeDestination = (id) => {
+    setDestinations((prev) => {
+      if (prev.length === 1) return prev;
+
+      return prev.filter((d) => d.id !== id);
+    });
+  };
 
   return (
     <SafeAreaView style={style.container}>
@@ -55,10 +64,17 @@ const addDestination = () => {
             ></Image>
           </View>
           <View style={style.destinationPickerContainer}>
-            {destinations.map((d) => (
+            {destinations.map((d, index) => (
               <DestinationPicker
                 key={d.id}
+                label={`Destination ${index + 1}`}
                 days={d.days}
+                name={d.name}
+                onNameChange={(nextName) =>
+        setDestinations((prev) =>
+          prev.map((x) => (x.id === d.id ? { ...x, name: nextName } : x))
+        )
+      }
                 onDaysChange={(nextDays) =>
                   setDestinations((prev) =>
                     prev.map((x) =>
@@ -66,23 +82,20 @@ const addDestination = () => {
                     )
                   )
                 }
+                onRemove={() => removeDestination(d.id)}
+                canRemove={destinations.length > 1}
               />
             ))}
           </View>
 
           <Pressable onPress={addDestination} style={{ marginTop: 12 }}>
             <Text style={{ color: "blue" }}>
-               <Feather
-            name="plus-circle"
-            size={16}
-            color={Colors.gray400}
- />
-              Add another destination</Text>
+              <Feather name="plus-circle" size={16} color={Colors.gray400} />
+              Add another destination
+            </Text>
           </Pressable>
 
-          {/* TODO : add in ability to add more destinations dynamically*/}
-          <Text>Placeholder for 'add more destinations</Text>
-
+            
           <AppText>When are you planning on travelling?</AppText>
           <View style={style.seasonPickerContainer}>
             <SeasonPicker
@@ -141,7 +154,7 @@ const style = StyleSheet.create({
   },
 
   destinationPickerContainer: {
-    marginTop: 26,
+    marginTop: 32,
   },
 
   seasonPickerContainer: {
