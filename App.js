@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider} from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import {
   Inter_400Regular,
@@ -11,6 +11,11 @@ import {
 
 import StartScreen from "./screens/StartScreen";
 import Colors from "./constants/Colors";
+
+// navigation
+import { NavigationContainer } from "@react-navigation/native";
+import BottomNav from "./components/navigation/BottomNav";
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,16 +32,20 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
+ 
   if (!fontsLoaded) {
     return null;
   }
 
+
   return (
-    <View style={styles.rootScreen} onLayout={onLayoutRootView}>
-      <SafeAreaProvider>
-          <StartScreen />
-      </SafeAreaProvider>
+    <SafeAreaProvider>
+  <View style={styles.rootScreen} onLayout={onLayoutRootView}>
+  <NavigationContainer>
+      <BottomNav />
+  </NavigationContainer>
     </View>
+</SafeAreaProvider>
   );
 }
 

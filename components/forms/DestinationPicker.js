@@ -43,11 +43,11 @@ function DestinationPicker({
       {/* Destination */}
       <View style={styles.destination}>
         <View style={styles.labelRow}>
-          <LabelText style={{ paddingLeft: 3 }}>{label}</LabelText>
+          <LabelText style={{ marginLeft: 3, color: Colors.primary700, marginRight: 8}}>{label}</LabelText>
 
           {canRemove && (
             <Pressable onPress={onRemove} hitSlop={8}>
-              <Feather name="x-circle" size={16} color={Colors.gray600} />
+              <Feather name="x-circle" size={14} color={Colors.accent600} />
             </Pressable>
           )}
         </View>
@@ -160,8 +160,7 @@ const styles = StyleSheet.create({
 
   labelRow: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    marginLeft: 2,
   },
 
   inputWrapper: {

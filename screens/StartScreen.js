@@ -5,16 +5,19 @@ import {
   View,
   Image,
   StyleSheet,
-  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import DestinationPicker from "../components/forms/DestinationPicker";
 import SeasonPicker from "../components/forms/SeasonPicker";
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import AppText from "../components/ui/textStyles/AppText";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 const MIN_DAYS = 1;
 const MAX_DAYS = 8;
@@ -55,7 +58,16 @@ function StartScreen() {
 
   return (
     <SafeAreaView style={style.container}>
+        <KeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior={Platform.OS === "ios" ? "padding" : undefined}
+  >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <ScrollView
+        keyboardShouldPersistTaps="handled"
+       contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View>
           <View style={style.imageContainer}>
             <Image
@@ -87,16 +99,20 @@ function StartScreen() {
               />
             ))}
           </View>
-
-          <Pressable onPress={addDestination} style={{ marginTop: 12 }}>
-            <Text style={{ color: "blue" }}>
-              <Feather name="plus-circle" size={16} color={Colors.gray400} />
+            
+            <View style={style.addDestinationContainer}>
+            <AppText style={{color: Colors.primary700, marginRight: 8, marginBottom: 6, fontWeight: '500'}}>
               Add another destination
-            </Text>
+               </AppText>
+          <Pressable onPress={addDestination} hitSlop={8} >
+         
+          <Feather name="plus-circle" size={16} color={Colors.accent600} />
+           
           </Pressable>
+            </View>
 
             
-          <AppText>When are you planning on travelling?</AppText>
+          <AppText style={{marginLeft: 2}}>When are you planning on travelling?</AppText>
           <View style={style.seasonPickerContainer}>
             <SeasonPicker
               isSelected={season === "Spring"}
@@ -124,11 +140,15 @@ function StartScreen() {
             </SeasonPicker>
           </View>
 
-          <View style={style.startButtonContainer}>
+      <View style={style.startButtonContainer}>
+
             <PrimaryButton>START PLANNING</PrimaryButton>
-          </View>
+            </View>
         </View>
+        </ScrollView>
+                      
       </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -138,13 +158,13 @@ export default StartScreen;
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 20,
   },
 
   imageContainer: {
     width: "auto",
     height: 200,
-    marginTop: 6,
+    marginTop: 6
+
     // marginHorizontal: 20,
   },
 
@@ -157,6 +177,13 @@ const style = StyleSheet.create({
     marginTop: 32,
   },
 
+  addDestinationContainer: {
+    flexDirection: "row",
+    marginVertical: 16,
+    marginLeft: 2,
+    
+  },
+
   seasonPickerContainer: {
     marginTop: 18,
     flexDirection: "row",
@@ -166,4 +193,11 @@ const style = StyleSheet.create({
   startButtonContainer: {
     marginTop: 32,
   },
+
+  fixedBtn: {
+    position: 'absolute',
+     left: 20,
+  right: 20,
+  bottom: 110, 
+  }
 });
