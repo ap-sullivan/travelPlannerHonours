@@ -58,14 +58,19 @@ function StartScreen() {
 
   return (
     <SafeAreaView style={style.container}>
+
+      {/* moves UI out of the way when keyboard appears */}
         <KeyboardAvoidingView
     style={{ flex: 1 }}
     behavior={Platform.OS === "ios" ? "padding" : undefined}
   >
+    {/* Tap anywhere on the screen to dismiss keyboard */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView
+        // Taps in empty space dismisses keyboard
         keyboardShouldPersistTaps="handled"
        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
+      //  scrollbar on scroll hidden
         showsVerticalScrollIndicator={false}
       >
         <View>
@@ -140,11 +145,12 @@ function StartScreen() {
             </SeasonPicker>
           </View>
 
+        </View>
+
       <View style={style.startButtonContainer}>
 
             <PrimaryButton>START PLANNING</PrimaryButton>
             </View>
-        </View>
         </ScrollView>
                       
       </TouchableWithoutFeedback>
@@ -163,14 +169,15 @@ const style = StyleSheet.create({
   imageContainer: {
     width: "auto",
     height: 200,
-    marginTop: 6
-
+    marginTop: 6,
+    
     // marginHorizontal: 20,
   },
-
+  
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 12, 
   },
 
   destinationPickerContainer: {
@@ -192,12 +199,8 @@ const style = StyleSheet.create({
 
   startButtonContainer: {
     marginTop: 32,
+     
   },
+   
 
-  fixedBtn: {
-    position: 'absolute',
-     left: 20,
-  right: 20,
-  bottom: 110, 
-  }
 });

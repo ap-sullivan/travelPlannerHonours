@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import StartScreen from "../../screens/StartScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
+import SearchResultScreen from "../../screens/SearchResultsScreen";
 import SettingsScreen from "../../screens/SettingsScreen";
 import Colors from "../../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -70,7 +71,7 @@ export default function BottomNav() {
       })}
     >
       <Tab.Screen name="Home" component={StartScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={SearchResultScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
