@@ -199,6 +199,7 @@ const style = StyleSheet.create({
 
   startButtonContainer: {
     marginTop: 32,
+    marginBottom: 24
      
   },
    
