@@ -1,16 +1,23 @@
 import { useState, useMemo } from "react";
-import { Text, View, StyleSheet, Image, ScrollView, FlatList } from "react-native";
+import { Text, View, StyleSheet, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CityPicker from "../components/ui/buttons/CityPicker";
 import AppText from "../components/ui/textStyles/AppText";
 import AttractionListItem from "../components/ui/AttractionListItem";
 import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
+import { useAttractions } from "../hooks/mapbox/useAttractions";
+import { CITY_META } from "../data/cityMeta";
+
 
 
 function SearchResultsScreen() {
 
-  const [city, setCity] = useState(null);
+  const [city, setCity] = useState("Edinburgh");
+  const { attractions, loading, error, sessionToken } = useAttractions(city);
+
   const [selectedAttraction, setSelectedAttraction] = useState(null);
+
+  const meta = CITY_META[city];
 
   const token = process.env.EXPO_PUBLIC_MAPBOX_TOKEN;
 
@@ -26,17 +33,17 @@ function SearchResultsScreen() {
 
     // dummy api dats
 
-      const attractions = useMemo(
-    () => [
-      { id: "1", name: "Attraction 1" },
-      { id: "2", name: "Attraction 2" },
-      { id: "3", name: "Attraction 3" },
-      { id: "4", name: "Attraction 4" },
-      { id: "5", name: "Attraction 5" },
-      { id: "6", name: "Attraction 6" },
-    ],
-    []
-  );
+  //     const attractions = useMemo(
+  //   () => [
+  //     { id: "1", name: "Attraction 1" },
+  //     { id: "2", name: "Attraction 2" },
+  //     { id: "3", name: "Attraction 3" },
+  //     { id: "4", name: "Attraction 4" },
+  //     { id: "5", name: "Attraction 5" },
+  //     { id: "6", name: "Attraction 6" },
+  //   ],
+  //   []
+  // );
 
 //   attraction open modal 
    function openDetails(attraction) {
@@ -70,25 +77,24 @@ function SearchResultsScreen() {
             <View style={style.resultsContainer}>
               <CityPicker
                 isSelected={city === "Edinburgh"}
-                onPress={() =>
-                  setCity(city === "Edinburgh" ? null : "Edinburgh")
-                }
+               onPress={() => setCity("Edinburgh")}
+
               >
                 Edinburgh
               </CityPicker>
 
               <CityPicker
                 isSelected={city === "Glasgow"}
-                onPress={() => setCity(city === "Glasgow" ? null : "Glasgow")}
+                onPress={() => setCity("Glasgow")}
+
               >
                 Glasgow
               </CityPicker>
 
               <CityPicker
                 isSelected={city === "Inverness"}
-                onPress={() =>
-                  setCity(city === "Inverness" ? null : "Inverness")
-                }
+                onPress={() => setCity("Inverness")}
+
               >
                 Inverness
               </CityPicker>
@@ -97,6 +103,17 @@ function SearchResultsScreen() {
             <AppText>
               {(city ?? "Edinburgh") + " Top Attractions"}
             </AppText>
+
+          {loading && (
+      <ActivityIndicator style={{ marginTop: 8 }} />
+    )}
+
+    {!!error && (
+      <Text style={{ color: "red", marginTop: 8 }}>
+        {error}
+      </Text>
+    )}
+          
 
             {/*spacing between header and first item */}
             <View style={{ height: 12 }} />

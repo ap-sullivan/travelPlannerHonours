@@ -20,7 +20,6 @@ function AttractionListItem({ title, onPress }) {
     </Pressable>
  
     
-    
     <View style={style.listIcons}>
     <Feather name="info" size={16} color={Colors.accent600} />
     <Feather name="plus-circle" size={16} color={Colors.accent600} />

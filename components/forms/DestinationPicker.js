@@ -3,7 +3,8 @@ import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import LabelText from "../ui/textStyles/LabelText";
-import { CITY_DESTINATIONS } from "../../data/cityDestinations";
+// import { CITY_DESTINATIONS } from "../../data/cityDestinations";
+import { CITY_DESTINATIONS } from "../../data/cities";
 
 const MIN_DAYS = 1;
 const MAX_DAYS = 8;
