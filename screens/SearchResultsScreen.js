@@ -31,19 +31,6 @@ function SearchResultsScreen() {
 
     // console.log("STATIC URL:", staticUrl);
 
-    // dummy api dats
-
-  //     const attractions = useMemo(
-  //   () => [
-  //     { id: "1", name: "Attraction 1" },
-  //     { id: "2", name: "Attraction 2" },
-  //     { id: "3", name: "Attraction 3" },
-  //     { id: "4", name: "Attraction 4" },
-  //     { id: "5", name: "Attraction 5" },
-  //     { id: "6", name: "Attraction 6" },
-  //   ],
-  //   []
-  // );
 
 //   attraction open modal 
    function openDetails(attraction) {

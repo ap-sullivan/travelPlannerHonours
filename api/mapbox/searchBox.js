@@ -10,6 +10,7 @@ const DEFAULT_ATTRACTION_CATEGORIES = [
   "castle",
 ];
 
+
 function requireToken() {
   const token = process.env.EXPO_PUBLIC_MAPBOX_TOKEN;
   if (!token) {
@@ -28,7 +29,6 @@ export async function suggestAttractions({
   lat,
   sessionToken,
   limit = 10,
-  categories = DEFAULT_ATTRACTION_CATEGORIES,
   country = "gb",
 }) {
   const token = requireToken();
