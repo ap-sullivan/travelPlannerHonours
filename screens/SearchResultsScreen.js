@@ -1,23 +1,23 @@
 import { useState, useMemo } from "react";
-import { Text, View, StyleSheet, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CityPicker from "../components/ui/buttons/CityPicker";
 import AppText from "../components/ui/textStyles/AppText";
 import AttractionListItem from "../components/ui/AttractionListItem";
 import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
-import { useAttractions } from "../hooks/mapbox/useAttractions";
-import { CITY_META } from "../data/cityMeta";
-
-
+import { useAttractions } from "../hooks/geoapify/useAttractions";
 
 function SearchResultsScreen() {
-
-  const [city, setCity] = useState("Edinburgh");
-  const { attractions, loading, error, sessionToken } = useAttractions(city);
-
+  const [city, setCity] = useState(null);
+  const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
   const [selectedAttraction, setSelectedAttraction] = useState(null);
-
-  const meta = CITY_META[city];
 
   const token = process.env.EXPO_PUBLIC_MAPBOX_TOKEN;
 
@@ -25,15 +25,28 @@ function SearchResultsScreen() {
   const lat = 55.9533;
   const zoom = 11;
 
-   const staticUrl =
+  const staticUrl =
     `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/` +
     `${lon},${lat},${zoom}/600x300@2x?access_token=${token}`;
 
-    // console.log("STATIC URL:", staticUrl);
+  // console.log("STATIC URL:", staticUrl);
 
+  // dummy api dats
 
-//   attraction open modal 
-   function openDetails(attraction) {
+  //     const attractions = useMemo(
+  //   () => [
+  //     { id: "1", name: "Attraction 1" },
+  //     { id: "2", name: "Attraction 2" },
+  //     { id: "3", name: "Attraction 3" },
+  //     { id: "4", name: "Attraction 4" },
+  //     { id: "5", name: "Attraction 5" },
+  //     { id: "6", name: "Attraction 6" },
+  //   ],
+  //   []
+  // );
+
+  //   attraction open modal
+  function openDetails(attraction) {
     setSelectedAttraction(attraction);
   }
 
@@ -42,7 +55,6 @@ function SearchResultsScreen() {
   }
 
   return (
-    
     <SafeAreaView style={style.container}>
       <FlatList
         data={attractions}
@@ -51,8 +63,9 @@ function SearchResultsScreen() {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
         renderItem={({ item }) => (
-          <AttractionListItem title={item.name}
-          onPress={() => openDetails(item)}
+          <AttractionListItem
+            title={item.name}
+            onPress={() => openDetails(item)}
           />
         )}
         ListHeaderComponent={
@@ -64,43 +77,39 @@ function SearchResultsScreen() {
             <View style={style.resultsContainer}>
               <CityPicker
                 isSelected={city === "Edinburgh"}
-               onPress={() => setCity("Edinburgh")}
-
+                onPress={() =>
+                  setCity(city === "Edinburgh" ? null : "Edinburgh")
+                }
               >
                 Edinburgh
               </CityPicker>
 
               <CityPicker
                 isSelected={city === "Glasgow"}
-                onPress={() => setCity("Glasgow")}
-
+                onPress={() => setCity(city === "Glasgow" ? null : "Glasgow")}
               >
                 Glasgow
               </CityPicker>
 
               <CityPicker
                 isSelected={city === "Inverness"}
-                onPress={() => setCity("Inverness")}
-
+                onPress={() =>
+                  setCity(city === "Inverness" ? null : "Inverness")
+                }
               >
                 Inverness
               </CityPicker>
             </View>
 
-            <AppText>
-              {(city ?? "Edinburgh") + " Top Attractions"}
-            </AppText>
+            <AppText>{(city ?? "Edinburgh") + " Top Attractions"}</AppText>
 
-          {loading && (
-      <ActivityIndicator style={{ marginTop: 8 }} />
-    )}
+            {loading && (
+              <Text style={{ marginTop: 8 }}>Loading attractions…</Text>
+            )}
 
-    {!!error && (
-      <Text style={{ color: "red", marginTop: 8 }}>
-        {error}
-      </Text>
-    )}
-          
+            {!!error && (
+              <Text style={{ color: "red", marginTop: 8 }}>{error}</Text>
+            )}
 
             {/*spacing between header and first item */}
             <View style={{ height: 12 }} />
@@ -110,7 +119,7 @@ function SearchResultsScreen() {
         ListEmptyComponent={<AppText>No attractions found.</AppText>}
       />
 
-        <AttractionInfoModal
+      <AttractionInfoModal
         visible={!!selectedAttraction}
         attraction={selectedAttraction}
         onClose={closeDetails}
@@ -139,8 +148,8 @@ const style = StyleSheet.create({
   },
 
   resultsContainer: {
-     marginTop: 18,
+    marginTop: 18,
     flexDirection: "row",
     justifyContent: "space-between",
-  }
+  },
 });
