@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {Feather} from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
-function AttractionListItem({ title, onPress }) {
+function AttractionListItem({ title,  subtitle, onPress }) {
   return (
       
       
@@ -17,6 +17,7 @@ function AttractionListItem({ title, onPress }) {
     >
 
            <Text>{title}</Text>
+            <Text>{subtitle}</Text>
     </Pressable>
  
     

@@ -8,7 +8,7 @@ export async function fetchCityAttractions({ lat, lon, radius }) {
   }
 
   const params = new URLSearchParams({
-    categories: "tourism.attraction",
+    categories: "tourism.sights",
     filter: `circle:${lon},${lat},${radius}`,
     bias: `proximity:${lon},${lat}`,
     limit: "50",

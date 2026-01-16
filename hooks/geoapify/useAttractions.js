@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { CITY_META } from "../../data/cityMeta";
 import { fetchCityAttractions } from "../../api/geoapify/places";
+import { getSightseeingCategoryLabel } from "../../data/sightseeing/sightseeingCategoryLabels";
+
 
 export function useAttractions(city) {
   const [attractions, setAttractions] = useState([]);
@@ -28,14 +30,26 @@ export function useAttractions(city) {
 
         const raw = await fetchCityAttractions(meta);
 
-        const normalized = raw.map((f) => ({
-          id: f.properties.place_id,
-          name: f.properties.name || "Unnamed place",
-          lat: f.properties.lat,
-          lon: f.properties.lon,
-          categories: f.properties.categories,
-        }));
+      const normalized = raw
 
+    //   filter out unnamed or blank attractions
+  .filter(
+    (f) =>
+      typeof f.properties?.name === "string" &&
+      f.properties.name.trim().length > 0
+  )
+  .map((f) => {
+    const categories = f.properties.categories ?? [];
+
+    return {
+      id: f.properties.place_id,
+      name: f.properties.name.trim(),
+      subtitle: getSightseeingCategoryLabel(categories), 
+      lat: f.properties.lat,
+      lon: f.properties.lon,
+      categories,
+    };
+  });
         if (!cancelled) setAttractions(normalized);
       } catch (e) {
         if (!cancelled) setError(e.message);

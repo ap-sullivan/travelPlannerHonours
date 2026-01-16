@@ -13,21 +13,50 @@ import AppText from "../components/ui/textStyles/AppText";
 import AttractionListItem from "../components/ui/AttractionListItem";
 import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
+import AttractionMap from "../components/ui/maps/AttractionMap";
+import { CITY_META } from "../data/cityMeta";
 
 function SearchResultsScreen() {
+  const token = process.env.EXPO_PUBLIC_MAPBOX_TOKEN;
+
   const [city, setCity] = useState(null);
   const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
   const [selectedAttraction, setSelectedAttraction] = useState(null);
 
-  const token = process.env.EXPO_PUBLIC_MAPBOX_TOKEN;
+  const attractionsGeoJSON = useMemo(() => {
+    return {
+      type: "FeatureCollection",
+      features: attractions.map((item) => ({
+        type: "Feature",
+        id: item.id,
+        properties: {
+          name: item.name,
+          subtitle: item.subtitle,
+          categories: item.categories,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [item.lon, item.lat],
+        },
+      })),
+    };
+  }, [attractions]);
 
-  const lon = -3.1883;
-  const lat = 55.9533;
-  const zoom = 11;
+  const activeCity = city ?? "Edinburgh";
+  const cityMeta = CITY_META[activeCity];
 
-  const staticUrl =
-    `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/` +
-    `${lon},${lat},${zoom}/600x300@2x?access_token=${token}`;
+  const mapCenter = [cityMeta.lon, cityMeta.lat];
+  const mapZoom = cityMeta.mapboxZoom;
+
+  // /hardcoded map url for testing
+
+  // const lon = -3.1883;
+  // const lat = 55.9533;
+  // const zoom = 11;
+
+  // const staticUrl =
+  //   `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/` +
+  //   `${lon},${lat},${zoom}/600x300@2x?access_token=${token}`;
 
   // console.log("STATIC URL:", staticUrl);
 
@@ -65,13 +94,28 @@ function SearchResultsScreen() {
         renderItem={({ item }) => (
           <AttractionListItem
             title={item.name}
+            subtitle={item.subtitle}
             onPress={() => openDetails(item)}
           />
         )}
         ListHeaderComponent={
           <View>
             <View style={style.mapContainer}>
-              <Image style={style.map} source={{ uri: staticUrl }} />
+              {/* <Image style={style.map} source={{ uri: staticUrl }} /> */}
+
+              <AttractionMap
+                geojson={attractionsGeoJSON}
+                center={mapCenter}
+                zoom={mapZoom}
+                onSelectAttraction={(feature) =>
+                  openDetails({
+                    id: feature.id,
+                    name: feature.properties.name,
+                    lat: feature.geometry.coordinates[1],
+                    lon: feature.geometry.coordinates[0],
+                  })
+                }
+              />
             </View>
 
             <View style={style.resultsContainer}>
