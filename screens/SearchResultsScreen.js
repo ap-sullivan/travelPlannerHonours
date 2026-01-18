@@ -17,22 +17,31 @@ import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
 
 function SearchResultsScreen() {
-  const token = process.env.EXPO_PUBLIC_MAPBOX_TOKEN;
 
   const [city, setCity] = useState(null);
   const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
   const [selectedAttraction, setSelectedAttraction] = useState(null);
 
+  // set numbers for lisit/map refs
+  const numberedAttractions = useMemo(() => {
+  return attractions.map((item, index) => ({
+    ...item,
+    displayIndex: index + 1, 
+  }));
+}, [attractions]);
+
+
   const attractionsGeoJSON = useMemo(() => {
     return {
       type: "FeatureCollection",
-      features: attractions.map((item) => ({
+      features: numberedAttractions.map((item) => ({
         type: "Feature",
         id: item.id,
         properties: {
           name: item.name,
           subtitle: item.subtitle,
           categories: item.categories,
+          index: item.displayIndex,
         },
         geometry: {
           type: "Point",
@@ -48,31 +57,7 @@ function SearchResultsScreen() {
   const mapCenter = [cityMeta.lon, cityMeta.lat];
   const mapZoom = cityMeta.mapboxZoom;
 
-  // /hardcoded map url for testing
 
-  // const lon = -3.1883;
-  // const lat = 55.9533;
-  // const zoom = 11;
-
-  // const staticUrl =
-  //   `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/` +
-  //   `${lon},${lat},${zoom}/600x300@2x?access_token=${token}`;
-
-  // console.log("STATIC URL:", staticUrl);
-
-  // dummy api dats
-
-  //     const attractions = useMemo(
-  //   () => [
-  //     { id: "1", name: "Attraction 1" },
-  //     { id: "2", name: "Attraction 2" },
-  //     { id: "3", name: "Attraction 3" },
-  //     { id: "4", name: "Attraction 4" },
-  //     { id: "5", name: "Attraction 5" },
-  //     { id: "6", name: "Attraction 6" },
-  //   ],
-  //   []
-  // );
 
   //   attraction open modal
   function openDetails(attraction) {
@@ -86,16 +71,21 @@ function SearchResultsScreen() {
   return (
     <SafeAreaView style={style.container}>
       <FlatList
-        data={attractions}
+        data={numberedAttractions}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
         renderItem={({ item }) => (
           <AttractionListItem
+            index={item.displayIndex}
             title={item.name}
             subtitle={item.subtitle}
-            onPress={() => openDetails(item)}
+
+            onPressInfo={() => openDetails(item)}
+            onPressRow={() => {
+      // TODO:  add in function that centres the map to this location when row is selected
+    }}
           />
         )}
         ListHeaderComponent={
