@@ -12,12 +12,19 @@ import {
 import StartScreen from "./screens/StartScreen";
 import Colors from "./constants/Colors";
 
+import Mapbox from '@rnmapbox/maps';
+
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
 import BottomNav from "./components/navigation/BottomNav";
 
 
 SplashScreen.preventAutoHideAsync();
+
+
+// set mapbox 
+Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN);
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({

@@ -12,7 +12,7 @@ function AttractionMap({
 
   return (
     <View style={styles.container}>
-      <Mapbox.MapView style={StyleSheet.absoluteFill}>
+      <Mapbox.MapView style={{ flex: 1 }}>
         <Mapbox.Camera
           zoomLevel={zoom}
           centerCoordinate={center}
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   pins: {
     circleRadius: 6,
-    circleColor: Colors.accent600   ,
+    circleColor: Colors.accent500   ,
     circleStrokeWidth: 1,
     circleStrokeColor: '#fff',
   },
