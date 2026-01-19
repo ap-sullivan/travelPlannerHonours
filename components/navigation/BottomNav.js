@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomNav() {
+export default function BottomNav({ HomeStack }) {
 
       const insets = useSafeAreaInsets();
 
@@ -70,8 +70,11 @@ export default function BottomNav() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={StartScreen} />
-      <Tab.Screen name="Profile" component={SearchResultScreen} />
+      {/* HOME TAB WITH STACK */}
+      <Tab.Screen name="Home" component={HomeStack} />
+
+      {/* DEV / SECONDARY TABS */}
+      <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );

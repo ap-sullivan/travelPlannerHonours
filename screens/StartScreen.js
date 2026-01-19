@@ -17,26 +17,33 @@ import AppText from "../components/ui/textStyles/AppText";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const MIN_DAYS = 1;
-const MAX_DAYS = 8;
 const MAX_DESTINATIONS = 4;
-const MIN_DESTINATIONS = 1;
 
-function StartScreen() {
+function StartScreen({ navigation }) {
   const [season, setSeason] = useState(null);
   const [destinations, setDestinations] = useState([
     { id: "1", name: "", days: 1 },
     { id: "2", name: "", days: 1 },
   ]);
 
+  const [city, setCity] = useState(null);
+
+
+  // Add a new destination state manage
+
+  // prev is guaranteed to be teh latest state
   const addDestination = () => {
     setDestinations((prev) => {
+      // limit max destinations to globa variable set above and return to prev state if hit
       if (prev.length >= MAX_DESTINATIONS) {
         return prev;
       }
-
+      // if not hit max, add a new destination with unique id, empty name and min days
       return [
         ...prev,
         {
@@ -48,13 +55,52 @@ function StartScreen() {
     });
   };
 
+  // remove destination base don id
   const removeDestination = (id) => {
     setDestinations((prev) => {
+      // make susre at least one destination 
       if (prev.length === 1) return prev;
-
+      // if more than one, filter out the one with the matching id
       return prev.filter((d) => d.id !== id);
     });
   };
+
+  // save to async storage
+
+  async function handleStartPlanning() {
+  try {
+    // Clean and validate data
+    const cleanedDestinations = destinations.filter(
+      (d) => d.name.trim().length > 0
+    );
+
+    if (cleanedDestinations.length === 0) {
+      console.warn("No destinations entered");
+      return;
+    }
+
+    const payload = {
+      season,
+      destinations: cleanedDestinations.map((d) => ({
+        id: d.id,
+        name: d.name.trim(),
+        days: d.days,
+      })),
+      createdAt: Date.now(),
+    };
+
+    await AsyncStorage.setItem(
+      "tripDraft",
+      JSON.stringify(payload)
+    );
+
+    navigation.navigate("SearchResults");
+  } catch (err) {
+    console.error("Failed to save trip", err);
+  }
+}
+
+
 
   return (
     <SafeAreaView style={style.container}>
@@ -149,7 +195,7 @@ function StartScreen() {
 
       <View style={style.startButtonContainer}>
 
-            <PrimaryButton>START PLANNING</PrimaryButton>
+            <PrimaryButton onPress={handleStartPlanning}>START PLANNING</PrimaryButton>
             </View>
         </ScrollView>
                       

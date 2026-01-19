@@ -18,17 +18,17 @@ function DestinationPicker({
   onRemove,
   canRemove,
 }) {
-  // for input focusing style
-  // ? todo: look to make a global style so re-usable
+  // for input focusing styles
+  // TODO: look to make this a global style so re-usable
   const [isFocused, setIsFocused] = useState(false);
 
   // SUGGESTED DESTINATIONS
   const [showSuggestions, setShowSuggestions] = useState(false);
   const suggestions = useMemo(() => {
-    const q = (name ?? "").trim().toLowerCase();
-    if (!q) return [];
+    const n = (name ?? "").trim().toLowerCase();
+    if (!n) return [];
     return CITY_DESTINATIONS.filter((city) =>
-      city.toLowerCase().includes(q)
+      city.toLowerCase().includes(n)
     ).slice(0, 6);
   }, [name]);
 

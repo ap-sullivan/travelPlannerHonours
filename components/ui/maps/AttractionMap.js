@@ -36,15 +36,15 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   pins: {
-    circleRadius: 6,
+    circleRadius: 8,
     circleColor: Colors.accent500,
     circleStrokeWidth: 1,
-    circleStrokeColor: "#fff",
+    circleStrokeColor: Colors.gray300,
   },
 
   pinNumbers: {
     textField: ["get", "index"],
-    textSize: 12,
+    textSize: 11,
     textColor: "#fff",
     textIgnorePlacement: true,
     textAllowOverlap: true,

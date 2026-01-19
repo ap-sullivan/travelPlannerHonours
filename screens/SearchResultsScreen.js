@@ -1,10 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Text,
   View,
   StyleSheet,
-  Image,
-  ScrollView,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,22 +13,54 @@ import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
 import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function SearchResultsScreen() {
-
   const [city, setCity] = useState(null);
   const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
   const [selectedAttraction, setSelectedAttraction] = useState(null);
+  const [destinations, setDestinations] = useState([]);
 
-  // set numbers for lisit/map refs
+  useEffect(() => {
+  console.log(
+    "CityPicker keys:",
+    destinations.map(d => d.id)
+  );
+}, [destinations]);
+
+  // load selected city from async storage on mount
+
+  useEffect(() => {
+    async function loadDestinations() {
+      try {
+        const stored = await AsyncStorage.getItem("tripDraft");
+        if (!stored) return;
+
+        const trip = JSON.parse(stored);
+
+        setDestinations(trip.destinations);
+
+        // default to first destination
+        if (trip.destinations.length > 0) {
+          setCity(trip.destinations[0].name);
+        }
+      } catch (err) {
+        console.error("Failed to load trip", err);
+      }
+    }
+
+    loadDestinations();
+  }, []);
+
+  // set numbers for list/map refs
   const numberedAttractions = useMemo(() => {
-  return attractions.map((item, index) => ({
-    ...item,
-    displayIndex: index + 1, 
-  }));
-}, [attractions]);
+    return attractions.map((item, index) => ({
+      ...item,
+      displayIndex: index + 1,
+    }));
+  }, [attractions]);
 
-
+  // convert attractions to geojson for map display
   const attractionsGeoJSON = useMemo(() => {
     return {
       type: "FeatureCollection",
@@ -49,15 +79,13 @@ function SearchResultsScreen() {
         },
       })),
     };
-  }, [attractions]);
+  }, [numberedAttractions]);
 
   const activeCity = city ?? "Edinburgh";
-  const cityMeta = CITY_META[activeCity];
+  const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
 
   const mapCenter = [cityMeta.lon, cityMeta.lat];
   const mapZoom = cityMeta.mapboxZoom;
-
-
 
   //   attraction open modal
   function openDetails(attraction) {
@@ -66,6 +94,9 @@ function SearchResultsScreen() {
 
   function closeDetails() {
     setSelectedAttraction(null);
+
+
+ 
   }
 
   return (
@@ -81,11 +112,10 @@ function SearchResultsScreen() {
             index={item.displayIndex}
             title={item.name}
             subtitle={item.subtitle}
-
             onPressInfo={() => openDetails(item)}
             onPressRow={() => {
-      // TODO:  add in function that centres the map to this location when row is selected
-    }}
+              // TODO:  add in function that centres the map to this location when row is selected
+            }}
           />
         )}
         ListHeaderComponent={
@@ -108,8 +138,21 @@ function SearchResultsScreen() {
               />
             </View>
 
+            
+
             <View style={style.resultsContainer}>
-              <CityPicker
+              {destinations.map((d) => (
+                <CityPicker
+                  key={d.id}
+                  isSelected={city === d.name}
+                  onPress={() => setCity(d.name)}
+                >
+                  {d.name}
+                </CityPicker>
+              ))}
+            </View>
+
+            {/* <CityPicker
                 isSelected={city === "Edinburgh"}
                 onPress={() =>
                   setCity(city === "Edinburgh" ? null : "Edinburgh")
@@ -132,8 +175,7 @@ function SearchResultsScreen() {
                 }
               >
                 Inverness
-              </CityPicker>
-            </View>
+              </CityPicker> */}
 
             <AppText>{(city ?? "Edinburgh") + " Top Attractions"}</AppText>
 
