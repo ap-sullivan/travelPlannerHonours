@@ -1,3 +1,5 @@
+import { SIGHTSEEING_CATEGORY_LABELS } from "../../data/sightseeing/sightseeingCategoryLabels";
+
 const BASE_URL = "https://api.geoapify.com/v2/places";
 
 export async function fetchCityAttractions({ lat, lon, radius }) {
@@ -8,7 +10,7 @@ export async function fetchCityAttractions({ lat, lon, radius }) {
   }
 
   const params = new URLSearchParams({
-    categories: "tourism.sights",
+    categories: "entertainment.museum, entertainment.culture",
     filter: `circle:${lon},${lat},${radius}`,
     bias: `proximity:${lon},${lat}`,
     limit: "50",

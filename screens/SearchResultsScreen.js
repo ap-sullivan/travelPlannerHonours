@@ -13,6 +13,7 @@ import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
 import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
+import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function SearchResultsScreen() {
@@ -52,15 +53,57 @@ function SearchResultsScreen() {
     loadDestinations();
   }, []);
 
-  // set numbers for list/map refs
-  const numberedAttractions = useMemo(() => {
-    return attractions.map((item, index) => ({
-      ...item,
-      displayIndex: index + 1,
-    }));
-  }, [attractions]);
+ 
 
-  // convert attractions to geojson for map display
+  const activeCity = city ?? "Edinburgh";
+  const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
+
+  // bring in must see atttraction list 
+  const mustSeeForCity = useMemo(() => {
+  return MUST_SEE_ATTRACTIONS[activeCity] ?? [];
+}, [activeCity]);
+
+
+const normalizedMustSee = useMemo(() => {
+  return mustSeeForCity.map((item) => ({
+    id: item.id,
+    name: item.name,
+    subtitle: "Must see",
+    lat: item.lat,
+    lon: item.lon,
+    categories: ["must_see"],
+    wikidata: item.wikidata,
+    isMustSee: true,
+  }));
+}, [mustSeeForCity]);
+
+// filter geapify to remove dupes
+const filteredGeoapifyAttractions = useMemo(() => {
+  const mustSeeNames = new Set(
+    normalizedMustSee.map((a) => a.name.toLowerCase())
+  );
+
+  return attractions.filter(
+    (a) => !mustSeeNames.has(a.name.toLowerCase())
+  );
+}, [attractions, normalizedMustSee]);
+
+// then merge list
+const mergedAttractions = useMemo(() => {
+  return [...normalizedMustSee, ...filteredGeoapifyAttractions];
+}, [normalizedMustSee, filteredGeoapifyAttractions]);
+
+
+ // set numbers for list/map refs
+const numberedAttractions = useMemo(() => {
+  return mergedAttractions.map((item, index) => ({
+    ...item,
+    displayIndex: index + 1,
+  }));
+}, [mergedAttractions]);
+
+
+  // convert attractions to geojson for map 
   const attractionsGeoJSON = useMemo(() => {
     return {
       type: "FeatureCollection",
@@ -81,11 +124,10 @@ function SearchResultsScreen() {
     };
   }, [numberedAttractions]);
 
-  const activeCity = city ?? "Edinburgh";
-  const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
 
   const mapCenter = [cityMeta.lon, cityMeta.lat];
   const mapZoom = cityMeta.mapboxZoom;
+
 
   //   attraction open modal
   function openDetails(attraction) {
@@ -94,7 +136,6 @@ function SearchResultsScreen() {
 
   function closeDetails() {
     setSelectedAttraction(null);
-
 
  
   }
@@ -111,6 +152,7 @@ function SearchResultsScreen() {
           <AttractionListItem
             index={item.displayIndex}
             title={item.name}
+            // debugCategories={item.debugCategories}
             subtitle={item.subtitle}
             onPressInfo={() => openDetails(item)}
             onPressRow={() => {
@@ -151,31 +193,6 @@ function SearchResultsScreen() {
                 </CityPicker>
               ))}
             </View>
-
-            {/* <CityPicker
-                isSelected={city === "Edinburgh"}
-                onPress={() =>
-                  setCity(city === "Edinburgh" ? null : "Edinburgh")
-                }
-              >
-                Edinburgh
-              </CityPicker>
-
-              <CityPicker
-                isSelected={city === "Glasgow"}
-                onPress={() => setCity(city === "Glasgow" ? null : "Glasgow")}
-              >
-                Glasgow
-              </CityPicker>
-
-              <CityPicker
-                isSelected={city === "Inverness"}
-                onPress={() =>
-                  setCity(city === "Inverness" ? null : "Inverness")
-                }
-              >
-                Inverness
-              </CityPicker> */}
 
             <AppText>{(city ?? "Edinburgh") + " Top Attractions"}</AppText>
 

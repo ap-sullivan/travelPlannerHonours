@@ -19,6 +19,9 @@ function AttractionListItem({ index, title,  subtitle,  onPressRow,
             <Text>{index}</Text>
            <Text>{title}</Text>
             <Text>{subtitle}</Text>
+            <Text>
+ 
+</Text>
     </Pressable>
  
     
