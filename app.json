@@ -29,7 +29,14 @@
     },
     "plugins": [
       "expo-font",
-      "@rnmapbox/maps"
-    ]
+      "@rnmapbox/maps",
+      "@react-native-google-signin/google-signin"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f21e2f5f-1b54-4420-98b9-aa8a70eb994e"
+      }
+    },
+    "owner": "thewebdeveloperglasgow"
   }
 }

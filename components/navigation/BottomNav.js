@@ -72,8 +72,6 @@ export default function BottomNav({ HomeStack }) {
     >
       {/* HOME TAB WITH STACK */}
       <Tab.Screen name="Home" component={HomeStack} />
-
-      {/* DEV / SECONDARY TABS */}
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>

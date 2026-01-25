@@ -8,6 +8,7 @@ export const GEOAPIFY_BLACKLIST = {
   Glasgow: [
     "Sir Robert Peel Statue",
      "Embassy",
+     "MANY Studios"
   ],
 
   Inverness: [

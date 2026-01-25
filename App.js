@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -19,6 +19,10 @@ import BottomNav from "./components/navigation/BottomNav";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StartScreen from "./screens/StartScreen";
 import SearchResultsScreen from "./screens/SearchResultsScreen";
+import LoginScreen from "./screens/LoginScreen";
+
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./utils/firebase";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +35,16 @@ function HomeStack() {
   );
 }
 
+const AuthStack = createNativeStackNavigator();
+
+function AuthNavigator() {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="Login" component={LoginScreen} />
+    </AuthStack.Navigator>
+  );
+}
+
 // keep splash screen visible while resources fetchd
 SplashScreen.preventAutoHideAsync();
 
@@ -38,11 +52,23 @@ SplashScreen.preventAutoHideAsync();
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN);
 
 export default function App() {
+  const [user, setUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
   });
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setAuthChecked(true);
+    });
+
+    return unsubscribe;
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -50,7 +76,7 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
+  if (!authChecked || !fontsLoaded) {
     return null;
   }
 
@@ -58,7 +84,7 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.rootScreen} onLayout={onLayoutRootView}>
         <NavigationContainer>
-          <BottomNav HomeStack={HomeStack} />
+          {user ? <BottomNav HomeStack={HomeStack} /> : <AuthNavigator />}
         </NavigationContainer>
       </View>
     </SafeAreaProvider>
