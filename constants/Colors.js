@@ -1,4 +1,3 @@
-import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 const Colors = {
 
