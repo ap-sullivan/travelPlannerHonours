@@ -1,6 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "./firebase";
+import { createUser } from "./createUser";
 
 
 GoogleSignin.configure({
@@ -14,7 +15,7 @@ export const signInWithGoogle = async () => {
   await GoogleSignin.signOut();
 
   const result = await GoogleSignin.signIn();
-// console.log("Google sign-in result:", result);
+// console.log("sign-in result:", result);
 
 const idToken = result?.data?.idToken;
 
@@ -23,7 +24,14 @@ if (!idToken) {
 }
 
 const credential = GoogleAuthProvider.credential(idToken);
-return signInWithCredential(auth, credential);
+ const userCredential = await signInWithCredential(auth, credential);
+
+//  check if user has been added to db previously
+  if (userCredential._tokenResponse?.isNewUser) {
+    await createUser(userCredential.user);
+  }
+
+  return userCredential;
 
 
 };

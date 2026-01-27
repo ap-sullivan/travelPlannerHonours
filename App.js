@@ -37,10 +37,12 @@ function HomeStack() {
 
 const AuthStack = createNativeStackNavigator();
 
-function AuthNavigator() {
+function AuthNavigator({ setGuestMode }) {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name="Login" component={LoginScreen} />
+      <AuthStack.Screen name="Login">
+        {(props) => <LoginScreen {...props} setGuestMode={setGuestMode} />}
+      </AuthStack.Screen>
     </AuthStack.Navigator>
   );
 }
@@ -52,6 +54,7 @@ SplashScreen.preventAutoHideAsync();
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_TOKEN);
 
 export default function App() {
+  const [guestMode, setGuestMode] = useState(false);
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
 
@@ -84,7 +87,11 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.rootScreen} onLayout={onLayoutRootView}>
         <NavigationContainer>
-          {user ? <BottomNav HomeStack={HomeStack} /> : <AuthNavigator />}
+          {user || guestMode ? (
+            <BottomNav HomeStack={HomeStack} />
+          ) : (
+            <AuthNavigator setGuestMode={setGuestMode} />
+          )}
         </NavigationContainer>
       </View>
     </SafeAreaProvider>
