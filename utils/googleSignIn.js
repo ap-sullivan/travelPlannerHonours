@@ -5,6 +5,7 @@ import { auth } from "./firebase";
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
   offlineAccess: true,
   forceCodeForRefreshToken: true,
 });
@@ -13,7 +14,7 @@ export const signInWithGoogle = async () => {
   await GoogleSignin.signOut();
 
   const result = await GoogleSignin.signIn();
-console.log("Google sign-in result:", result);
+// console.log("Google sign-in result:", result);
 
 const idToken = result?.data?.idToken;
 

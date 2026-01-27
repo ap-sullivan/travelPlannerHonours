@@ -14,7 +14,17 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.travelPlanner"
+      "bundleIdentifier": "com.anonymous.travelPlanner",
+      "googleServicesFile": "./ios/GoogleService-Info.plist",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.829140211747-4dme59dodsk66bm5kf7edjk0jf5b19f6"
+            ]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
