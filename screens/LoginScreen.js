@@ -9,14 +9,44 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Colors from "../constants/Colors";
 import { signInWithGoogle } from "../utils/googleSignIn";
+import { signUpWithEmail, signInWithEmail } from "../utils/emailAuth";
 
 export default function LoginScreen({ setGuestMode }) {
+  // input UI focus states
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
+  // state and logic for email/pasword signup/login
+  const [mode, setMode] = useState("signup");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleEmailAuth = async () => {
+    if (!email || !password) {
+      Alert.alert("Missing info", "Please enter email and password");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      if (mode === "signup") {
+        await signUpWithEmail(email, password);
+      } else {
+        await signInWithEmail(email, password);
+      }
+    } catch (err) {
+      Alert.alert("Auth error", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // google login handler
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
@@ -29,19 +59,17 @@ export default function LoginScreen({ setGuestMode }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-    
         <Text style={styles.title}>Welcome to PlanMyScotTrip</Text>
         <Text style={styles.subtitle}>
           Log in or sign up to save trips and unlock AI features
         </Text>
 
-      {/* google login */}
+        {/* google login */}
         <Pressable style={styles.googleButton} onPress={handleGoogleLogin}>
           <FontAwesome name="google" size={24} color="black" />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
         </Pressable>
 
-        
         <View style={styles.divider}>
           <View style={styles.line} />
           <Text style={styles.dividerText}>OR</Text>
@@ -49,12 +77,7 @@ export default function LoginScreen({ setGuestMode }) {
         </View>
 
         {/* Email signups */}
-        <View
-          style={[
-            styles.inputWrapper,
-            emailFocused && styles.focused,
-          ]}
-        >
+        <View style={[styles.inputWrapper, emailFocused && styles.focused]}>
           <TextInput
             placeholder="Email"
             keyboardType="email-address"
@@ -62,38 +85,50 @@ export default function LoginScreen({ setGuestMode }) {
             onFocus={() => setEmailFocused(true)}
             onBlur={() => setEmailFocused(false)}
             style={styles.input}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
 
-        <View
-          style={[
-            styles.inputWrapper,
-            passwordFocused && styles.focused,
-          ]}
-        >
+        <View style={[styles.inputWrapper, passwordFocused && styles.focused]}>
           <TextInput
             placeholder="Password"
             secureTextEntry
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
             style={styles.input}
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
 
-        {/* Email Action Button (wire logic later) */}
-        <Pressable style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Sign up with Email</Text>
+        <Pressable
+          style={styles.primaryButton}
+          onPress={handleEmailAuth}
+          disabled={loading}
+        >
+          <Text style={styles.primaryButtonText}>
+            {mode === "signup" ? "Sign up with Email" : "Sign in with Email"}
+          </Text>
         </Pressable>
 
-        {/* Skip */}
         <Pressable onPress={() => setGuestMode(true)}>
           <Text style={styles.skipText}>Skip for now</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => setMode(mode === "signup" ? "signin" : "signup")}
+        >
+          <Text style={styles.toggleText}>
+            {mode === "signup"
+              ? "Already have an account? Sign in"
+              : "Don't have an account? Sign up"}
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
