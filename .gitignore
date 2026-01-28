@@ -43,3 +43,5 @@ yarn-error.*
 
 
 apiCategoriesInfo.txt
+
+GoogleService-Info.plist

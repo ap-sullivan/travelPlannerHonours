@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Colors from "../constants/Colors";
 import { signInWithGoogle } from "../utils/googleSignIn";
 
@@ -28,26 +29,26 @@ export default function LoginScreen({ setGuestMode }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Header */}
+    
         <Text style={styles.title}>Welcome to PlanMyScotTrip</Text>
         <Text style={styles.subtitle}>
           Log in or sign up to save trips and unlock AI features
         </Text>
 
-        {/* Google Button */}
+      {/* google login */}
         <Pressable style={styles.googleButton} onPress={handleGoogleLogin}>
-          <Feather name="google" size={18} color="#000" />
+          <FontAwesome name="google" size={24} color="black" />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
         </Pressable>
 
-        {/* Divider */}
+        
         <View style={styles.divider}>
           <View style={styles.line} />
           <Text style={styles.dividerText}>OR</Text>
           <View style={styles.line} />
         </View>
 
-        {/* Email Inputs */}
+        {/* Email signups */}
         <View
           style={[
             styles.inputWrapper,
