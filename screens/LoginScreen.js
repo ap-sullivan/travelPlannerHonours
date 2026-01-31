@@ -5,8 +5,11 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  Alert,
+  Alert
 } from "react-native";
+import Logo from "../assets/logo/logo.svg";
+
+import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -59,6 +62,20 @@ export default function LoginScreen({ setGuestMode }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+
+        <View style={styles.imageContainer}>
+                    {/* <Image
+                      style={styles.image}
+                      source={require("../assets/logo/logo.svg")}
+                    ></Image> */}
+
+                    <Logo width={180} height={180} />
+
+                  </View>
+
+
+
+
         <Text style={styles.title}>Welcome to PlanMyScotTrip</Text>
         <Text style={styles.subtitle}>
           Log in or sign up to save trips and unlock AI features
@@ -102,15 +119,13 @@ export default function LoginScreen({ setGuestMode }) {
           />
         </View>
 
-        <Pressable
-          style={styles.primaryButton}
-          onPress={handleEmailAuth}
-          disabled={loading}
-        >
-          <Text style={styles.primaryButtonText}>
-            {mode === "signup" ? "Sign up with Email" : "Sign in with Email"}
-          </Text>
-        </Pressable>
+        <PrimaryButton onPress={handleEmailAuth} disabled={loading}>
+          {loading
+            ? "Please wait..."
+            : mode === "signup"
+              ? "Sign up with Email"
+              : "Sign in with Email"}
+        </PrimaryButton>
 
         <Pressable onPress={() => setGuestMode(true)}>
           <Text style={styles.skipText}>Skip for now</Text>
@@ -141,6 +156,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: "center",
   },
+
+    imageContainer: {
+    display: "flex",
+    alignItems: "center",
+    width: "auto",
+    height: 200,
+    marginTop: 6,
+    
+  },
+  
+  // image: {
+  //   width: "100%",
+  //   height: "100%",
+  //   borderRadius: 12, 
+  // },
 
   title: {
     fontSize: 26,
