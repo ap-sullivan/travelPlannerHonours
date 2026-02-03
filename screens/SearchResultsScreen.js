@@ -18,6 +18,46 @@ function SearchResultsScreen() {
   const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
   const [selectedAttraction, setSelectedAttraction] = useState(null);
   const [destinations, setDestinations] = useState([]);
+  const [itineraryId, setItineraryId] = useState(null);
+
+  const user = auth.currentUser; 
+
+
+    // load selected cities and grab stored ids from async storage on mount
+
+useEffect(() => {
+  async function initScreen() {
+    try {
+      // 1. Grab both pieces of info from storage
+      const [storedId, storedDraft] = await Promise.all([
+        AsyncStorage.getItem("activeItineraryId"),
+        AsyncStorage.getItem("tripDraft")
+      ]);
+
+      // 2. Set the ID state (so handleSaveAttraction knows where to save)
+      if (storedId) {
+        setItineraryId(storedId);
+        console.log("Current Itinerary ID:", storedId);
+      }
+
+      // 3. Set the destinations and default city
+      if (storedDraft) {
+        const trip = JSON.parse(storedDraft);
+        setDestinations(trip.destinations);
+
+        // Default to first destination if one isn't already set
+        if (trip.destinations.length > 0 && !city) {
+          setCity(trip.destinations[0].name);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to initialize search results:", err);
+    }
+  }
+
+  initScreen();
+}, []);
+
 
   useEffect(() => {
     console.log(
@@ -26,34 +66,34 @@ function SearchResultsScreen() {
     );
   }, [destinations]);
 
-  // load selected city from async storage on mount
 
-  useEffect(() => {
-    async function loadDestinations() {
-      try {
-        const stored = await AsyncStorage.getItem("tripDraft");
-        if (!stored) return;
 
-        const trip = JSON.parse(stored);
+  // useEffect(() => {
+  //   async function loadDestinations() {
+  //     try {
+  //       const stored = await AsyncStorage.getItem("tripDraft");
+  //       if (!stored) return;
 
-        setDestinations(trip.destinations);
+  //       const trip = JSON.parse(stored);
 
-        // default to first destination
-        if (trip.destinations.length > 0) {
-          setCity(trip.destinations[0].name);
-        }
-      } catch (err) {
-        console.error("Failed to load trip", err);
-      }
-    }
+  //       setDestinations(trip.destinations);
 
-    loadDestinations();
-  }, []);
+  //       // default to first destination
+  //       if (trip.destinations.length > 0) {
+  //         setCity(trip.destinations[0].name);
+  //       }
+  //     } catch (err) {
+  //       console.error("Failed to load trip", err);
+  //     }
+  //   }
+
+  //   loadDestinations();
+  // }, []);
 
   const activeCity = city ?? "Edinburgh";
   const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
 
-  // bring in must see atttraction list
+  // bring in must see attraction list
   const mustSeeForCity = useMemo(() => {
     return MUST_SEE_ATTRACTIONS[activeCity] ?? [];
   }, [activeCity]);
@@ -126,35 +166,51 @@ function SearchResultsScreen() {
     setSelectedAttraction(null);
   }
 
+  // save attraction to itinerary
 const handleSaveAttraction = async (attraction) => {
-  if (!user || !itineraryId) {
-    Alert.alert(
-      "Sign in required",
-      "Please log in to save attractions."
-    );
+  
+  if (!itineraryId) {
+    console.error("No itineraryId found in state.");
     return;
   }
 
-   try {
-    await saveAttraction(
-      user.uid,
-      itineraryId,
-      {
-        id: attraction.id,
-        name: attraction.name,
-        city: city ?? "Edinburgh",
-        lat: attraction.lat,
-        lon: attraction.lon,
-        categories: attraction.categories,
-      }
-    );  
-
-      Alert.alert("Saved", "Attraction saved to your trip!");
-    } catch (err) {
-      console.error("Save failed", err);
-      Alert.alert("Error", "Could not save attraction");
-    }
+  const attractionData = {
+    id: attraction.id,
+    name: attraction.name,
+    city: city ?? "Edinburgh",
+    lat: attraction.lat,
+    lon: attraction.lon,
+    categories: attraction.categories ?? [],
   };
+
+  try {
+    if (user) {
+      // logged in save to firebase
+      await saveAttraction(user.uid, itineraryId, attractionData);
+      console.log("Firebase Save successful.");
+    } else {
+      // guest save to async storage
+      console.log(`saved "${attractionData.name} locally" as Guest...`);  
+      const existingJson = await AsyncStorage.getItem("guestSavedAttractions");
+      const savedList = existingJson ? JSON.parse(existingJson) : [];
+      
+      // check for dupes
+      if (!savedList.find(item => item.id === attraction.id)) {
+        savedList.push({ ...attractionData, savedAt: Date.now() });
+        await AsyncStorage.setItem("guestSavedAttractions", JSON.stringify(savedList));
+      } else {
+
+        // TODO:  change from console log to alert or toast
+        console.log("Attraction already saved locally");
+      }
+    }
+
+    Alert.alert("Saved", "Added to your itinerary!");
+  } catch (err) {
+    console.error("Save failed", err);
+    Alert.alert("Error", "Could not save attraction");
+  }
+};
 
   return (
     <SafeAreaView style={style.container}>
@@ -179,8 +235,6 @@ const handleSaveAttraction = async (attraction) => {
         ListHeaderComponent={
           <View>
             <View style={style.mapContainer}>
-              {/* <Image style={style.map} source={{ uri: staticUrl }} /> */}
-
               <AttractionMap
                 geojson={attractionsGeoJSON}
                 center={mapCenter}

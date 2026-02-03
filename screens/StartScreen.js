@@ -19,6 +19,7 @@ import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createItinerary } from "../utils/createItinerary";
+import * as Crypto from "expo-crypto"; 
 import { getAuth } from "firebase/auth";
 
 const MIN_DAYS = 1;
@@ -34,14 +35,8 @@ function StartScreen({ navigation }) {
   // TODO: REMOVE??
   const [city, setCity] = useState(null);
 
-  const [itineraryId, setItineraryId] = useState(null);
-
   const auth = getAuth();
   const user = auth.currentUser;
-
-  useEffect(() => {
-    AsyncStorage.getItem("activeItineraryId").then(setItineraryId);
-  }, []);
 
   // Add a new destination state manage
 
@@ -52,7 +47,7 @@ function StartScreen({ navigation }) {
       if (prev.length >= MAX_DESTINATIONS) {
         return prev;
       }
-      // if not hit max, add a new destination with unique id, empty name and min days
+      // if not hit max, add a new destination with new creds
       return [
         ...prev,
         {
@@ -64,75 +59,136 @@ function StartScreen({ navigation }) {
     });
   };
 
-  // remove destination base don id
+  // remove destination based on id
   const removeDestination = (id) => {
     setDestinations((prev) => {
-      // make susre at least one destination
+      // make sure at least one destination, if more than one filter out the one with the matching id
       if (prev.length === 1) return prev;
-      // if more than one, filter out the one with the matching id
       return prev.filter((d) => d.id !== id);
     });
   };
 
-
-  // save to async storage and firestore
   async function handleStartPlanning() {
-  try {
-    if (!user) {
-      Alert.alert(
-        "Sign in required",
-        "Please log in to start planning a trip."
+    try {
+      // clean and validate data
+      const cleanedDestinations = destinations
+        .filter((d) => d.name.trim().length > 0)
+        .map((d) => ({
+          id: d.id,
+          name: d.name.trim(),
+          days: d.days,
+        }));
+
+        // if no destinations after clean give warning
+        // TODO: replace console log with user alert
+      if (cleanedDestinations.length === 0) {
+        console.warn("No destinations entered");
+        return;
+      }
+
+      // calculate total days
+      const totalDays = cleanedDestinations.reduce(
+        (sum, d) => sum + (d.days || 0),
+        0
       );
-      return;
+
+      // prepare payload that will be saved
+      const payload = {
+        version: 1,
+        season,
+        destinations: cleanedDestinations,
+        totalDays,
+        lastUpdated: Date.now(),
+      };
+
+      let finalItineraryId;
+
+      if (user) {
+        // if logged in user save directly to firestore
+        finalItineraryId = await createItinerary(user.uid, payload);
+        console.log("Logged-in User Trip Created. Firestore ID:", finalItineraryId);
+      } else {
+      //  if guest user generate a temp id
+        finalItineraryId = `guest_${Crypto.randomUUID()}`;
+        console.log("Guest Trip Created. Temporary ID:", finalItineraryId);
+      }
+
+    //  save active itin id to async storage (both guest and logged in)
+      await AsyncStorage.setItem("activeItineraryId", finalItineraryId);
+      
+      // save local draft with itin id included
+      await AsyncStorage.setItem(
+        "tripDraft",
+        JSON.stringify({ ...payload, id: finalItineraryId })
+      );
+
+  
+      navigation.navigate("SearchResults");
+      
+    } catch (err) {
+      console.error("Failed to save trip", err);
     }
-
-    // Clean and validate data
-    const cleanedDestinations = destinations
-      .filter((d) => d.name.trim().length > 0)
-      .map((d) => ({
-        id: d.id,
-        name: d.name.trim(),
-        days: d.days,
-      }));
-
-    if (cleanedDestinations.length === 0) {
-      console.warn("No destinations entered");
-      return;
-    }
-
-    const totalDays = cleanedDestinations.reduce(
-      (sum, d) => sum + (d.days || 0),
-      0
-    );
-
-    const payload = {
-      version: 1,
-      season,
-      destinations: cleanedDestinations,
-      totalDays,
-      lastUpdated: Date.now(),
-    };
-
-    // create itinerary in firestore
-    const itineraryId = await createItinerary(user.uid, payload);
-
-    // Track active itinerary
-    await AsyncStorage.setItem(
-      "activeItineraryId",
-      itineraryId
-    );
-
-    // local draft
-    await AsyncStorage.setItem(
-      "tripDraft",
-      JSON.stringify(payload)
-    );
-
-    navigation.navigate("SearchResults");
-  } catch (err) {
-    console.error("Failed to save trip", err);
   }
-}
+
+
+//   // save to async storage and firestore
+//   async function handleStartPlanning() {
+//   try {
+//     if (!user) {
+//       Alert.alert(
+//         "Sign in required",
+//         "Please log in to start planning a trip."
+//       );
+//       return;
+//     }
+
+//     // Clean and validate data
+//     const cleanedDestinations = destinations
+//       .filter((d) => d.name.trim().length > 0)
+//       .map((d) => ({
+//         id: d.id,
+//         name: d.name.trim(),
+//         days: d.days,
+//       }));
+
+//     if (cleanedDestinations.length === 0) {
+//       console.warn("No destinations entered");
+//       return;
+//     }
+
+//     const totalDays = cleanedDestinations.reduce(
+//       (sum, d) => sum + (d.days || 0),
+//       0
+//     );
+
+//     const payload = {
+//       version: 1,
+//       season,
+//       destinations: cleanedDestinations,
+//       totalDays,
+//       lastUpdated: Date.now(),
+//     };
+
+//     // create itinerary in firestore
+//     const itineraryId = await createItinerary(user.uid, payload);
+
+//     // Track active itinerary
+//     await AsyncStorage.setItem(
+//       "activeItineraryId",
+//       itineraryId
+//     );
+
+//     // local draft
+//     await AsyncStorage.setItem(
+//       "tripDraft",
+//       JSON.stringify(payload)
+//     );
+
+//     navigation.navigate("SearchResults");
+//   } catch (err) {
+//     console.error("Failed to save trip", err);
+//   }
+// }
 
   return (
     <SafeAreaView style={style.container}>

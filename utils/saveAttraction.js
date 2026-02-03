@@ -1,14 +1,8 @@
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
-export const saveAttraction = async (
-  uid,
-  itineraryId,
-  attraction
-) => {
-  if (!uid || !itineraryId) {
-    throw new Error("Missing uid or itineraryId");
-  }
+export const saveAttraction = async (uid, itineraryId, attraction) => {
+  if (!uid || !itineraryId) throw new Error("Missing uid or itineraryId");
 
   const ref = doc(
     db,
@@ -20,14 +14,11 @@ export const saveAttraction = async (
     attraction.id
   );
 
+  // We spread the attraction data and add the timestamp
   await setDoc(ref, {
-    id: attraction.id,
-    name: attraction.name,
-    city: attraction.city,
-    lat: attraction.lat,
-    lon: attraction.lon,
-    categories: attraction.categories ?? [],
+    ...attraction,
     savedAt: serverTimestamp(),
   });
+  
+  return true;
 };
-    
