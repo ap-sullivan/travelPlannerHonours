@@ -1,5 +1,9 @@
-import { isRejectedCategory, isCoordMismatch } from "./wikiValidation";
+// fetchWikiSmart tries to get the best possible Wikipedia article for a given attraction
+// It first tries the exact name, then name + city
+// It validates the result by checking againist categories and coordinates
 
+
+import { isRejectedCategory, isCoordMismatch } from "./wikiValidation";
 
 export async function fetchWikiSmart(attraction) {
   const { name, city, lat, lon } = attraction;
@@ -8,14 +12,14 @@ export async function fetchWikiSmart(attraction) {
   let result = await fetchWikiByTitle(name, lat, lon);
   if (result) return result;
 
-//   name + city
+//   name  and city
   if (city) {
     result = await fetchWikiByTitle(`${name} ${city}`, lat, lon);
     if (result) return result;
   }
 
   return null;
-  // return fetchWikiByCoords(lat, lon);
+
 }
 
 
@@ -57,7 +61,7 @@ async function fetchWikiByTitle(query, lat, lon) {
   const page = pageJson?.query?.pages?.[pageId];
   if (!page) return null;
 
-  // validate coordinates are within the limist set in wikivalidation file and the categories arent blacklisted
+  // validate coordinates are within the limit set in wikivalidation file and the categories arent blacklisted
 
   const wikiCoords = page.coordinates?.[0];
 if (!wikiCoords) return null;

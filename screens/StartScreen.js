@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Keyboard,
   TouchableWithoutFeedback,
@@ -17,9 +17,9 @@ import AppText from "../components/ui/textStyles/AppText";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createItinerary } from "../utils/createItinerary";
+import { getAuth } from "firebase/auth";
 
 const MIN_DAYS = 1;
 const MAX_DESTINATIONS = 4;
@@ -31,12 +31,21 @@ function StartScreen({ navigation }) {
     { id: "2", name: "", days: 1 },
   ]);
 
+  // TODO: REMOVE??
   const [city, setCity] = useState(null);
 
+  const [itineraryId, setItineraryId] = useState(null);
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    AsyncStorage.getItem("activeItineraryId").then(setItineraryId);
+  }, []);
 
   // Add a new destination state manage
 
-  // prev is guaranteed to be teh latest state
+  // previous is guaranteed to be the latest state
   const addDestination = () => {
     setDestinations((prev) => {
       // limit max destinations to globa variable set above and return to prev state if hit
@@ -58,37 +67,62 @@ function StartScreen({ navigation }) {
   // remove destination base don id
   const removeDestination = (id) => {
     setDestinations((prev) => {
-      // make susre at least one destination 
+      // make susre at least one destination
       if (prev.length === 1) return prev;
       // if more than one, filter out the one with the matching id
       return prev.filter((d) => d.id !== id);
     });
   };
 
-  // save to async storage
 
+  // save to async storage and firestore
   async function handleStartPlanning() {
   try {
+    if (!user) {
+      Alert.alert(
+        "Sign in required",
+        "Please log in to start planning a trip."
+      );
+      return;
+    }
+
     // Clean and validate data
-    const cleanedDestinations = destinations.filter(
-      (d) => d.name.trim().length > 0
-    );
+    const cleanedDestinations = destinations
+      .filter((d) => d.name.trim().length > 0)
+      .map((d) => ({
+        id: d.id,
+        name: d.name.trim(),
+        days: d.days,
+      }));
 
     if (cleanedDestinations.length === 0) {
       console.warn("No destinations entered");
       return;
     }
 
+    const totalDays = cleanedDestinations.reduce(
+      (sum, d) => sum + (d.days || 0),
+      0
+    );
+
     const payload = {
+      version: 1,
       season,
-      destinations: cleanedDestinations.map((d) => ({
-        id: d.id,
-        name: d.name.trim(),
-        days: d.days,
-      })),
-      createdAt: Date.now(),
+      destinations: cleanedDestinations,
+      totalDays,
+      lastUpdated: Date.now(),
     };
 
+    // create itinerary in firestore
+    const itineraryId = await createItinerary(user.uid, payload);
+
+    // Track active itinerary
+    await AsyncStorage.setItem(
+      "activeItineraryId",
+      itineraryId
+    );
+
+    // local draft
     await AsyncStorage.setItem(
       "tripDraft",
       JSON.stringify(payload)
@@ -100,106 +134,122 @@ function StartScreen({ navigation }) {
   }
 }
 
-
-
   return (
     <SafeAreaView style={style.container}>
-
       {/* moves UI out of the way when keyboard appears */}
-        <KeyboardAvoidingView
-    style={{ flex: 1 }}
-    behavior={Platform.OS === "ios" ? "padding" : undefined}
-  >
-    {/* Tap anywhere on the screen to dismiss keyboard */}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView
-        // Taps in empty space dismisses keyboard
-        keyboardShouldPersistTaps="handled"
-       contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
-      //  scrollbar on scroll hidden
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <View>
-          <View style={style.imageContainer}>
-            <Image
-              style={style.image}
-              source={require("../assets/images/placeholder.jpg")}
-            ></Image>
-          </View>
-          <View style={style.destinationPickerContainer}>
-            {destinations.map((d, index) => (
-              <DestinationPicker
-                key={d.id}
-                label={`Destination ${index + 1}`}
-                days={d.days}
-                name={d.name}
-                onNameChange={(nextName) =>
-        setDestinations((prev) =>
-          prev.map((x) => (x.id === d.id ? { ...x, name: nextName } : x))
-        )
-      }
-                onDaysChange={(nextDays) =>
-                  setDestinations((prev) =>
-                    prev.map((x) =>
-                      x.id === d.id ? { ...x, days: nextDays } : x
-                    )
-                  )
-                }
-                onRemove={() => removeDestination(d.id)}
-                canRemove={destinations.length > 1}
-              />
-            ))}
-          </View>
-            
-            <View style={style.addDestinationContainer}>
-            <AppText style={{color: Colors.primary700, marginRight: 8, marginBottom: 6, fontWeight: '500'}}>
-              Add another destination
-               </AppText>
-          <Pressable onPress={addDestination} hitSlop={8} >
-         
-          <Feather name="plus-circle" size={16} color={Colors.accent600} />
-           
-          </Pressable>
+        {/* Tap anywhere on the screen to dismiss keyboard */}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <ScrollView
+            // Taps in empty space dismisses keyboard
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
+            //  scrollbar on scroll hidden
+            showsVerticalScrollIndicator={false}
+          >
+            <View>
+              <View style={style.imageContainer}>
+                <Image
+                  style={style.image}
+                  source={require("../assets/images/placeholder.jpg")}
+                ></Image>
+              </View>
+              <View style={style.destinationPickerContainer}>
+                {destinations.map((d, index) => (
+                  <DestinationPicker
+                    key={d.id}
+                    label={`Destination ${index + 1}`}
+                    days={d.days}
+                    name={d.name}
+                    onNameChange={(nextName) =>
+                      setDestinations((prev) =>
+                        prev.map((x) =>
+                          x.id === d.id ? { ...x, name: nextName } : x,
+                        ),
+                      )
+                    }
+                    onDaysChange={(nextDays) =>
+                      setDestinations((prev) =>
+                        prev.map((x) =>
+                          x.id === d.id ? { ...x, days: nextDays } : x,
+                        ),
+                      )
+                    }
+                    onRemove={() => removeDestination(d.id)}
+                    canRemove={destinations.length > 1}
+                  />
+                ))}
+              </View>
+
+              <View style={style.addDestinationContainer}>
+                <AppText
+                  style={{
+                    color: Colors.primary700,
+                    marginRight: 8,
+                    marginBottom: 6,
+                    fontWeight: "500",
+                  }}
+                >
+                  Add another destination
+                </AppText>
+                <Pressable onPress={addDestination} hitSlop={8}>
+                  <Feather
+                    name="plus-circle"
+                    size={16}
+                    color={Colors.accent600}
+                  />
+                </Pressable>
+              </View>
+
+              <AppText style={{ marginLeft: 2 }}>
+                When are you planning on travelling?
+              </AppText>
+              <View style={style.seasonPickerContainer}>
+                <SeasonPicker
+                  isSelected={season === "Spring"}
+                  onPress={() =>
+                    setSeason(season === "Spring" ? null : "Spring")
+                  }
+                >
+                  Spring
+                </SeasonPicker>
+                <SeasonPicker
+                  isSelected={season === "Summer"}
+                  onPress={() =>
+                    setSeason(season === "Summer" ? null : "Summer")
+                  }
+                >
+                  Summer
+                </SeasonPicker>
+                <SeasonPicker
+                  isSelected={season === "Autumn"}
+                  onPress={() =>
+                    setSeason(season === "Autumn" ? null : "Autumn")
+                  }
+                >
+                  Autumn
+                </SeasonPicker>
+                <SeasonPicker
+                  isSelected={season === "Winter"}
+                  onPress={() =>
+                    setSeason(season === "Winter" ? null : "Winter")
+                  }
+                >
+                  Winter
+                </SeasonPicker>
+              </View>
             </View>
 
-            
-          <AppText style={{marginLeft: 2}}>When are you planning on travelling?</AppText>
-          <View style={style.seasonPickerContainer}>
-            <SeasonPicker
-              isSelected={season === "Spring"}
-              onPress={() => setSeason(season === "Spring" ? null : "Spring")}
-            >
-              Spring
-            </SeasonPicker>
-            <SeasonPicker
-              isSelected={season === "Summer"}
-              onPress={() => setSeason(season === "Summer" ? null : "Summer")}
-            >
-              Summer
-            </SeasonPicker>
-            <SeasonPicker
-              isSelected={season === "Autumn"}
-              onPress={() => setSeason(season === "Autumn" ? null : "Autumn")}
-            >
-              Autumn
-            </SeasonPicker>
-            <SeasonPicker
-              isSelected={season === "Winter"}
-              onPress={() => setSeason(season === "Winter" ? null : "Winter")}
-            >
-              Winter
-            </SeasonPicker>
-          </View>
-
-        </View>
-
-      <View style={style.startButtonContainer}>
-
-            <PrimaryButton onPress={handleStartPlanning}>START PLANNING</PrimaryButton>
+            <View style={style.startButtonContainer}>
+              <PrimaryButton onPress={handleStartPlanning}>
+                START PLANNING
+              </PrimaryButton>
             </View>
-        </ScrollView>
-                      
-      </TouchableWithoutFeedback>
+          </ScrollView>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -216,14 +266,14 @@ const style = StyleSheet.create({
     width: "auto",
     height: 200,
     marginTop: 6,
-    
+
     // marginHorizontal: 20,
   },
-  
+
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: 12, 
+    borderRadius: 12,
   },
 
   destinationPickerContainer: {
@@ -234,7 +284,6 @@ const style = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 16,
     marginLeft: 2,
-    
   },
 
   seasonPickerContainer: {
@@ -245,9 +294,6 @@ const style = StyleSheet.create({
 
   startButtonContainer: {
     marginTop: 32,
-    marginBottom: 24
-     
+    marginBottom: 24,
   },
-   
-
 });

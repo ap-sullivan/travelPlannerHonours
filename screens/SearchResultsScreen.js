@@ -1,10 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-} from "react-native";
+import { Text, View, StyleSheet, FlatList, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CityPicker from "../components/ui/buttons/CityPicker";
 import AppText from "../components/ui/textStyles/AppText";
@@ -15,6 +10,8 @@ import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
 import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { saveAttraction } from "../utils/saveAttraction";
+import { auth } from "../utils/firebase";
 
 function SearchResultsScreen() {
   const [city, setCity] = useState(null);
@@ -23,11 +20,11 @@ function SearchResultsScreen() {
   const [destinations, setDestinations] = useState([]);
 
   useEffect(() => {
-  console.log(
-    "CityPicker keys:",
-    destinations.map(d => d.id)
-  );
-}, [destinations]);
+    console.log(
+      "CityPicker keys:",
+      destinations.map((d) => d.id),
+    );
+  }, [destinations]);
 
   // load selected city from async storage on mount
 
@@ -53,57 +50,50 @@ function SearchResultsScreen() {
     loadDestinations();
   }, []);
 
- 
-
   const activeCity = city ?? "Edinburgh";
   const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
 
-  // bring in must see atttraction list 
+  // bring in must see atttraction list
   const mustSeeForCity = useMemo(() => {
-  return MUST_SEE_ATTRACTIONS[activeCity] ?? [];
-}, [activeCity]);
+    return MUST_SEE_ATTRACTIONS[activeCity] ?? [];
+  }, [activeCity]);
 
+  const normalizedMustSee = useMemo(() => {
+    return mustSeeForCity.map((item) => ({
+      id: item.id,
+      name: item.name,
+      subtitle: "Must see",
+      lat: item.lat,
+      lon: item.lon,
+      categories: ["must_see"],
+      wikidata: item.wikidata,
+      isMustSee: true,
+    }));
+  }, [mustSeeForCity]);
 
-const normalizedMustSee = useMemo(() => {
-  return mustSeeForCity.map((item) => ({
-    id: item.id,
-    name: item.name,
-    subtitle: "Must see",
-    lat: item.lat,
-    lon: item.lon,
-    categories: ["must_see"],
-    wikidata: item.wikidata,
-    isMustSee: true,
-  }));
-}, [mustSeeForCity]);
+  // filter geapify to remove dupes
+  const filteredGeoapifyAttractions = useMemo(() => {
+    const mustSeeNames = new Set(
+      normalizedMustSee.map((a) => a.name.toLowerCase()),
+    );
 
-// filter geapify to remove dupes
-const filteredGeoapifyAttractions = useMemo(() => {
-  const mustSeeNames = new Set(
-    normalizedMustSee.map((a) => a.name.toLowerCase())
-  );
+    return attractions.filter((a) => !mustSeeNames.has(a.name.toLowerCase()));
+  }, [attractions, normalizedMustSee]);
 
-  return attractions.filter(
-    (a) => !mustSeeNames.has(a.name.toLowerCase())
-  );
-}, [attractions, normalizedMustSee]);
+  // then merge list
+  const mergedAttractions = useMemo(() => {
+    return [...normalizedMustSee, ...filteredGeoapifyAttractions];
+  }, [normalizedMustSee, filteredGeoapifyAttractions]);
 
-// then merge list
-const mergedAttractions = useMemo(() => {
-  return [...normalizedMustSee, ...filteredGeoapifyAttractions];
-}, [normalizedMustSee, filteredGeoapifyAttractions]);
+  // set numbers for list/map refs
+  const numberedAttractions = useMemo(() => {
+    return mergedAttractions.map((item, index) => ({
+      ...item,
+      displayIndex: index + 1,
+    }));
+  }, [mergedAttractions]);
 
-
- // set numbers for list/map refs
-const numberedAttractions = useMemo(() => {
-  return mergedAttractions.map((item, index) => ({
-    ...item,
-    displayIndex: index + 1,
-  }));
-}, [mergedAttractions]);
-
-
-  // convert attractions to geojson for map 
+  // convert attractions to geojson for map
   const attractionsGeoJSON = useMemo(() => {
     return {
       type: "FeatureCollection",
@@ -124,10 +114,8 @@ const numberedAttractions = useMemo(() => {
     };
   }, [numberedAttractions]);
 
-
   const mapCenter = [cityMeta.lon, cityMeta.lat];
   const mapZoom = cityMeta.mapboxZoom;
-
 
   //   attraction open modal
   function openDetails(attraction) {
@@ -136,9 +124,37 @@ const numberedAttractions = useMemo(() => {
 
   function closeDetails() {
     setSelectedAttraction(null);
-
- 
   }
+
+const handleSaveAttraction = async (attraction) => {
+  if (!user || !itineraryId) {
+    Alert.alert(
+      "Sign in required",
+      "Please log in to save attractions."
+    );
+    return;
+  }
+
+   try {
+    await saveAttraction(
+      user.uid,
+      itineraryId,
+      {
+        id: attraction.id,
+        name: attraction.name,
+        city: city ?? "Edinburgh",
+        lat: attraction.lat,
+        lon: attraction.lon,
+        categories: attraction.categories,
+      }
+    );  
+
+      Alert.alert("Saved", "Attraction saved to your trip!");
+    } catch (err) {
+      console.error("Save failed", err);
+      Alert.alert("Error", "Could not save attraction");
+    }
+  };
 
   return (
     <SafeAreaView style={style.container}>
@@ -152,9 +168,9 @@ const numberedAttractions = useMemo(() => {
           <AttractionListItem
             index={item.displayIndex}
             title={item.name}
-            // debugCategories={item.debugCategories}
             subtitle={item.subtitle}
             onPressInfo={() => openDetails(item)}
+            onPressAdd={() => handleSaveAttraction(item)}
             onPressRow={() => {
               // TODO:  add in function that centres the map to this location when row is selected
             }}
@@ -179,8 +195,6 @@ const numberedAttractions = useMemo(() => {
                 }
               />
             </View>
-
-            
 
             <View style={style.resultsContainer}>
               {destinations.map((d) => (
