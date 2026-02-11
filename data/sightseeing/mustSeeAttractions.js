@@ -25,16 +25,16 @@ export const MUST_SEE_ATTRACTIONS = {
   {
     id: "glasgow-burrell-collection",
     city: "Glasgow",
-    name: "The Burrell Collection",
-    lat: 55.8246,
-    lon: -4.2670,
+    name: "Burrell Collection",
+    lat: 55.830833, 
+    lon: -4.3075, 
     wikidata: "Q1014544",
     priority: 2
   },
   {
     id: "glasgow-duke-of-wellington-statue",
     city: "Glasgow",
-    name: "Equestrian Statue of the Duke of Wellington",
+    name: "Statue of the Duke of Wellington",
     lat: 55.8610,
     lon: -4.2520,
     wikidata: "Q5343839",

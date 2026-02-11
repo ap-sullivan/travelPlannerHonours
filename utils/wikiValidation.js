@@ -25,7 +25,7 @@ export function isRejectedCategory(categories = []) {
 
 // makes ure the coordinates from wiki are within a certain distance of the geoapify place
 
-const MAX_DISTANCE_METERS = 500;
+const MAX_DISTANCE_METERS = 1000;
 
 // Haversine formula
 function getDistanceMeters(lat1, lon1, lat2, lon2) {

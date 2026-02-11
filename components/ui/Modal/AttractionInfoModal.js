@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Colors from "../../../constants/Colors";
 import {
   Modal,
   View,
@@ -9,6 +10,7 @@ import {
   ActivityIndicator,
   Linking,
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { fetchWikiSmart } from "../../../utils/wiki";
 
@@ -39,12 +41,18 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
     <Modal visible={visible} animationType="slide" transparent>
       <View style={style.overlay}>
         <View style={style.modalContainer}>
+          <View style={style.header}>
+  <Text style={style.title}>{attraction?.name}</Text>
+
+  <Pressable onPress={onClose} style={style.closeXBtn}>
+    <Feather name="x-circle" size={18} color="black" />
+  </Pressable>
+</View>
           <ScrollView
             style={{ width: "100%" }}
             contentContainerStyle={{ alignItems: "center", paddingBottom: 20 }}
             showsVerticalScrollIndicator={false}
           >
-            <Text style={style.title}>{attraction?.name}</Text>
 
             {loading && (
               <ActivityIndicator size="large" style={{ marginVertical: 20 }} />
@@ -97,12 +105,13 @@ export default AttractionInfoModal;
 const style = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)", // dimmed background
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 100,
   },
+  
   modalContainer: {
     width: "100%",
     maxWidth: 400,
@@ -115,12 +124,35 @@ const style = StyleSheet.create({
     shadowRadius: 10,
     elevation: 10,
   },
+
+  header: {
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  marginBottom: 16,
+},
+
+closeXBtn: {
+  position: "absolute",
+  top: 0,
+  right: 0,
+  padding: 10,
+},
+
+closeXText: {
+  fontSize: 24,
+  fontWeight: "700",
+  color: "#444",
+},
+
   title: {
     fontSize: 22,
     fontWeight: "700",
     marginBottom: 16,
     textAlign: "center",
     color: "#222",
+    maxWidth: "80%",
   },
   image: {
     width: 250,
@@ -128,6 +160,7 @@ const style = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 16,
   },
+  
   extract: {
     fontSize: 15,
     color: "#444",
@@ -135,6 +168,7 @@ const style = StyleSheet.create({
     textAlign: "justify",
     marginBottom: 16,
   },
+
   linkButton: {
     backgroundColor: "#1E90FF",
     paddingVertical: 10,

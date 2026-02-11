@@ -239,7 +239,7 @@ const handleSaveAttraction = async (attraction) => {
               ))}
             </View>
 
-            <AppText>{(city ?? "Edinburgh") + " Top Attractions"}</AppText>
+            <AppText style={{marginTop: 6, textAlign: "center", }}>Add {(city ?? "Edinburgh") + " Attractions to Your Itinerary"}</AppText>
 
             {loading && (
               <Text style={{ marginTop: 8 }}>Loading attractions…</Text>
@@ -250,7 +250,7 @@ const handleSaveAttraction = async (attraction) => {
             )}
 
             {/*spacing between header and first item */}
-            <View style={{ height: 12 }} />
+            <View style={{ height: 6}} />
           </View>
         }
         // Optional: shown if no attractions
