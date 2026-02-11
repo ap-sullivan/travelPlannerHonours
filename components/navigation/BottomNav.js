@@ -1,18 +1,30 @@
 import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import StartScreen from "../../screens/StartScreen";
+import SearchResultsScreen from "../../screens/SearchResultsScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
-import SearchResultScreen from "../../screens/SearchResultsScreen";
 import SettingsScreen from "../../screens/SettingsScreen";
 import Colors from "../../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createNativeStackNavigator();
 
-export default function BottomNav({ HomeStack }) {
+// Define the stack for the Home tab
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="Start" component={StartScreen} />
+      <HomeStack.Screen name="SearchResults" component={SearchResultsScreen} />
+      <HomeStack.Screen name="Settings" component={SettingsScreen} />
+    </HomeStack.Navigator>
+  );
+}
 
-      const insets = useSafeAreaInsets();
+export default function BottomNav() {
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -21,7 +33,6 @@ export default function BottomNav({ HomeStack }) {
         tabBarShowLabel: false,
         safeAreaInsets: { bottom: insets.bottom + 12 },
 
-        
         tabBarStyle: {
           position: "absolute",
           left: 20,
@@ -29,9 +40,6 @@ export default function BottomNav({ HomeStack }) {
           height: 60,
           borderRadius: 15,
           backgroundColor: "#fff",
-          paddingBottom: 0,
-          paddingTop: 0,
-
           elevation: 8,
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 4 },
@@ -39,7 +47,6 @@ export default function BottomNav({ HomeStack }) {
           shadowRadius: 8,
         },
 
-        tabBarIconStyle: { marginBottom: 0, marginTop: 0 },
         tabBarItemStyle: {
           height: 60,
           justifyContent: "center",
@@ -57,21 +64,19 @@ export default function BottomNav({ HomeStack }) {
           if (route.name === "Settings") iconName = "settings";
 
           return (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Feather name={iconName} size={focused ? 26 : 22} color={color} />
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Feather
+                name={iconName}
+                size={focused ? 26 : 22}
+                color={color}
+              />
             </View>
           );
         },
       })}
     >
-      {/* HOME TAB WITH STACK */}
-      <Tab.Screen name="Home" component={HomeStack} />
+      {/* Tabs */}
+      <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>

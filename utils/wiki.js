@@ -5,6 +5,11 @@
 
 import { isRejectedCategory, isCoordMismatch } from "./wikiValidation";
 
+const WIKI_HEADERS = {
+  "User-Agent": "PlanMyScotTrip/1.0 (https://github.com/ap-sullivan/travelPlannerHonours",
+  "Accept": "application/json",
+};
+
 export async function fetchWikiSmart(attraction) {
   const { name, city, lat, lon } = attraction;
 
@@ -33,7 +38,18 @@ async function fetchWikiByTitle(query, lat, lon) {
     `&srsearch=${encodeURIComponent(query)}` +
     `&srlimit=1`;
 
-  const searchRes = await fetch(searchUrl);
+    
+const searchRes = await fetch(searchUrl, {
+  headers: WIKI_HEADERS,
+});
+
+
+  if (!searchRes.ok) {
+  console.warn("Wiki search failed", searchRes.status);
+  return null;
+}
+
+
   const searchJson = await searchRes.json();
 
   const result = searchJson?.query?.search?.[0];
@@ -55,7 +71,14 @@ async function fetchWikiByTitle(query, lat, lon) {
     `&explaintext=1` +
     `&cllimit=20`;
 
-  const pageRes = await fetch(pageUrl);
+ const pageRes = await fetch(pageUrl, {
+  headers: WIKI_HEADERS,
+});
+
+if (!pageRes.ok) {
+  console.warn("Wiki page fetch failed:", pageRes.status);
+  return null;
+}
   const pageJson = await pageRes.json();
 
   const page = pageJson?.query?.pages?.[pageId];

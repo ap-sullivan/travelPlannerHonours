@@ -1,23 +1,27 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Pressable,
-  Alert
+  Alert,
 } from "react-native";
 import Logo from "../assets/logo/logo.svg";
 
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Colors from "../constants/Colors";
 import { signInWithGoogle } from "../utils/googleSignIn";
 import { signUpWithEmail, signInWithEmail } from "../utils/emailAuth";
+import { doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../utils/firebase";
 
-export default function LoginScreen({ setGuestMode }) {
+export default function LoginScreen({ setGuestMode, setHasProfile }) {
+  const navigation = useNavigation();
+
   // input UI focus states
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
@@ -37,10 +41,24 @@ export default function LoginScreen({ setGuestMode }) {
     try {
       setLoading(true);
 
+      let userCredential;
+
       if (mode === "signup") {
-        await signUpWithEmail(email, password);
+        userCredential = await signUpWithEmail(email, password);
       } else {
-        await signInWithEmail(email, password);
+        userCredential = await signInWithEmail(email, password);
+      }
+
+      const user = userCredential.user;
+
+      //  Check if the user has a completed profile
+      const profileRef = doc(db, "users", user.uid, "profile", "preferences");
+      const profileSnap = await getDoc(profileRef);
+
+      if (!profileSnap.exists()) {
+        setHasProfile(false);
+      } else {
+        setHasProfile(profileSnap.data().hasCompletedSetup);
       }
     } catch (err) {
       Alert.alert("Auth error", err.message);
@@ -52,29 +70,45 @@ export default function LoginScreen({ setGuestMode }) {
   // google login handler
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+      setLoading(true);
+
+      const userCredential = await signInWithGoogle();
+      const loggedInUser = userCredential.user;
+
+      const profileRef = doc(
+        db,
+        "users",
+        loggedInUser.uid,
+        "profile",
+        "preferences",
+      );
+      const profileSnap = await getDoc(profileRef);
+
+      if (!profileSnap.exists() || !profileSnap.data().hasCompletedSetup) {
+        setHasProfile(false);
+      } else {
+        setHasProfile(true);
+      }
+      
     } catch (e) {
       console.error("Google sign-in error:", e);
       Alert.alert("Error", e.message ?? "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-
         <View style={styles.imageContainer}>
-                    {/* <Image
+          {/* <Image
                       style={styles.image}
                       source={require("../assets/logo/logo.svg")}
                     ></Image> */}
 
-                    <Logo width={180} height={180} />
-
-                  </View>
-
-
-
+          <Logo width={180} height={180} />
+        </View>
 
         <Text style={styles.title}>Welcome to PlanMyScotTrip</Text>
         <Text style={styles.subtitle}>
@@ -157,16 +191,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-    imageContainer: {
+  imageContainer: {
     display: "flex",
     alignItems: "center",
     width: "auto",
     height: 200,
     marginTop: 6,
-    
   },
-  
- 
 
   title: {
     fontSize: 26,

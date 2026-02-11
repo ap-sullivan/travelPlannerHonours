@@ -19,7 +19,7 @@ import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createItinerary } from "../utils/createItinerary";
-import * as Crypto from "expo-crypto"; 
+import * as Crypto from "expo-crypto";
 import { getAuth } from "firebase/auth";
 
 const MIN_DAYS = 1;
@@ -79,8 +79,8 @@ function StartScreen({ navigation }) {
           days: d.days,
         }));
 
-        // if no destinations after clean give warning
-        // TODO: replace console log with user alert
+      // if no destinations after clean give warning
+      // TODO: replace console log with user alert
       if (cleanedDestinations.length === 0) {
         console.warn("No destinations entered");
         return;
@@ -89,7 +89,7 @@ function StartScreen({ navigation }) {
       // calculate total days
       const totalDays = cleanedDestinations.reduce(
         (sum, d) => sum + (d.days || 0),
-        0
+        0,
       );
 
       // prepare payload that will be saved
@@ -106,89 +106,30 @@ function StartScreen({ navigation }) {
       if (user) {
         // if logged in user save directly to firestore
         finalItineraryId = await createItinerary(user.uid, payload);
-        console.log("Logged-in User Trip Created. Firestore ID:", finalItineraryId);
+        console.log(
+          "Logged-in User Trip Created. Firestore ID:",
+          finalItineraryId,
+        );
       } else {
-      //  if guest user generate a temp id
+        //  if guest user generate a temp id
         finalItineraryId = `guest_${Crypto.randomUUID()}`;
         console.log("Guest Trip Created. Temporary ID:", finalItineraryId);
       }
 
-    //  save active itin id to async storage (both guest and logged in)
+      //  save active itin id to async storage (both guest and logged in)
       await AsyncStorage.setItem("activeItineraryId", finalItineraryId);
-      
+
       // save local draft with itin id included
       await AsyncStorage.setItem(
         "tripDraft",
-        JSON.stringify({ ...payload, id: finalItineraryId })
+        JSON.stringify({ ...payload, id: finalItineraryId }),
       );
 
-  
       navigation.navigate("SearchResults");
-      
     } catch (err) {
       console.error("Failed to save trip", err);
     }
   }
-
-
-//   // save to async storage and firestore
-//   async function handleStartPlanning() {
-//   try {
-//     if (!user) {
-//       Alert.alert(
-//         "Sign in required",
-//         "Please log in to start planning a trip."
-//       );
-//       return;
-//     }
-
-//     // Clean and validate data
-//     const cleanedDestinations = destinations
-//       .filter((d) => d.name.trim().length > 0)
-//       .map((d) => ({
-//         id: d.id,
-//         name: d.name.trim(),
-//         days: d.days,
-//       }));
-
-//     if (cleanedDestinations.length === 0) {
-//       console.warn("No destinations entered");
-//       return;
-//     }
-
-//     const totalDays = cleanedDestinations.reduce(
-//       (sum, d) => sum + (d.days || 0),
-//       0
-//     );
-
-//     const payload = {
-//       version: 1,
-//       season,
-//       destinations: cleanedDestinations,
-//       totalDays,
-//       lastUpdated: Date.now(),
-//     };
-
-//     // create itinerary in firestore
-//     const itineraryId = await createItinerary(user.uid, payload);
-
-//     // Track active itinerary
-//     await AsyncStorage.setItem(
-//       "activeItineraryId",
-//       itineraryId
-//     );
-
-//     // local draft
-//     await AsyncStorage.setItem(
-//       "tripDraft",
-//       JSON.stringify(payload)
-//     );
-
-//     navigation.navigate("SearchResults");
-//   } catch (err) {
-//     console.error("Failed to save trip", err);
-//   }
-// }
 
   return (
     <SafeAreaView style={style.container}>
@@ -304,6 +245,11 @@ function StartScreen({ navigation }) {
                 START PLANNING
               </PrimaryButton>
             </View>
+            {/* <View>
+              <Pressable style={style.logoutButton} onPress={handleLogout}>
+                <Text style={style.logoutText}>Logout (for testing)</Text>
+              </Pressable>
+            </View> */}
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

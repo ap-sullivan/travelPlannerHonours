@@ -18,36 +18,53 @@ import { NavigationContainer } from "@react-navigation/native";
 import BottomNav from "./components/navigation/BottomNav";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StartScreen from "./screens/StartScreen";
-import SearchResultsScreen from "./screens/SearchResultsScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
+import SearchResultsScreen from "./screens/SearchResultsScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./utils/firebase";
+import { auth, db } from "./utils/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
+const AuthStack = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
 
-function HomeStack() {
+function HomeStack({ isFirstTime, setHasProfile }) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={isFirstTime ? "Settings" : "Start"}
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen name="Start" component={StartScreen} />
       <Stack.Screen name="SearchResults" component={SearchResultsScreen} />
+      <Stack.Screen
+        name="Settings"
+        children={(props) => (
+          <SettingsScreen {...props} setHasProfile={setHasProfile} />
+        )}
+      />
     </Stack.Navigator>
   );
 }
 
-const AuthStack = createNativeStackNavigator();
-
-function AuthNavigator({ setGuestMode }) {
+function AuthNavigator({ setGuestMode, setHasProfile }) {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name="Login">
-        {(props) => <LoginScreen {...props} setGuestMode={setGuestMode} />}
+        {(props) => (
+          <LoginScreen
+            {...props}
+            setGuestMode={setGuestMode}
+            setHasProfile={setHasProfile}
+          />
+        )}
       </AuthStack.Screen>
     </AuthStack.Navigator>
   );
 }
 
-// keep splash screen visible while resources fetchd
+// keep splash screen visible while resources fetched
 SplashScreen.preventAutoHideAsync();
 
 // set mapbox
@@ -57,6 +74,8 @@ export default function App() {
   const [guestMode, setGuestMode] = useState(false);
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const [hasOpenedApp, setHasOpenedApp] = useState(null);
+  const [hasProfile, setHasProfile] = useState(null);
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -65,21 +84,70 @@ export default function App() {
   });
 
   useEffect(() => {
+    const checkFirstOpen = async () => {
+      const opened = await AsyncStorage.getItem("hasOpenedApp");
+      if (!opened) {
+        await AsyncStorage.setItem("hasOpenedApp", "true");
+        setHasOpenedApp(false);
+      } else {
+        setHasOpenedApp(true);
+      }
+    };
+
+    checkFirstOpen();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
+      setUser(firebaseUser ?? null);
       setAuthChecked(true);
     });
 
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    if (!user) {
+      setHasProfile(null); // important reset on logout
+      return;
+    }
+
+    const checkProfile = async () => {
+      try {
+        const profileRef = doc(db, "users", user.uid, "profile", "preferences");
+
+        const profileSnap = await getDoc(profileRef);
+
+        setHasProfile(profileSnap.exists());
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        setHasProfile(false); // safe fallback
+      }
+    };
+
+    checkProfile();
+  }, [user]);
+
+  //  hide splash once fonts loaded, auth state checked, and first open status determined
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (
+      fontsLoaded &&
+      authChecked &&
+      hasOpenedApp !== null &&
+      (!user || hasProfile !== null)
+    ) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, authChecked, hasOpenedApp, user, hasProfile]);
 
-  if (!authChecked || !fontsLoaded) {
+  console.log("Navigation State - User:", !!user, " Guest:", guestMode);
+
+  if (
+    !fontsLoaded ||
+    !authChecked ||
+    hasOpenedApp === null ||
+    (user && hasProfile === null)
+  ) {
     return null;
   }
 
@@ -87,11 +155,31 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.rootScreen} onLayout={onLayoutRootView}>
         <NavigationContainer>
-          {user || guestMode ? (
-            <BottomNav HomeStack={HomeStack} />
-          ) : (
-            <AuthNavigator setGuestMode={setGuestMode} />
-          )}
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {!user && !guestMode ? (
+              <Stack.Screen name="Login">
+                {(props) => (
+                  <LoginScreen
+                    {...props}
+                    setGuestMode={setGuestMode}
+                    setHasProfile={setHasProfile}
+                  />
+                )}
+              </Stack.Screen>
+            ) : hasProfile === false ? (
+              <Stack.Screen name="Settings">
+                {(props) => (
+                  <SettingsScreen {...props} setHasProfile={setHasProfile} />
+                )}
+              </Stack.Screen>
+            ) : (
+              <Stack.Screen name="AppHome">
+                {(props) => (
+                  <HomeStack {...props} setHasProfile={setHasProfile} />
+                )}
+              </Stack.Screen>
+            )}
+          </Stack.Navigator>
         </NavigationContainer>
       </View>
     </SafeAreaProvider>

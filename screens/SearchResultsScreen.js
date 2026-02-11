@@ -66,30 +66,6 @@ useEffect(() => {
     );
   }, [destinations]);
 
-
-
-  // useEffect(() => {
-  //   async function loadDestinations() {
-  //     try {
-  //       const stored = await AsyncStorage.getItem("tripDraft");
-  //       if (!stored) return;
-
-  //       const trip = JSON.parse(stored);
-
-  //       setDestinations(trip.destinations);
-
-  //       // default to first destination
-  //       if (trip.destinations.length > 0) {
-  //         setCity(trip.destinations[0].name);
-  //       }
-  //     } catch (err) {
-  //       console.error("Failed to load trip", err);
-  //     }
-  //   }
-
-  //   loadDestinations();
-  // }, []);
-
   const activeCity = city ?? "Edinburgh";
   const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
 
@@ -195,6 +171,7 @@ const handleSaveAttraction = async (attraction) => {
       const savedList = existingJson ? JSON.parse(existingJson) : [];
       
       // check for dupes
+      // TODO: CHECK IF THIS WORKS WHEN USER IS LOGGED IN (WORKS FOR LOCAL)
       if (!savedList.find(item => item.id === attraction.id)) {
         savedList.push({ ...attractionData, savedAt: Date.now() });
         await AsyncStorage.setItem("guestSavedAttractions", JSON.stringify(savedList));
