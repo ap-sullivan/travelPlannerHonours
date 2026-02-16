@@ -289,7 +289,12 @@ const styles = StyleSheet.create({
   skipText: {
     marginTop: 20,
     textAlign: "center",
-    color: Colors.gray600,
+    color: Colors.gray700,
     fontSize: 13,
+    marginBottom: 12,
   },
+
+  toggleText: {
+    textAlign: "center",
+  }
 });

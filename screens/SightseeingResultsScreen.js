@@ -11,53 +11,58 @@ import { CITY_META } from "../data/cityMeta";
 import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { saveAttraction } from "../utils/saveAttraction";
+import { getSavedAttractions } from "../utils/getSavedAttractions";
+import PrimaryButton from "../components/ui/buttons/PrimaryButton";
+import { useNavigation } from "@react-navigation/native";
+
+
 import { auth } from "../utils/firebase";
 
-function SearchResultsScreen() {
+function SightseeingResultsScreen() {
   const [city, setCity] = useState(null);
   const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
   const [selectedAttraction, setSelectedAttraction] = useState(null);
   const [destinations, setDestinations] = useState([]);
   const [itineraryId, setItineraryId] = useState(null);
 
-  const user = auth.currentUser; 
+  const navigation = useNavigation();
 
+  const user = auth.currentUser;
 
-    // load selected cities and grab stored ids from async storage on mount
+  // load selected cities and grab stored ids from async storage on mount
 
-useEffect(() => {
-  async function initScreen() {
-    try {
-      // 1. Grab both pieces of info from storage
-      const [storedId, storedDraft] = await Promise.all([
-        AsyncStorage.getItem("activeItineraryId"),
-        AsyncStorage.getItem("tripDraft")
-      ]);
+  useEffect(() => {
+    async function initScreen() {
+      try {
+        // 1. Grab both pieces of info from storage
+        const [storedId, storedDraft] = await Promise.all([
+          AsyncStorage.getItem("activeItineraryId"),
+          AsyncStorage.getItem("tripDraft"),
+        ]);
 
-      // 2. Set the ID state (so handleSaveAttraction knows where to save)
-      if (storedId) {
-        setItineraryId(storedId);
-        console.log("Current Itinerary ID:", storedId);
-      }
-
-      // 3. Set the destinations and default city
-      if (storedDraft) {
-        const trip = JSON.parse(storedDraft);
-        setDestinations(trip.destinations);
-
-        // Default to first destination if one isn't already set
-        if (trip.destinations.length > 0 && !city) {
-          setCity(trip.destinations[0].name);
+        // 2. Set the ID state (so handleSaveAttraction knows where to save)
+        if (storedId) {
+          setItineraryId(storedId);
+          console.log("Current Itinerary ID:", storedId);
         }
+
+        // 3. Set the destinations and default city
+        if (storedDraft) {
+          const trip = JSON.parse(storedDraft);
+          setDestinations(trip.destinations);
+
+          // Default to first destination if one isn't already set
+          if (trip.destinations.length > 0 && !city) {
+            setCity(trip.destinations[0].name);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to initialize search results:", err);
       }
-    } catch (err) {
-      console.error("Failed to initialize search results:", err);
     }
-  }
 
-  initScreen();
-}, []);
-
+    initScreen();
+  }, []);
 
   useEffect(() => {
     console.log(
@@ -143,54 +148,102 @@ useEffect(() => {
   }
 
   // save attraction to itinerary
-const handleSaveAttraction = async (attraction) => {
-  
-  if (!itineraryId) {
-    console.error("No itineraryId found in state.");
-    return;
-  }
-
-  const attractionData = {
-    id: attraction.id,
-    name: attraction.name,
-    city: city ?? "Edinburgh",
-    lat: attraction.lat,
-    lon: attraction.lon,
-    categories: attraction.categories ?? [],
-  };
-
-  try {
-    if (user) {
-      // logged in save to firebase
-      await saveAttraction(user.uid, itineraryId, attractionData);
-      console.log("Firebase Save successful.");
-    } else {
-      // guest save to async storage
-      console.log(`saved "${attractionData.name} locally" as Guest...`);  
-      const existingJson = await AsyncStorage.getItem("guestSavedAttractions");
-      const savedList = existingJson ? JSON.parse(existingJson) : [];
-      
-      // check for dupes
-      // TODO: CHECK IF THIS WORKS WHEN USER IS LOGGED IN (WORKS FOR LOCAL)
-      if (!savedList.find(item => item.id === attraction.id)) {
-        savedList.push({ ...attractionData, savedAt: Date.now() });
-        await AsyncStorage.setItem("guestSavedAttractions", JSON.stringify(savedList));
-      } else {
-
-        // TODO:  change from console log to alert or toast
-        console.log("Attraction already saved locally");
-      }
+  const handleSaveAttraction = async (attraction) => {
+    if (!itineraryId) {
+      console.error("No itineraryId found in state.");
+      return;
     }
 
-    Alert.alert("Saved", "Added to your itinerary!");
+    const attractionData = {
+      id: attraction.id,
+      name: attraction.name,
+      city: city ?? "Edinburgh",
+      lat: attraction.lat,
+      lon: attraction.lon,
+      categories: attraction.categories ?? [],
+    };
+
+    try {
+      if (user) {
+        // logged in save to firebase
+        await saveAttraction(user.uid, itineraryId, attractionData);
+        console.log("Firebase Save successful.");
+      } else {
+        // guest save to async storage
+        console.log(`saved "${attractionData.name} locally" as Guest...`);
+        const existingJson = await AsyncStorage.getItem(
+          "guestSavedAttractions",
+        );
+        const savedList = existingJson ? JSON.parse(existingJson) : [];
+
+        // check for dupes
+        // TODO: CHECK IF THIS WORKS WHEN USER IS LOGGED IN (WORKS FOR LOCAL)
+        if (!savedList.find((item) => item.id === attraction.id)) {
+          savedList.push({ ...attractionData, savedAt: Date.now() });
+          await AsyncStorage.setItem(
+            "guestSavedAttractions",
+            JSON.stringify(savedList),
+          );
+        } else {
+          // TODO:  change from console log to alert or toast
+          console.log("Attraction already saved locally");
+        }
+      }
+
+      Alert.alert("Saved", "Added to your itinerary!");
+    } catch (err) {
+      console.error("Save failed", err);
+      Alert.alert("Error", "Could not save attraction");
+    }
+  };
+
+  const handleNext = async () => {
+  try {
+    let savedAttractions = [];
+
+    if (user) {
+      savedAttractions = await getSavedAttractions(user.uid, itineraryId);
+    } else {
+      const json = await AsyncStorage.getItem("guestSavedAttractions");
+      savedAttractions = json ? JSON.parse(json) : [];
+    }
+
+    // Group by city
+    const savedByCity = savedAttractions.reduce((acc, item) => {
+      if (!acc[item.city]) acc[item.city] = [];
+      acc[item.city].push(item);
+      return acc;
+    }, {});
+
+    // Validate
+    const missingCities = destinations
+      .map(d => d.name)
+      .filter(cityName => !savedByCity[cityName]);
+
+    if (missingCities.length > 0) {
+      Alert.alert(
+        "Almost there!",
+        `Please add at least one attraction for:\n\n${missingCities.join("\n")}`
+      );
+      return;
+    }
+
+    navigation.navigate("SightseeingSummary", {
+      itineraryId
+    });
+
   } catch (err) {
-    console.error("Save failed", err);
-    Alert.alert("Error", "Could not save attraction");
+    console.error(err);
   }
 };
 
   return (
     <SafeAreaView style={style.container}>
+
+      
+
+   {/* */}
+
       <FlatList
         data={numberedAttractions}
         keyExtractor={(item) => item.id}
@@ -239,7 +292,16 @@ const handleSaveAttraction = async (attraction) => {
               ))}
             </View>
 
-            <AppText style={{marginTop: 6, textAlign: "center", }}>Add {(city ?? "Edinburgh") + " Attractions to Your Itinerary"}</AppText>
+            <AppText style={{ marginTop: 6, textAlign: "center" }}>
+              Add {(city ?? "Edinburgh") + " Attractions to Your Itinerary"}
+            </AppText>
+
+            <PrimaryButton
+      onPress={handleNext} 
+      >
+         Next 
+         
+      </PrimaryButton>
 
             {loading && (
               <Text style={{ marginTop: 8 }}>Loading attractions…</Text>
@@ -250,7 +312,7 @@ const handleSaveAttraction = async (attraction) => {
             )}
 
             {/*spacing between header and first item */}
-            <View style={{ height: 6}} />
+            <View style={{ height: 6 }} />
           </View>
         }
         // Optional: shown if no attractions
@@ -265,7 +327,7 @@ const handleSaveAttraction = async (attraction) => {
     </SafeAreaView>
   );
 }
-export default SearchResultsScreen;
+export default SightseeingResultsScreen;
 
 const style = StyleSheet.create({
   container: {

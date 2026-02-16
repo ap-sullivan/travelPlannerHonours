@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import StartScreen from "../../screens/StartScreen";
-import SearchResultsScreen from "../../screens/SearchResultsScreen";
+import SearchResultsScreen from "../../screens/SightseeingResultsScreen";
 import ProfileScreen from "../../screens/ProfileScreen";
 import SettingsScreen from "../../screens/SettingsScreen";
 import Colors from "../../constants/Colors";

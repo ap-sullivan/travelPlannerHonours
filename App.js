@@ -8,9 +8,7 @@ import {
   Inter_500Medium,
   Inter_600SemiBold,
 } from "@expo-google-fonts/inter";
-
 import Colors from "./constants/Colors";
-
 import Mapbox from "@rnmapbox/maps";
 
 // navigation
@@ -18,9 +16,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import BottomNav from "./components/navigation/BottomNav";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StartScreen from "./screens/StartScreen";
+
+import SightseeingSummaryScreen from "./screens/SightseeingSummaryScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
-import SearchResultsScreen from "./screens/SearchResultsScreen";
+import SightseeingResultsScreen from "./screens/SightseeingResultsScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -29,24 +29,8 @@ import { doc, getDoc } from "firebase/firestore";
 
 const AuthStack = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
+const JourneyFlowStack = createNativeStackNavigator();
 
-function HomeStack({ isFirstTime, setHasProfile }) {
-  return (
-    <Stack.Navigator
-      initialRouteName={isFirstTime ? "Settings" : "Start"}
-      screenOptions={{ headerShown: false }}
-    >
-      <Stack.Screen name="Start" component={StartScreen} />
-      <Stack.Screen name="SearchResults" component={SearchResultsScreen} />
-      <Stack.Screen
-        name="Settings"
-        children={(props) => (
-          <SettingsScreen {...props} setHasProfile={setHasProfile} />
-        )}
-      />
-    </Stack.Navigator>
-  );
-}
 
 function AuthNavigator({ setGuestMode, setHasProfile }) {
   return (
@@ -61,6 +45,29 @@ function AuthNavigator({ setGuestMode, setHasProfile }) {
         )}
       </AuthStack.Screen>
     </AuthStack.Navigator>
+  );
+}
+
+function JourneyFlow() {
+  return (
+    <JourneyFlowStack.Navigator screenOptions={{ headerShown: false }}>
+      <JourneyFlowStack.Screen name="Start" component={StartScreen} />
+
+      <JourneyFlowStack.Screen
+        name="SightseeingResults"
+        component={SightseeingResultsScreen}
+      />
+      <JourneyFlowStack.Screen
+        name="SightseeingSummary"
+        component={SightseeingSummaryScreen}
+      />
+      {/* <JourneyFlowStack.Screen
+        name="Accommodation"
+        component={AccommodationScreen}
+      />
+      <JourneyFlowStack.Screen name="Transport" component={TransportScreen} />
+      <JourneyFlowStack.Screen name="AISummary" component={AISummaryScreen} /> */}
+    </JourneyFlowStack.Navigator>
   );
 }
 
@@ -173,10 +180,8 @@ export default function App() {
                 )}
               </Stack.Screen>
             ) : (
-              <Stack.Screen name="AppHome">
-                {(props) => (
-                  <HomeStack {...props} setHasProfile={setHasProfile} />
-                )}
+              <Stack.Screen name="JourneyFlow">
+                {(props) => <JourneyFlow {...props} />}
               </Stack.Screen>
             )}
           </Stack.Navigator>

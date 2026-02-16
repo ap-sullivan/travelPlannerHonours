@@ -19,6 +19,7 @@ import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createItinerary } from "../utils/createItinerary";
+import { resetGuestItinerary } from "../utils/resetGuestItinerary";
 import * as Crypto from "expo-crypto";
 import { getAuth } from "firebase/auth";
 
@@ -70,6 +71,11 @@ function StartScreen({ navigation }) {
 
   async function handleStartPlanning() {
     try {
+      // clears local async to start a new itinerary for guest users 
+      if (!user) {
+        await resetGuestItinerary(); 
+        console.log("Guest itinerary cleared before starting new trip");
+      }
       // clean and validate data
       const cleanedDestinations = destinations
         .filter((d) => d.name.trim().length > 0)
@@ -125,7 +131,7 @@ function StartScreen({ navigation }) {
         JSON.stringify({ ...payload, id: finalItineraryId }),
       );
 
-      navigation.navigate("SearchResults");
+      navigation.navigate("SightseeingResults");
     } catch (err) {
       console.error("Failed to save trip", err);
     }
