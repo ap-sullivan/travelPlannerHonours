@@ -1,3 +1,5 @@
+// util to fetch saved attractions for a user and itinerary from Firestore
+
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 

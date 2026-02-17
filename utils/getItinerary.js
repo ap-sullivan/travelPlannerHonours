@@ -1,3 +1,5 @@
+// util to fetch itinerary data from firestore
+
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 

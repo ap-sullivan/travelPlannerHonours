@@ -8,20 +8,24 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { getSavedAttractions } from "../utils/getSavedAttractions";
 import { getItinerary } from "../utils/getItinerary";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 
 import { auth } from "../utils/firebase";
 
 function SightseeingSummaryScreen({ route }) {
+
+     const navigation = useNavigation();
   const { itineraryId } = route.params;
   const user = auth.currentUser;
 
   const [attractions, setAttractions] = useState([]);
-    const [destinations, setDestinations] = useState([]);
+  const [destinations, setDestinations] = useState([]);
 
   const handleRemoveAttraction = async (attractionId) => {
     try {
@@ -48,42 +52,47 @@ function SightseeingSummaryScreen({ route }) {
     }
   };
 
-useEffect(() => {
-  async function load() {
-    try {
-      if (user) {
-        const data = await getSavedAttractions(user.uid, itineraryId);
-        setAttractions(data);
+  useEffect(() => {
+    async function load() {
+      try {
+        if (user) {
+          const data = await getSavedAttractions(user.uid, itineraryId);
+          setAttractions(data);
 
-        const itinerary = await getItinerary(user.uid, itineraryId);
-        setDestinations(itinerary?.destinations || []);
-      } else {
-        const json = await AsyncStorage.getItem("guestSavedAttractions");
-        setAttractions(json ? JSON.parse(json) : []);
+          const itinerary = await getItinerary(user.uid, itineraryId);
+          setDestinations(itinerary?.destinations || []);
+        } else {
+          const json = await AsyncStorage.getItem("guestSavedAttractions");
+          setAttractions(json ? JSON.parse(json) : []);
 
-        const draftJson = await AsyncStorage.getItem("tripDraft");
-        const draft = draftJson ? JSON.parse(draftJson) : {};
-        setDestinations(draft.destinations || []);
+          const draftJson = await AsyncStorage.getItem("tripDraft");
+          const draft = draftJson ? JSON.parse(draftJson) : {};
+          setDestinations(draft.destinations || []);
+        }
+      } catch (err) {
+        console.error("Failed to load attractions or destinations", err);
       }
-    } catch (err) {
-      console.error("Failed to load attractions or destinations", err);
     }
-  }
 
-  load();
-}, [user, itineraryId]);
+    load();
+  }, [user, itineraryId]);
 
-//   group attractions by city for UI 
+  //   group attractions by city for UI
   const grouped = attractions.reduce((acc, item) => {
     if (!acc[item.city]) acc[item.city] = [];
     acc[item.city].push(item);
     return acc;
   }, {});
 
+  const cities = Object.keys(grouped);
 
   const stayDays = (cityName) => {
-  const dest = destinations.find(d => d.name === cityName);
-  return dest ? dest.days : null;
+    const dest = destinations.find((d) => d.name === cityName);
+    return dest ? dest.days : null;
+  };
+
+  const handleNext = () => {
+  navigation.navigate("AccommodationResults", { itineraryId });
 };
 
   return (
@@ -92,34 +101,48 @@ useEffect(() => {
         <Text style={style.title}>Your Sightseeing Summary</Text>
       </View>
       <ScrollView style={{ padding: 32 }}>
-        {Object.keys(grouped).map((city) => (
-          <View key={city}>
-            <Text style={style.cityTitle}>
-              {city} {stayDays(city) ? `(${stayDays(city)} days)` : ""}
+  {cities.map((city, index) => (
+    <View key={city}>
+      <Text style={style.cityTitle}>
+        {city} {stayDays(city) ? `(${stayDays(city)} days)` : ""}
+      </Text>
 
-            </Text>
+      {grouped[city].map((attraction) => (
+        <View key={attraction.id} style={style.attractionItem}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={style.attractionText}
+          >
+            {attraction.name}
+          </Text>
 
-            {grouped[city].map((attraction) => (
-              <View key={attraction.id} style={style.attractionItem}>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={style.attractionText}
-                >
-                  {attraction.name}
-                </Text>
+          <TouchableOpacity
+            onPress={() => handleRemoveAttraction(attraction.id)}
+            style={style.removeButton}
+          >
+            <Feather name="x-circle" size={16} color={Colors.accent600} />
+          </TouchableOpacity>
+        </View>
+      ))}
 
-                <TouchableOpacity
-                  onPress={() => handleRemoveAttraction(attraction.id)}
-                  style={style.removeButton}
-                >
-                  <Feather name="x-circle" size={16} color={Colors.accent600} />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-        ))}
-      </ScrollView>
+     
+      {index < cities.length - 1 && (
+        <View style={style.divider}>
+          <View style={style.line} />
+        </View>
+      )}
+    </View>
+  ))}
+
+   <PrimaryButton style={{marginTop: 24}}
+    onPress={handleNext}
+      >
+         Move to Accommodation
+         
+      </PrimaryButton>
+</ScrollView>
+
     </SafeAreaView>
   );
 }
@@ -136,7 +159,8 @@ const style = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 16,
+    marginTop: 24,
+    marginBottom: 16,
   },
   cityTitle: {
     fontSize: 18,
@@ -155,10 +179,16 @@ const style = StyleSheet.create({
     marginRight: 8,
   },
 
-  //   removeButton: {
-  //     backgroundColor: "red",
-  //     paddingVertical: 4,
-  //     paddingHorizontal: 8,
-  //     borderRadius: 6,
-  //   },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.gray300,
+    marginTop: 16,
+  },
 });

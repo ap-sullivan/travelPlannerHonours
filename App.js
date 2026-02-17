@@ -17,10 +17,11 @@ import BottomNav from "./components/navigation/BottomNav";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StartScreen from "./screens/StartScreen";
 
-import SightseeingSummaryScreen from "./screens/SightseeingSummaryScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SightseeingResultsScreen from "./screens/SightseeingResultsScreen";
+import SightseeingSummaryScreen from "./screens/SightseeingSummaryScreen";
+import AccommodationResultsScreen from "./screens/AccommodationResultsScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -61,10 +62,11 @@ function JourneyFlow() {
         name="SightseeingSummary"
         component={SightseeingSummaryScreen}
       />
-      {/* <JourneyFlowStack.Screen
-        name="Accommodation"
-        component={AccommodationScreen}
+     <JourneyFlowStack.Screen
+        name="AccommodationResults"
+        component={AccommodationResultsScreen}
       />
+       {/* 
       <JourneyFlowStack.Screen name="Transport" component={TransportScreen} />
       <JourneyFlowStack.Screen name="AISummary" component={AISummaryScreen} /> */}
     </JourneyFlowStack.Navigator>

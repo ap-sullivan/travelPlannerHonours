@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Hilton Garden Inn Glasgow City Centre",
+    "brand": "Hilton Garden Inn",
+    "operator": "Hilton",
+    "stars": 4,
+    "rooms": 164,
+    "coordinates": {
+      "lat": 55.857939,
+      "lon": -4.282846
+    },
+    "address": {
+      "formatted": "Hilton Garden Inn Glasgow City Centre, 1 Finnieston Street, Glasgow, G3 8HN, United Kingdom",
+      "street": "Finnieston Street",
+      "housenumber": "1",
+      "city": "Glasgow",
+      "postcode": "G3 8HN",
+      "district": "Cranstonhill",
+      "suburb": "Plantation",
+      "state": "Scotland",
+      "country": "United Kingdom"
+    },
+    "contact": {
+      "phone": "+44 141 240 1002",
+      "email": "hgiglasgow.reception@hilton.com",
+      "fax": "+44-141-227 1036"
+    },
+    "facilities": {
+      "internet_access": true,
+      "wheelchair": true,
+      "air_conditioning": true,
+      "smoking": false
+    },
+    "website": "https://www.hilton.com/en/hotels/glaccgi-hilton-garden-inn-glasgow-city-centre/",
+    "wiki_and_media": {
+      "wikidata": "Q65770076"
+    },
+    "place_id": "5124a3014ca22111c059a8a5cbf2d0ed4b40f00102f90190fba3010000000092032548696c746f6e2047617264656e20496e6e20476c6173676f7720436974792043656e747265"
+  },
+  {
+    "name": "DoubleTree by Hilton Hotel Glasgow Central",
+    "brand": "DoubleTree",
+    "operator": "Hilton Hotels",
+    "stars": 4,
+    "rooms": 300,
+    "coordinates": {
+      "lat": 55.86603,
+      "lon": -4.259015
+    },
+    "address": {
+      "formatted": "DoubleTree by Hilton Hotel Glasgow Central, 36 Cambridge Street, Glasgow, G2 3HN, United Kingdom",
+      "street": "Cambridge Street",
+      "housenumber": "36",
+      "city": "Glasgow",
+      "postcode": "G2 3HN",
+      "district": null,
+      "suburb": "Blythswood Hill",
+      "state": "Scotland",
+      "country": "United Kingdom"
+    },
+    "contact": {
+      "phone": "+44 141 332 3311",
+      "email": "reservations@dtglasgowcentral.com",
+      "fax": null
+    },
+    "facilities": {
+      "internet_access": true,
+      "wheelchair": true,
+      "air_conditioning": null,
+      "smoking": null
+    },
+    "website": "https://www.hilton.com/en/hotels/glagwdi-doubletree-glasgow-central/",
+    "wiki_and_media": {
+      "wikidata": "Q31038324"
+    },
+    "place_id": "51e26544363b0911c0591d3b1610daee4b40f00102f9015eee7e030000000092032a446f75626c65547265652062792048696c746f6e20486f74656c20476c6173676f772043656e7472616c"
+  },
+  {
+    "name": "Kimpton Blythswood Square Hotel",
+    "brand": "Kimpton",
+    "operator": null,
+    "stars": 5,
+    "rooms": null,
+    "coordinates": {
+      "lat": 55.863497,
+      "lon": -4.261891
+    },
+    "address": {
+      "formatted": "Kimpton Blythswood Square Hotel, 11 Blythswood Square, Glasgow, G2 4AD, United Kingdom",
+      "street": "Blythswood Square",
+      "housenumber": "11",
+      "city": "Glasgow",
+      "postcode": "G2 4AD",
+      "district": null,
+      "suburb": "Blythswood Hill",
+      "state": "Scotland",
+      "country": "United Kingdom"
+    },
+    "contact": {
+      "phone": "+44 141 248 8888",
+      "email": null,
+      "fax": null
+    },
+    "facilities": {
+      "internet_access": null,
+      "wheelchair": null,
+      "air_conditioning": null
+
+    }
+}
+
+]

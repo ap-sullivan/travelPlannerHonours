@@ -102,10 +102,6 @@ export default function LoginScreen({ setGuestMode, setHasProfile }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.imageContainer}>
-          {/* <Image
-                      style={styles.image}
-                      source={require("../assets/logo/logo.svg")}
-                    ></Image> */}
 
           <Logo width={180} height={180} />
         </View>
@@ -127,6 +123,7 @@ export default function LoginScreen({ setGuestMode, setHasProfile }) {
           <View style={styles.line} />
         </View>
 
+{/* TODO: MAKE THE FOCUS STATE ORANGE */}
         {/* Email signups */}
         <View style={[styles.inputWrapper, emailFocused && styles.focused]}>
           <TextInput
