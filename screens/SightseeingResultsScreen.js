@@ -8,7 +8,7 @@ import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
 import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
-import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions";
+import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { saveAttraction } from "../utils/saveAttraction";
 import { getSavedAttractions } from "../utils/getSavedAttractions";
@@ -79,7 +79,7 @@ function SightseeingResultsScreen() {
     return MUST_SEE_ATTRACTIONS[activeCity] ?? [];
   }, [activeCity]);
 
-  const normalizedMustSee = useMemo(() => {
+  const normalisedMustSee = useMemo(() => {
     return mustSeeForCity.map((item) => ({
       id: item.id,
       name: item.name,
@@ -95,16 +95,16 @@ function SightseeingResultsScreen() {
   // filter geapify to remove dupes
   const filteredGeoapifyAttractions = useMemo(() => {
     const mustSeeNames = new Set(
-      normalizedMustSee.map((a) => a.name.toLowerCase()),
+      normalisedMustSee.map((a) => a.name.toLowerCase()),
     );
 
     return attractions.filter((a) => !mustSeeNames.has(a.name.toLowerCase()));
-  }, [attractions, normalizedMustSee]);
+  }, [attractions, normalisedMustSee]);
 
   // then merge list
   const mergedAttractions = useMemo(() => {
-    return [...normalizedMustSee, ...filteredGeoapifyAttractions];
-  }, [normalizedMustSee, filteredGeoapifyAttractions]);
+    return [...normalisedMustSee, ...filteredGeoapifyAttractions];
+  }, [normalisedMustSee, filteredGeoapifyAttractions]);
 
   // set numbers for list/map refs
   const numberedAttractions = useMemo(() => {

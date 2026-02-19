@@ -10,6 +10,11 @@ import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../utils/firebase";
 import { saveHotel } from "../utils/saveHotel";
+import AttractionMap from "../components/ui/maps/AttractionMap";
+import { CITY_META } from "../data/cityMeta";
+import { FAVOURITE_HOTELS } from "../data/hotels/favouriteHotels";
+
+//TODO add in favourite hotels eventually and possibly info modal
 
 function AccommodationResultsScreen() {
   const [city, setCity] = useState(null);
@@ -45,7 +50,86 @@ function AccommodationResultsScreen() {
     initScreen();
   }, []);
 
-  const { hotels, loading, error } = useHotels(city ?? "", 4); // min 4-star
+
+  // mapbox logics
+  const activeCity = city ?? "Edinburgh";
+  const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
+
+    // bring in favopourite hotels
+    const favouriteHotels = useMemo(() => {
+      return FAVOURITE_HOTELS[activeCity] ?? [];
+    }, [activeCity]);
+
+// normalise data for map and list
+    const normalisedFavouriteHotels = useMemo(() => {
+    return favouriteHotels.map((item) => ({
+      id: item.id,
+      name: item.name,
+      subtitle: "App Favourite",
+      lat: item.lat,
+      lon: item.lon,
+      categories: ["favourite"],
+      isFavourite: true,
+    }));
+  }, [favouriteHotels]);
+
+    // TODO: remove 4* minimum 
+const { hotels = [], loading, error } = useHotels(city ?? "", 4);
+
+  // filter to remove dupes 
+
+  const filteredGeoapifyHotels = useMemo(() => {
+  if (!hotels || !hotels.length) return []; // <-- wait for hotels to exist
+
+  const favouriteHotelNames = new Set(
+    normalisedFavouriteHotels.map((a) => a.name.toLowerCase())
+  );
+
+  return hotels.filter((a) => !favouriteHotelNames.has(a.name.toLowerCase()));
+}, [hotels, normalisedFavouriteHotels]);
+
+    const mergedHotels = useMemo(() => {
+    return [...normalisedFavouriteHotels, ...filteredGeoapifyHotels];
+  }, [normalisedFavouriteHotels, filteredGeoapifyHotels]);
+
+    // set numbers for list/map refs
+const numberedHotels = useMemo(() => {
+    return mergedHotels.map((item, index) => ({
+      ...item,
+      displayIndex: index + 1,
+    }));
+  }, [mergedHotels]);  
+
+
+
+  // convert hotels to geojson for map
+  const hotelsGeoJSON = useMemo(() => {
+    return {
+      type: "FeatureCollection",
+      features: numberedHotels.map((item) => ({
+        type: "Feature",
+        id: item.id,
+        properties: {
+          name: item.name,
+          subtitle: item.subtitle,
+          categories: item.categories,
+          index: item.displayIndex,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [item.lon, item.lat],
+        },
+      })),
+    };
+  }, [numberedHotels]);
+
+  const mapCenter = [cityMeta.lon, cityMeta.lat];
+  const mapZoom = cityMeta.mapboxZoom;
+
+  
+  
+
+
 
   const handleSaveHotel = async (hotel) => {
     if (!itineraryId) return;
@@ -56,9 +140,9 @@ function AccommodationResultsScreen() {
       city: city ?? "",
       lat: hotel.lat,
       lon: hotel.lon,
-    //   stars: hotel.stars,
-        website: hotel.website,
-        wikidataId: hotel.wikidataId,
+      //   stars: hotel.stars,
+      website: hotel.website,
+      wikidataId: hotel.wikidataId,
     };
 
     try {
@@ -71,7 +155,7 @@ function AccommodationResultsScreen() {
           savedList.push({ ...hotelData, savedAt: Date.now() });
           await AsyncStorage.setItem(
             "guestSavedHotels",
-            JSON.stringify(savedList)
+            JSON.stringify(savedList),
           );
         }
       }
@@ -106,18 +190,37 @@ function AccommodationResultsScreen() {
       {error && <Text style={{ color: "red" }}>{error}</Text>}
 
       <FlatList
-        data={hotels}
+        data={numberedHotels}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <HotelListItem
-            index={index + 1}
+            index={item.displayIndex}
             title={item.name}
-            subtitle={`${item.hasWikiData ? " (has WikiData)" : ""}`}
+            subtitle={`${item.subtitle} ${item.hasWikiData ? " (has WikiData)" : ""}`}
             onPressAdd={() => handleSaveHotel(item)}
           />
         )}
         ListEmptyComponent={<AppText>No hotels found.</AppText>}
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}
+        ListHeaderComponent={
+          <View>
+            <View style={styles.mapContainer}>
+              {/* <AttractionMap
+          geojson={attractionsGeoJSON}
+          center={mapCenter}
+          zoom={mapZoom}
+          onSelectAttraction={(feature) =>
+            openDetails({
+              id: feature.id,
+              name: feature.properties.name,
+              lat: feature.geometry.coordinates[1],
+              lon: feature.geometry.coordinates[0],
+            })
+          }
+        /> */}
+            </View>
+          </View>
+        }
       />
 
       <PrimaryButton onPress={handleNext}>Next</PrimaryButton>
@@ -129,6 +232,25 @@ export default AccommodationResultsScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+
   title: { fontSize: 20, fontWeight: "bold", marginVertical: 16 },
-  resultsContainer: { marginBottom: 16, flexDirection: "row", flexWrap: "wrap" },
+
+  resultsContainer: {
+    marginBottom: 16,
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+
+  mapContainer: {
+    width: "auto",
+    height: 220,
+    marginTop: 6,
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+
+  map: {
+    width: "100%",
+    height: "100%",
+  },
 });

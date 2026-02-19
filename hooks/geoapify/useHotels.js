@@ -20,7 +20,6 @@ export function useHotels(city) {
       return;
     }
 
-    
     let cancelled = false;
 
     // fetch hotels from geoapify and normalise
@@ -31,17 +30,15 @@ export function useHotels(city) {
 
         const raw = await fetchCityHotels({ ...meta });
 
-
         const normalized = raw
           .filter(
             (f) =>
               typeof f.properties?.name === "string" &&
-              f.properties.name.trim().length > 0
+              f.properties.name.trim().length > 0,
           )
-        //   normalise for usable format and give fallbacks
+          //   normalise for usable format and give fallbacks
           .map((f) => {
-
-                const wikidataId = f.properties.wiki_and_media?.wikidata ?? null;
+            const wikidataId = f.properties.wiki_and_media?.wikidata ?? null;
 
             return {
               id: f.properties.place_id,
@@ -50,17 +47,19 @@ export function useHotels(city) {
               lat: f.properties.lat,
               lon: f.properties.lon,
               stars: f.properties.accommodation?.stars ?? 0,
-            //   stars: f.properties.accommodation.stars,
-            //   rooms: f.properties.accommodation?.rooms ?? 0,
               website: f.properties.website ?? "",
               contact: f.properties.contact ?? {},
               facilities: f.properties.facilities ?? {},
-               hasWikiData: !!wikidataId,
-      wikidataId,
+              hasWikiData: !!wikidataId,
+              wikidataId,
+              categories: [], 
+              isFavourite: false, 
+              subtitle: "", 
+              description: "",
             };
-          })
+          });
         //   filtering by min 4 stars
-        //   .filter((h) => h.stars >= minStars); 
+        //   .filter((h) => h.stars >= minStars);
 
         if (!cancelled) setHotels(normalized);
       } catch (e) {

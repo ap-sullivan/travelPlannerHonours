@@ -85,9 +85,20 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
             )}
 
             {!loading && !wiki && (
+              <View>
               <Text style={style.fallback}>
                 No Wikipedia information found for this location.
               </Text>
+
+              <Text style={style.fallback}>
+              Use AI to find out more about this attraction (premium subscription only) 
+              </Text>
+
+              <Pressable>
+                ADD A BUTTON HERE
+              </Pressable>
+              </View>
+
             )}
 
             <Pressable onPress={onClose} style={style.closeBtn}>

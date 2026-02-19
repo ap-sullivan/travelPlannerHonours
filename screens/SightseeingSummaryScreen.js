@@ -5,9 +5,12 @@ import {
   Alert,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
+  Image,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getSavedAttractions } from "../utils/getSavedAttractions";
 import { getItinerary } from "../utils/getItinerary";
@@ -15,17 +18,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
+import Carousel from "react-native-reanimated-carousel";
+import { useCityImages } from "../hooks/unsplash/useCityImages";
 
 import { auth } from "../utils/firebase";
 
 function SightseeingSummaryScreen({ route }) {
-
-     const navigation = useNavigation();
+  const navigation = useNavigation();
   const { itineraryId } = route.params;
   const user = auth.currentUser;
 
   const [attractions, setAttractions] = useState([]);
   const [destinations, setDestinations] = useState([]);
+
+  
 
   const handleRemoveAttraction = async (attractionId) => {
     try {
@@ -52,37 +58,51 @@ function SightseeingSummaryScreen({ route }) {
     }
   };
 
-  useEffect(() => {
-    async function load() {
-      try {
-        if (user) {
-          const data = await getSavedAttractions(user.uid, itineraryId);
-          setAttractions(data);
+  //  load data on mount - attractions + destinations for city names and days
 
-          const itinerary = await getItinerary(user.uid, itineraryId);
-          setDestinations(itinerary?.destinations || []);
-        } else {
-          const json = await AsyncStorage.getItem("guestSavedAttractions");
-          setAttractions(json ? JSON.parse(json) : []);
+ useEffect(() => {
+  const loadData = async () => {
+    try {
+      let attractionsData = [];
+      let destinationsData = [];
 
-          const draftJson = await AsyncStorage.getItem("tripDraft");
-          const draft = draftJson ? JSON.parse(draftJson) : {};
-          setDestinations(draft.destinations || []);
-        }
-      } catch (err) {
-        console.error("Failed to load attractions or destinations", err);
+      if (user) {
+        const data = await getSavedAttractions(user.uid, itineraryId);
+        const itinerary = await getItinerary(user.uid, itineraryId);
+
+        console.log("SCREEN: Attractions from Firestore:", data?.length, data);
+        console.log("SCREEN: Destinations from Firestore:", itinerary?.destinations?.length, itinerary?.destinations);
+
+        attractionsData = data || [];
+        destinationsData = itinerary?.destinations || [];
+      } else {
+        const savedJson = await AsyncStorage.getItem("guestSavedAttractions");
+        const draftJson = await AsyncStorage.getItem("tripDraft");
+
+        attractionsData = savedJson ? JSON.parse(savedJson) : [];
+        const draft = draftJson ? JSON.parse(draftJson) : {};
+        destinationsData = draft?.destinations || [];
       }
-    }
+ 
+      setAttractions(attractionsData);
+      setDestinations(destinationsData);
 
-    load();
-  }, [user, itineraryId]);
+    } catch (error) {
+      console.error("SCREEN: Failed loading data:", error);
+    }
+  };
+
+  loadData();
+}, [user, itineraryId]);
 
   //   group attractions by city for UI
-  const grouped = attractions.reduce((acc, item) => {
-    if (!acc[item.city]) acc[item.city] = [];
-    acc[item.city].push(item);
-    return acc;
-  }, {});
+  const grouped = useMemo(() => {
+    return attractions.reduce((acc, item) => {
+      if (!acc[item.city]) acc[item.city] = [];
+      acc[item.city].push(item);
+      return acc;
+    }, {});
+  }, [attractions]);
 
   const cities = Object.keys(grouped);
 
@@ -91,58 +111,106 @@ function SightseeingSummaryScreen({ route }) {
     return dest ? dest.days : null;
   };
 
+  console.log("DESTINATIONS TYPE:", Array.isArray(destinations));
+console.log("DESTINATIONS VALUE:", destinations);
+console.log("GROUPED VALUE:", grouped);
+
+  const { heroImages, loadingImages } = useCityImages(destinations, grouped);
+
+  const width = Dimensions.get("window").width;
+
   const handleNext = () => {
-  navigation.navigate("AccommodationResults", { itineraryId });
-};
+    navigation.navigate("AccommodationResults", { itineraryId });
+  };
+
+ useEffect(() => {
+  async function checkCache() {
+    try {
+      // List all keys (optional, for debugging)
+      const keys = await AsyncStorage.getAllKeys();
+      console.log("All AsyncStorage keys:", keys);
+
+      // Check a specific city cache
+      const city = "Glasgow"; // change to your city
+      const cachedData = await AsyncStorage.getItem(`unsplash-${city}`);
+      const cachedMeta = await AsyncStorage.getItem(`unsplash-${city}-meta`);
+
+      console.log(`${city} cached images:`, cachedData ? JSON.parse(cachedData) : "none");
+      console.log(`${city} cache meta:`, cachedMeta ? JSON.parse(cachedMeta) : "none");
+    } catch (err) {
+      console.error("Error reading AsyncStorage cache:", err);
+    }
+  }
+
+  checkCache();
+}, []);
+
 
   return (
     <SafeAreaView style={style.container}>
-      <View>
-        <Text style={style.title}>Your Sightseeing Summary</Text>
-      </View>
-      <ScrollView style={{ padding: 32 }}>
-  {cities.map((city, index) => (
-    <View key={city}>
-      <Text style={style.cityTitle}>
-        {city} {stayDays(city) ? `(${stayDays(city)} days)` : ""}
-      </Text>
+      
 
-      {grouped[city].map((attraction) => (
-        <View key={attraction.id} style={style.attractionItem}>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            style={style.attractionText}
-          >
-            {attraction.name}
-          </Text>
+      {loadingImages && <ActivityIndicator size="large" />}
 
-          <TouchableOpacity
-            onPress={() => handleRemoveAttraction(attraction.id)}
-            style={style.removeButton}
-          >
-            <Feather name="x-circle" size={16} color={Colors.accent600} />
-          </TouchableOpacity>
-        </View>
-      ))}
-
-     
-      {index < cities.length - 1 && (
-        <View style={style.divider}>
-          <View style={style.line} />
-        </View>
+{/* TODO : add pagination and image overlay to match branding */ }
+      {heroImages.length > 0 && (
+        <Carousel
+          width={width}
+          height={220}
+          autoPlay
+          autoPlayInterval={4000}
+          data={heroImages}
+          scrollAnimationDuration={800}
+          renderItem={({ item }) => (
+            <Image
+              source={{ uri: item }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          )}
+        />
       )}
-    </View>
-  ))}
 
-   <PrimaryButton style={{marginTop: 24}}
-    onPress={handleNext}
-      >
-         Move to Accommodation
-         
-      </PrimaryButton>
-</ScrollView>
+      <Text style={style.title}>Your Sightseeing Summary</Text>
 
+      <ScrollView style={{ padding: 32 }}>
+        {cities.map((city, index) => (
+          <View key={city}>
+            <Text style={style.cityTitle}>
+              {city} {stayDays(city) ? `(${stayDays(city)} days)` : ""}
+            </Text>
+
+            {grouped[city].map((attraction) => (
+              <View key={attraction.id} style={style.attractionItem}>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={style.attractionText}
+                >
+                  {attraction.name}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={() => handleRemoveAttraction(attraction.id)}
+                  style={style.removeButton}
+                >
+                  <Feather name="x-circle" size={16} color={Colors.accent600} />
+                </TouchableOpacity>
+              </View>
+            ))}
+
+            {index < cities.length - 1 && (
+              <View style={style.divider}>
+                <View style={style.line} />
+              </View>
+            )}
+          </View>
+        ))}
+
+        <PrimaryButton style={{ marginTop: 24 }} onPress={handleNext}>
+          Move to Accommodation
+        </PrimaryButton>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -166,6 +234,13 @@ const style = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginVertical: 6,
+  },
+
+  cityImage: {
+    width: "100%",
+    height: 160,
+    borderRadius: 10,
+    marginBottom: 8,
   },
 
   attractionItem: {

@@ -17,6 +17,8 @@ export function useAttractions(city) {
       return;
     }
 
+    // validate city before making call
+
     const meta = CITY_META[city];
     if (!meta) {
       setError(`Unknown city: ${city}`);
