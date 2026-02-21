@@ -10,7 +10,7 @@ import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../utils/firebase";
 import { saveHotel } from "../utils/saveHotel";
-import AttractionMap from "../components/ui/maps/AttractionMap";
+import HotelsMap from "../components/ui/maps/HotelsMap";
 import { CITY_META } from "../data/cityMeta";
 import { FAVOURITE_HOTELS } from "../data/hotels/favouriteHotels";
 
@@ -172,19 +172,9 @@ const numberedHotels = useMemo(() => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Accommodation in {city ?? ""}</Text>
+      {/* <Text style={styles.title}>Accommodation in {city ?? ""}</Text> */}
 
-      <View style={styles.resultsContainer}>
-        {destinations.map((d) => (
-          <CityPicker
-            key={d.id}
-            isSelected={city === d.name}
-            onPress={() => setCity(d.name)}
-          >
-            {d.name}
-          </CityPicker>
-        ))}
-      </View>
+      
 
       {loading && <Text>Loading hotels...</Text>}
       {error && <Text style={{ color: "red" }}>{error}</Text>}
@@ -205,11 +195,13 @@ const numberedHotels = useMemo(() => {
         ListHeaderComponent={
           <View>
             <View style={styles.mapContainer}>
-              {/* <AttractionMap
-          geojson={attractionsGeoJSON}
+              <HotelsMap
+          geojson={hotelsGeoJSON}
           center={mapCenter}
           zoom={mapZoom}
-          onSelectAttraction={(feature) =>
+          onSelectHotel={(feature) =>
+            // TODO: crete hotel details modal and link to the favourite hotels json
+
             openDetails({
               id: feature.id,
               name: feature.properties.name,
@@ -217,9 +209,23 @@ const numberedHotels = useMemo(() => {
               lon: feature.geometry.coordinates[0],
             })
           }
-        /> */}
+        />
             </View>
+
+            <View style={styles.resultsContainer}>
+        {destinations.map((d) => (
+          <CityPicker
+            key={d.id}
+            isSelected={city === d.name}
+            onPress={() => setCity(d.name)}
+          >
+            {d.name}
+          </CityPicker>
+        ))}
+      </View>
           </View>
+
+          
         }
       />
 

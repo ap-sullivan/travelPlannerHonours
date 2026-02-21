@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "829140211747",
+    "project_id": "planmyscottrip",
+    "storage_bucket": "planmyscottrip.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829140211747:android:61ef2ef12c43cf8e5f3996",
+        "android_client_info": {
+          "package_name": "com.anonymous.travelPlanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829140211747-d66csvo8igo929l0cp6r5d8t4no1nck9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.travelPlanner",
+            "certificate_hash": "bdc77ff824eb1dd6414c842110fb04ef3779e152"
+          }
+        },
+        {
+          "client_id": "829140211747-fvq3l4a3btelmacq8h5401paldvlrckr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.travelPlanner",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "829140211747-5mqvbl0gniev9isnju0e5k9il2fb6o0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHHPs7KVwqgQsJWYQh9oIZs6KFJX5SUXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829140211747-5mqvbl0gniev9isnju0e5k9il2fb6o0r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "829140211747-4dme59dodsk66bm5kf7edjk0jf5b19f6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anonymous.travelPlanner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

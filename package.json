@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
+    "@google-cloud/secret-manager": "^6.1.1",
+    "@google/generative-ai": "^0.24.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-google-signin/google-signin": "^16.1.1",
     "@react-navigation/bottom-tabs": "^7.9.0",
@@ -24,6 +26,7 @@
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "firebase": "^12.8.0",
+    "firebase-functions": "^7.0.5",
     "react": "19.1.0",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",

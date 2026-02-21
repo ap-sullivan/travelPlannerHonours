@@ -210,6 +210,12 @@ console.log("GROUPED VALUE:", grouped);
         <PrimaryButton style={{ marginTop: 24 }} onPress={handleNext}>
           Move to Accommodation
         </PrimaryButton>
+        
+              <PrimaryButton style={{ marginTop: 12 }}
+              // onPress={}
+              >
+          Skip to Transport (add later)
+        </PrimaryButton>
       </ScrollView>
     </SafeAreaView>
   );

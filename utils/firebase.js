@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { initializeAuth, getReactNativePersistence } from 'firebase/auth'; // Import these
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import this
+import { getFunctions, connectFunctionsEmulator }from 'firebase/functions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -20,3 +21,10 @@ export const auth = initializeAuth(app, {
 });
 
 export const db = getFirestore(app);
+
+// functuons for gemini ai api
+export const functions = getFunctions(app, 'us-central1');
+
+if (__DEV__) {
+  connectFunctionsEmulator(functions, "localhost", 5001);
+}

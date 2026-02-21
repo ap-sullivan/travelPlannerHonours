@@ -1,3 +1,4 @@
+// import '@react-native-firebase/app';
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
