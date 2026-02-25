@@ -1,4 +1,6 @@
-import { SIGHTSEEING_CATEGORY_LABELS } from "../../data/sightseeing/sightseeingCategoryLabels";
+// import { SIGHTSEEING_CATEGORY_LABELS } from "../../data/sightseeing/sightseeingCategoryLabels";
+
+// this function fetches attractions from Geoapify Places API based on the given latitude, longitude and radius
 
 const BASE_URL = "https://api.geoapify.com/v2/places";
 

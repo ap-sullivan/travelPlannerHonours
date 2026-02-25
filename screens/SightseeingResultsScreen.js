@@ -157,7 +157,7 @@ function SightseeingResultsScreen() {
     const attractionData = {
       id: attraction.id,
       name: attraction.name,
-      city: city ?? "Edinburgh",
+      city: city ?? "Not set",
       lat: attraction.lat,
       lon: attraction.lon,
       categories: attraction.categories ?? [],
@@ -311,11 +311,11 @@ function SightseeingResultsScreen() {
               <Text style={{ color: "red", marginTop: 8 }}>{error}</Text>
             )}
 
-            {/*spacing between header and first item */}
+        
             <View style={{ height: 6 }} />
           </View>
         }
-        // Optional: shown if no attractions
+       
         ListEmptyComponent={<AppText>No attractions found.</AppText>}
       />
 

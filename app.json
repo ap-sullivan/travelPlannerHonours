@@ -17,8 +17,14 @@
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.829140211747-4dme59dodsk66bm5kf7edjk0jf5b19f6"
             ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.829140211747-4dme59dodsk66bm5kf7edjk0jf5b19f6"
+            ]
           }
-        ]
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -28,7 +34,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.travelPlanner",
-      "googleServicesFile": "./google-services.json" 
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "expo-font",

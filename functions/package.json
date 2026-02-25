@@ -7,15 +7,14 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-      "lint": "echo 'no linting configured'"
-
+    "lint": "echo 'no linting configured'"
   },
   "engines": {
     "node": "22"
   },
   "main": "index.js",
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
+    "@google/generative-ai": "^0.22.0",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^7.0.0"
   },

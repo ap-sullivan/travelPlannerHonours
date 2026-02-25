@@ -111,7 +111,7 @@ function SightseeingSummaryScreen({ route }) {
     return dest ? dest.days : null;
   };
 
-  console.log("DESTINATIONS TYPE:", Array.isArray(destinations));
+console.log("DESTINATIONS TYPE:", Array.isArray(destinations));
 console.log("DESTINATIONS VALUE:", destinations);
 console.log("GROUPED VALUE:", grouped);
 
