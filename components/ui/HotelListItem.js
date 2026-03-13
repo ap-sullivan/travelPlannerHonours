@@ -26,7 +26,7 @@ function HotelListItem({
             <Text style={style.title} numberOfLines={1} ellipsizeMode="tail">
               {title}
             </Text>
-            <Text style={style.subtitle}>{subtitle}</Text>
+            {/* <Text style={style.subtitle}>{subtitle}</Text> */}
           </View>
         </View>
       </Pressable>

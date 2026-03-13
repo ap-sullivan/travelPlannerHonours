@@ -8,13 +8,12 @@ import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
 import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
-import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions"; 
+import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { saveAttraction } from "../utils/saveAttraction";
 import { getSavedAttractions } from "../utils/getSavedAttractions";
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import { useNavigation } from "@react-navigation/native";
-
 
 import { auth } from "../utils/firebase";
 
@@ -30,23 +29,22 @@ function SightseeingResultsScreen() {
   const user = auth.currentUser;
 
   // load selected cities and grab stored ids from async storage on mount
-
   useEffect(() => {
     async function initScreen() {
       try {
-        // 1. Grab both pieces of info from storage
+        // Grab info from storage
         const [storedId, storedDraft] = await Promise.all([
           AsyncStorage.getItem("activeItineraryId"),
           AsyncStorage.getItem("tripDraft"),
         ]);
 
-        // 2. Set the ID state (so handleSaveAttraction knows where to save)
+        //Set the ID state so handleSaveAttraction knows where to save
         if (storedId) {
           setItineraryId(storedId);
           console.log("Current Itinerary ID:", storedId);
         }
 
-        // 3. Set the destinations and default city
+        // set the destinations and default city
         if (storedDraft) {
           const trip = JSON.parse(storedDraft);
           setDestinations(trip.destinations);
@@ -184,6 +182,15 @@ function SightseeingResultsScreen() {
             "guestSavedAttractions",
             JSON.stringify(savedList),
           );
+
+          const verifyAdded = await AsyncStorage.getItem(
+            "guestSavedAttractions",
+          );
+          console.log(
+            "AsyncStorage after save:",
+            JSON.parse(verifyAdded),
+          );
+
         } else {
           // TODO:  change from console log to alert or toast
           console.log("Attraction already saved locally");
@@ -198,51 +205,47 @@ function SightseeingResultsScreen() {
   };
 
   const handleNext = async () => {
-  try {
-    let savedAttractions = [];
+    try {
+      let savedAttractions = [];
 
-    if (user) {
-      savedAttractions = await getSavedAttractions(user.uid, itineraryId);
-    } else {
-      const json = await AsyncStorage.getItem("guestSavedAttractions");
-      savedAttractions = json ? JSON.parse(json) : [];
+      if (user) {
+        savedAttractions = await getSavedAttractions(user.uid, itineraryId);
+      } else {
+        const json = await AsyncStorage.getItem("guestSavedAttractions");
+        savedAttractions = json ? JSON.parse(json) : [];
+      }
+
+      // Group by city
+      const savedByCity = savedAttractions.reduce((acc, item) => {
+        if (!acc[item.city]) acc[item.city] = [];
+        acc[item.city].push(item);
+        return acc;
+      }, {});
+
+      // Validate
+      const missingCities = destinations
+        .map((d) => d.name)
+        .filter((cityName) => !savedByCity[cityName]);
+
+      if (missingCities.length > 0) {
+        Alert.alert(
+          "Almost there!",
+          `Please add at least one attraction for:\n\n${missingCities.join("\n")}`,
+        );
+        return;
+      }
+
+      navigation.navigate("SightseeingSummary", {
+        itineraryId,
+      });
+    } catch (err) {
+      console.error(err);
     }
-
-    // Group by city
-    const savedByCity = savedAttractions.reduce((acc, item) => {
-      if (!acc[item.city]) acc[item.city] = [];
-      acc[item.city].push(item);
-      return acc;
-    }, {});
-
-    // Validate
-    const missingCities = destinations
-      .map(d => d.name)
-      .filter(cityName => !savedByCity[cityName]);
-
-    if (missingCities.length > 0) {
-      Alert.alert(
-        "Almost there!",
-        `Please add at least one attraction for:\n\n${missingCities.join("\n")}`
-      );
-      return;
-    }
-
-    navigation.navigate("SightseeingSummary", {
-      itineraryId
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
   return (
     <SafeAreaView style={style.container}>
-
-      
-
-   {/* */}
+      {/* */}
 
       <FlatList
         data={numberedAttractions}
@@ -296,12 +299,7 @@ function SightseeingResultsScreen() {
               Add {(city ?? "Edinburgh") + " Attractions to Your Itinerary"}
             </AppText>
 
-            <PrimaryButton
-      onPress={handleNext} 
-      >
-         Next 
-         
-      </PrimaryButton>
+            <PrimaryButton onPress={handleNext}>Next</PrimaryButton>
 
             {loading && (
               <Text style={{ marginTop: 8 }}>Loading attractions…</Text>
@@ -311,11 +309,9 @@ function SightseeingResultsScreen() {
               <Text style={{ color: "red", marginTop: 8 }}>{error}</Text>
             )}
 
-        
             <View style={{ height: 6 }} />
           </View>
         }
-       
         ListEmptyComponent={<AppText>No attractions found.</AppText>}
       />
 

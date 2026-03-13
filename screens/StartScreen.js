@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Keyboard,
   TouchableWithoutFeedback,
@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  Alert,
 } from "react-native";
 import DestinationPicker from "../components/forms/DestinationPicker";
 import SeasonPicker from "../components/forms/SeasonPicker";
@@ -33,7 +34,7 @@ function StartScreen({ navigation }) {
     { id: "2", name: "", days: 1 },
   ]);
 
-  // TODO: REMOVE??
+  // TODO: OK TO REMOVE?
   const [city, setCity] = useState(null);
 
   const auth = getAuth();
@@ -64,6 +65,7 @@ function StartScreen({ navigation }) {
   const removeDestination = (id) => {
     setDestinations((prev) => {
       // make sure at least one destination, if more than one filter out the one with the matching id
+      console.log("Removing destination with id:", id);
       if (prev.length === 1) return prev;
       return prev.filter((d) => d.id !== id);
     });
@@ -74,7 +76,6 @@ function StartScreen({ navigation }) {
       // clears local async to start a new itinerary for guest users 
       if (!user) {
         await resetGuestItinerary(); 
-        console.log("Guest itinerary cleared before starting new trip");
       }
       // clean and validate data
       const cleanedDestinations = destinations
@@ -86,11 +87,14 @@ function StartScreen({ navigation }) {
         }));
 
       // if no destinations after clean give warning
-      // TODO: replace console log with user alert
-      if (cleanedDestinations.length === 0) {
-        console.warn("No destinations entered");
-        return;
-      }
+  
+    if (cleanedDestinations.length === 0) {
+  Alert.alert(
+    "No Destinations",
+    "At least one destination is required to start planning."
+  );
+  return;
+}
 
       // calculate total days
       const totalDays = cleanedDestinations.reduce(
@@ -130,7 +134,7 @@ function StartScreen({ navigation }) {
         "tripDraft",
         JSON.stringify({ ...payload, id: finalItineraryId }),
       );
-
+      console.log("Trip draft saved:", { ...payload, id: finalItineraryId });
       navigation.navigate("SightseeingResults");
     } catch (err) {
       console.error("Failed to save trip", err);

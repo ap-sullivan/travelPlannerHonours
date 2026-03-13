@@ -15,8 +15,6 @@ exports.getAttractionInsights = onCall({ secrets: [GEMINI_API_KEY_SECRET] }, asy
   }
 
   try {
-
-          // console.log("API KEY EXISTS:", !!process.env[GEMINI_API_KEY_SECRET]);
     
     // initialize Gemini API client
     const genAI = new GoogleGenerativeAI(process.env[GEMINI_API_KEY_SECRET]);

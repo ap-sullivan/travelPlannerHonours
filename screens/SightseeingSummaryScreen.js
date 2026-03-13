@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getSavedAttractions } from "../utils/getSavedAttractions";
+import { removeSavedAttraction } from "../utils/removeSavedAttraction";
 import { getItinerary } from "../utils/getItinerary";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
@@ -31,27 +32,83 @@ function SightseeingSummaryScreen({ route }) {
   const [attractions, setAttractions] = useState([]);
   const [destinations, setDestinations] = useState([]);
 
-  
-
   const handleRemoveAttraction = async (attractionId) => {
     try {
+      let city;
+
+      //   fetch list of attractions (firebase or async depending on user)
+      let currentList;
+
       if (user) {
-        //  remove from firestore
-        await removeSavedAttraction(user.uid, itineraryId, attractionId);
-        setAttractions((prev) => prev.filter((a) => a.id !== attractionId));
-        Alert.alert("Removed", "Attraction removed from your itinerary");
+        // logged-in users use state
+        currentList = attractions;
       } else {
-        // Guest remove from async
         const json = await AsyncStorage.getItem("guestSavedAttractions");
-        const savedList = json ? JSON.parse(json) : [];
-        const updatedList = savedList.filter((a) => a.id !== attractionId);
+        currentList = json ? JSON.parse(json) : [];
+      }
+
+      console.log("AsyncStorage before removed item:", currentList);
+
+      //  find the  attraction to remov based on id
+      const attractionToRemove = currentList.find((a) => a.id === attractionId);
+
+      if (!attractionToRemove) {
+        console.warn("Attraction not found");
+        return;
+      }
+
+      city = attractionToRemove.city;
+
+      //  validate that at least 1 attraction remains for the city before allowing removal
+      const cityAttractions = currentList.filter((a) => a.city === city);
+
+      console.log(
+        `City: ${city}, attractions in city:`,
+        cityAttractions.length,
+      );
+
+      if (cityAttractions.length <= 1) {
+        Alert.alert(
+          "Cannot Remove",
+          `At least one attraction must remain in ${city}.`,
+        );
+        return;
+      }
+
+      // remove
+      if (user) {
+        // Firebase removal
+        await removeSavedAttraction(user.uid, itineraryId, attractionId);
+
+        const updatedList = attractions.filter((a) => a.id !== attractionId);
+
+        setAttractions(updatedList);
+      } else {
+        // AsyncStorage removal
+        const updatedList = currentList.filter((a) => a.id !== attractionId);
+
         await AsyncStorage.setItem(
           "guestSavedAttractions",
           JSON.stringify(updatedList),
         );
+
+        console.log(
+          `Remove ID: ${attractionId}`,
+        );
+
+        const verifyRemoved = await AsyncStorage.getItem(
+          "guestSavedAttractions",
+        );
+
+        console.log(
+          "AsyncStorage after removed item:",
+          verifyRemoved ? JSON.parse(verifyRemoved) : [],
+        );
+
         setAttractions(updatedList);
-        Alert.alert("Removed", "Attraction removed from your itinerary");
       }
+
+      Alert.alert("Removed", "Attraction removed from your itinerary");
     } catch (err) {
       console.error("Failed to remove attraction", err);
       Alert.alert("Error", "Could not remove attraction");
@@ -60,40 +117,47 @@ function SightseeingSummaryScreen({ route }) {
 
   //  load data on mount - attractions + destinations for city names and days
 
- useEffect(() => {
-  const loadData = async () => {
-    try {
-      let attractionsData = [];
-      let destinationsData = [];
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        let attractionsData = [];
+        let destinationsData = [];
 
-      if (user) {
-        const data = await getSavedAttractions(user.uid, itineraryId);
-        const itinerary = await getItinerary(user.uid, itineraryId);
+        if (user) {
+          const data = await getSavedAttractions(user.uid, itineraryId);
+          const itinerary = await getItinerary(user.uid, itineraryId);
 
-        console.log("SCREEN: Attractions from Firestore:", data?.length, data);
-        console.log("SCREEN: Destinations from Firestore:", itinerary?.destinations?.length, itinerary?.destinations);
+          console.log(
+            "SCREEN: Attractions from Firestore:",
+            data?.length,
+            data,
+          );
+          console.log(
+            "SCREEN: Destinations from Firestore:",
+            itinerary?.destinations?.length,
+            itinerary?.destinations,
+          );
 
-        attractionsData = data || [];
-        destinationsData = itinerary?.destinations || [];
-      } else {
-        const savedJson = await AsyncStorage.getItem("guestSavedAttractions");
-        const draftJson = await AsyncStorage.getItem("tripDraft");
+          attractionsData = data || [];
+          destinationsData = itinerary?.destinations || [];
+        } else {
+          const savedJson = await AsyncStorage.getItem("guestSavedAttractions");
+          const draftJson = await AsyncStorage.getItem("tripDraft");
 
-        attractionsData = savedJson ? JSON.parse(savedJson) : [];
-        const draft = draftJson ? JSON.parse(draftJson) : {};
-        destinationsData = draft?.destinations || [];
+          attractionsData = savedJson ? JSON.parse(savedJson) : [];
+          const draft = draftJson ? JSON.parse(draftJson) : {};
+          destinationsData = draft?.destinations || [];
+        }
+
+        setAttractions(attractionsData);
+        setDestinations(destinationsData);
+      } catch (error) {
+        console.error("SCREEN: Failed loading data:", error);
       }
- 
-      setAttractions(attractionsData);
-      setDestinations(destinationsData);
+    };
 
-    } catch (error) {
-      console.error("SCREEN: Failed loading data:", error);
-    }
-  };
-
-  loadData();
-}, [user, itineraryId]);
+    loadData();
+  }, [user, itineraryId]);
 
   //   group attractions by city for UI
   const grouped = useMemo(() => {
@@ -111,9 +175,9 @@ function SightseeingSummaryScreen({ route }) {
     return dest ? dest.days : null;
   };
 
-console.log("DESTINATIONS TYPE:", Array.isArray(destinations));
-console.log("DESTINATIONS VALUE:", destinations);
-console.log("GROUPED VALUE:", grouped);
+  console.log("DESTINATIONS TYPE:", Array.isArray(destinations));
+  console.log("DESTINATIONS VALUE:", destinations);
+  console.log("GROUPED VALUE:", grouped);
 
   const { heroImages, loadingImages } = useCityImages(destinations, grouped);
 
@@ -123,36 +187,40 @@ console.log("GROUPED VALUE:", grouped);
     navigation.navigate("AccommodationResults", { itineraryId });
   };
 
- useEffect(() => {
-  async function checkCache() {
-    try {
-      // List all keys (optional, for debugging)
-      const keys = await AsyncStorage.getAllKeys();
-      console.log("All AsyncStorage keys:", keys);
+  // debug AsyncStorage caching for city images
+  useEffect(() => {
+    async function checkCache() {
+      try {
+        // List all keys
+        const keys = await AsyncStorage.getAllKeys();
+        console.log("All AsyncStorage keys:", keys);
 
-      // Check a specific city cache
-      const city = "Glasgow"; // change to your city
-      const cachedData = await AsyncStorage.getItem(`unsplash-${city}`);
-      const cachedMeta = await AsyncStorage.getItem(`unsplash-${city}-meta`);
+        // Check a specific city cache
+        const city = "Glasgow"; 
+        const cachedData = await AsyncStorage.getItem(`unsplash-${city}`);
+        const cachedMeta = await AsyncStorage.getItem(`unsplash-${city}-meta`);
 
-      console.log(`${city} cached images:`, cachedData ? JSON.parse(cachedData) : "none");
-      console.log(`${city} cache meta:`, cachedMeta ? JSON.parse(cachedMeta) : "none");
-    } catch (err) {
-      console.error("Error reading AsyncStorage cache:", err);
+        console.log(
+          `${city} cached images:`,
+          cachedData ? JSON.parse(cachedData) : "none",
+        );
+        console.log(
+          `${city} cache meta:`,
+          cachedMeta ? JSON.parse(cachedMeta) : "none",
+        );
+      } catch (err) {
+        console.error("Error reading AsyncStorage cache:", err);
+      }
     }
-  }
 
-  checkCache();
-}, []);
-
+    checkCache();
+  }, []);
 
   return (
     <SafeAreaView style={style.container}>
-      
-
       {loadingImages && <ActivityIndicator size="large" />}
 
-{/* TODO : add pagination and image overlay to match branding */ }
+      {/* TODO : add pagination and image overlay to match branding */}
       {heroImages.length > 0 && (
         <Carousel
           width={width}
@@ -210,11 +278,12 @@ console.log("GROUPED VALUE:", grouped);
         <PrimaryButton style={{ marginTop: 24 }} onPress={handleNext}>
           Move to Accommodation
         </PrimaryButton>
-        
-              <PrimaryButton style={{ marginTop: 12 }}
-              // onPress={}
-              >
-          Skip to Transport (add later)
+
+        <PrimaryButton
+          style={{ marginTop: 12 }}
+          // onPress={}
+        >
+          Skip to Transport
         </PrimaryButton>
       </ScrollView>
     </SafeAreaView>

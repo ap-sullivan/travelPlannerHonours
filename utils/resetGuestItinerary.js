@@ -1,4 +1,7 @@
+// Util to reset guest itinerary data from AsyncStorage
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export const resetGuestItinerary = async () => {
   try {

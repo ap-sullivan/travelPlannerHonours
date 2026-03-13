@@ -50,18 +50,17 @@ function AccommodationResultsScreen() {
     initScreen();
   }, []);
 
-
   // mapbox logics
   const activeCity = city ?? "Edinburgh";
   const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
 
-    // bring in favopourite hotels
-    const favouriteHotels = useMemo(() => {
-      return FAVOURITE_HOTELS[activeCity] ?? [];
-    }, [activeCity]);
+  // bring in favopourite hotels
+  const favouriteHotels = useMemo(() => {
+    return FAVOURITE_HOTELS[activeCity] ?? [];
+  }, [activeCity]);
 
-// normalise data for map and list
-    const normalisedFavouriteHotels = useMemo(() => {
+  // normalise data for map and list
+  const normalisedFavouriteHotels = useMemo(() => {
     return favouriteHotels.map((item) => ({
       id: item.id,
       name: item.name,
@@ -73,34 +72,32 @@ function AccommodationResultsScreen() {
     }));
   }, [favouriteHotels]);
 
-    // TODO: remove 4* minimum 
-const { hotels = [], loading, error } = useHotels(city ?? "", 4);
+  // TODO: remove 4* minimum
+  const { hotels = [], loading, error } = useHotels(city ?? "", 4);
 
-  // filter to remove dupes 
+  // filter to remove dupes
 
   const filteredGeoapifyHotels = useMemo(() => {
-  if (!hotels || !hotels.length) return []; // <-- wait for hotels to exist
+    if (!hotels || !hotels.length) return []; // <-- wait for hotels to exist
 
-  const favouriteHotelNames = new Set(
-    normalisedFavouriteHotels.map((a) => a.name.toLowerCase())
-  );
+    const favouriteHotelNames = new Set(
+      normalisedFavouriteHotels.map((a) => a.name.toLowerCase()),
+    );
 
-  return hotels.filter((a) => !favouriteHotelNames.has(a.name.toLowerCase()));
-}, [hotels, normalisedFavouriteHotels]);
+    return hotels.filter((a) => !favouriteHotelNames.has(a.name.toLowerCase()));
+  }, [hotels, normalisedFavouriteHotels]);
 
-    const mergedHotels = useMemo(() => {
+  const mergedHotels = useMemo(() => {
     return [...normalisedFavouriteHotels, ...filteredGeoapifyHotels];
   }, [normalisedFavouriteHotels, filteredGeoapifyHotels]);
 
-    // set numbers for list/map refs
-const numberedHotels = useMemo(() => {
+  // set numbers for list/map refs
+  const numberedHotels = useMemo(() => {
     return mergedHotels.map((item, index) => ({
       ...item,
       displayIndex: index + 1,
     }));
-  }, [mergedHotels]);  
-
-
+  }, [mergedHotels]);
 
   // convert hotels to geojson for map
   const hotelsGeoJSON = useMemo(() => {
@@ -126,11 +123,6 @@ const numberedHotels = useMemo(() => {
   const mapCenter = [cityMeta.lon, cityMeta.lat];
   const mapZoom = cityMeta.mapboxZoom;
 
-  
-  
-
-
-
   const handleSaveHotel = async (hotel) => {
     if (!itineraryId) return;
 
@@ -141,8 +133,8 @@ const numberedHotels = useMemo(() => {
       lat: hotel.lat,
       lon: hotel.lon,
       //   stars: hotel.stars,
-      website: hotel.website,
-      wikidataId: hotel.wikidataId,
+      website: hotel.website ?? null,
+      wikidataId: hotel.wikidataId ?? null,
     };
 
     try {
@@ -157,6 +149,7 @@ const numberedHotels = useMemo(() => {
             "guestSavedHotels",
             JSON.stringify(savedList),
           );
+          console.log("Hotel saved to AsyncStorage:", hotelData);
         }
       }
       Alert.alert("Saved", `"${hotel.name}" added to your itinerary!`);
@@ -174,8 +167,6 @@ const numberedHotels = useMemo(() => {
     <SafeAreaView style={styles.container}>
       {/* <Text style={styles.title}>Accommodation in {city ?? ""}</Text> */}
 
-      
-
       {loading && <Text>Loading hotels...</Text>}
       {error && <Text style={{ color: "red" }}>{error}</Text>}
 
@@ -186,7 +177,7 @@ const numberedHotels = useMemo(() => {
           <HotelListItem
             index={item.displayIndex}
             title={item.name}
-            subtitle={`${item.subtitle} ${item.hasWikiData ? " (has WikiData)" : ""}`}
+            // subtitle={`${item.subtitle} ${item.hasWikiData ? " (has WikiData)" : ""}`}
             onPressAdd={() => handleSaveHotel(item)}
           />
         )}
@@ -196,36 +187,34 @@ const numberedHotels = useMemo(() => {
           <View>
             <View style={styles.mapContainer}>
               <HotelsMap
-          geojson={hotelsGeoJSON}
-          center={mapCenter}
-          zoom={mapZoom}
-          onSelectHotel={(feature) =>
-            // TODO: crete hotel details modal and link to the favourite hotels json
+                geojson={hotelsGeoJSON}
+                center={mapCenter}
+                zoom={mapZoom}
+                onSelectHotel={(feature) =>
+                  // TODO: crete hotel details modal and link to the favourite hotels json
 
-            openDetails({
-              id: feature.id,
-              name: feature.properties.name,
-              lat: feature.geometry.coordinates[1],
-              lon: feature.geometry.coordinates[0],
-            })
-          }
-        />
+                  openDetails({
+                    id: feature.id,
+                    name: feature.properties.name,
+                    lat: feature.geometry.coordinates[1],
+                    lon: feature.geometry.coordinates[0],
+                  })
+                }
+              />
             </View>
 
             <View style={styles.resultsContainer}>
-        {destinations.map((d) => (
-          <CityPicker
-            key={d.id}
-            isSelected={city === d.name}
-            onPress={() => setCity(d.name)}
-          >
-            {d.name}
-          </CityPicker>
-        ))}
-      </View>
+              {destinations.map((d) => (
+                <CityPicker
+                  key={d.id}
+                  isSelected={city === d.name}
+                  onPress={() => setCity(d.name)}
+                >
+                  {d.name}
+                </CityPicker>
+              ))}
+            </View>
           </View>
-
-          
         }
       />
 
@@ -242,6 +231,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 20, fontWeight: "bold", marginVertical: 16 },
 
   resultsContainer: {
+    marginVertical: 16,
     marginBottom: 16,
     flexDirection: "row",
     flexWrap: "wrap",

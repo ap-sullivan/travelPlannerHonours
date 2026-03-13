@@ -61,7 +61,7 @@ export default function LoginScreen({ setGuestMode, setHasProfile }) {
         setHasProfile(profileSnap.data().hasCompletedSetup);
       }
     } catch (err) {
-      Alert.alert("Auth error", err.message);
+      Alert.alert("Incorrect Login Details Entered Please Try Again", err.message);
     } finally {
       setLoading(false);
     }
