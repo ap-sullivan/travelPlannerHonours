@@ -72,6 +72,8 @@ function StartScreen({ navigation }) {
   };
 
   async function handleStartPlanning() {
+
+
     try {
       // clears local async to start a new itinerary for guest users 
       if (!user) {

@@ -11,10 +11,10 @@ import {
 } from "@expo-google-fonts/inter";
 import Colors from "./constants/Colors";
 import Mapbox from "@rnmapbox/maps";
+import { Feather } from "@expo/vector-icons";
 
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
-import BottomNav from "./components/navigation/BottomNav";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StartScreen from "./screens/StartScreen";
 
@@ -23,15 +23,55 @@ import LoginScreen from "./screens/LoginScreen";
 import SightseeingResultsScreen from "./screens/SightseeingResultsScreen";
 import SightseeingSummaryScreen from "./screens/SightseeingSummaryScreen";
 import AccommodationResultsScreen from "./screens/AccommodationResultsScreen";
+import SummaryScreen from "./screens/SummaryScreen";
+import FinalItineraryScreen from "./screens/FinalItineraryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const AuthStack = createNativeStackNavigator();
 const Stack = createNativeStackNavigator();
 const JourneyFlowStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function MainTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+
+        tabBarActiveTintColor: Colors.accent600,
+        tabBarInactiveTintColor: Colors.primary700,
+
+        tabBarStyle: {
+          backgroundColor: Colors.gray100,
+          borderTopWidth: 0,
+          height: 66,
+          paddingVertical: 10,
+        },
+
+        tabBarIcon: ({ color, size }) => {
+          const icons = {
+            Home: "home",
+            Settings: "settings",
+          };
+
+          return (
+            <Feather name={icons[route.name]} size={size} color={color} />
+          );
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={JourneyFlow} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
+  );
+}
+
+
 
 
 function AuthNavigator({ setGuestMode, setHasProfile }) {
@@ -53,6 +93,7 @@ function AuthNavigator({ setGuestMode, setHasProfile }) {
 function JourneyFlow() {
   return (
     <JourneyFlowStack.Navigator screenOptions={{ headerShown: false }}>
+      
       <JourneyFlowStack.Screen name="Start" component={StartScreen} />
 
       <JourneyFlowStack.Screen
@@ -67,9 +108,17 @@ function JourneyFlow() {
         name="AccommodationResults"
         component={AccommodationResultsScreen}
       />
+      <JourneyFlowStack.Screen
+        name="Summary"
+        component={SummaryScreen}
+      />
+      <JourneyFlowStack.Screen
+        name="FinalItineraryScreen"
+        component={FinalItineraryScreen}
+      />
+      {/* screen to add if transport added */}
        {/* 
-      <JourneyFlowStack.Screen name="Transport" component={TransportScreen} />
-      <JourneyFlowStack.Screen name="AISummary" component={AISummaryScreen} /> */}
+      <JourneyFlowStack.Screen name="Transport" component={TransportScreen} />*/}
     </JourneyFlowStack.Navigator>
   );
 }
@@ -183,9 +232,11 @@ export default function App() {
                 )}
               </Stack.Screen>
             ) : (
-              <Stack.Screen name="JourneyFlow">
-                {(props) => <JourneyFlow {...props} />}
-              </Stack.Screen>
+              // <Stack.Screen name="JourneyFlow">
+              //   {(props) => <JourneyFlow {...props} />}
+              // </Stack.Screen>
+
+              <Stack.Screen name="MainTabs" component={MainTabs} />
             )}
           </Stack.Navigator>
         </NavigationContainer>

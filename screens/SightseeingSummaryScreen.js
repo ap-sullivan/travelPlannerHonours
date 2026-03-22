@@ -26,11 +26,22 @@ import { auth } from "../utils/firebase";
 
 function SightseeingSummaryScreen({ route }) {
   const navigation = useNavigation();
-  const { itineraryId } = route.params;
+ const { itineraryId, tapTime } = route.params;
   const user = auth.currentUser;
 
   const [attractions, setAttractions] = useState([]);
   const [destinations, setDestinations] = useState([]);
+
+//  timestamp for UI  performance monitoring
+  if (tapTime === undefined) {
+    throw new Error("requires tapTime parameter");
+  }
+
+  useEffect(() => {
+    const renderTime = performance.now();
+    const latency = renderTime - tapTime;
+    console.log(`TapTime: ${tapTime}, Render Time: ${renderTime}, Screen render latency: ${latency.toFixed(1)} ms`);
+  }, [tapTime]);
 
   const handleRemoveAttraction = async (attractionId) => {
     try {
@@ -75,7 +86,7 @@ function SightseeingSummaryScreen({ route }) {
         return;
       }
 
-      // remove
+      // remove attraction 
       if (user) {
         // Firebase removal
         await removeSavedAttraction(user.uid, itineraryId, attractionId);
@@ -175,6 +186,7 @@ function SightseeingSummaryScreen({ route }) {
     return dest ? dest.days : null;
   };
 
+  //  logs for testing data removal
   console.log("DESTINATIONS TYPE:", Array.isArray(destinations));
   console.log("DESTINATIONS VALUE:", destinations);
   console.log("GROUPED VALUE:", grouped);

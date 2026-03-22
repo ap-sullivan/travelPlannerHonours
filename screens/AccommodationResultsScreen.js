@@ -160,7 +160,7 @@ function AccommodationResultsScreen() {
   };
 
   const handleNext = () => {
-    navigation.navigate("AccommodationSummary", { itineraryId });
+    navigation.navigate("Summary", { itineraryId });
   };
 
   return (
@@ -214,11 +214,18 @@ function AccommodationResultsScreen() {
                 </CityPicker>
               ))}
             </View>
+
+             <AppText style={{ marginTop: 6, textAlign: "center" }}>
+              Add a {(city ?? "City Not Found") + " Hotel to Your Itinerary"}
+            </AppText>
+
+           
+      <PrimaryButton onPress={handleNext}>Next</PrimaryButton>
+    
           </View>
         }
       />
 
-      <PrimaryButton onPress={handleNext}>Next</PrimaryButton>
     </SafeAreaView>
   );
 }
@@ -231,10 +238,9 @@ const styles = StyleSheet.create({
   title: { fontSize: 20, fontWeight: "bold", marginVertical: 16 },
 
   resultsContainer: {
-    marginVertical: 16,
-    marginBottom: 16,
+   marginTop: 18,
     flexDirection: "row",
-    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
 
   mapContainer: {

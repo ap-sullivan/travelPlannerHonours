@@ -205,6 +205,11 @@ function SightseeingResultsScreen() {
   };
 
   const handleNext = async () => {
+
+    // timestamp for UI performance monitoring
+      const tapTime = performance.now(); 
+  console.log("Next button tapped at:", tapTime);
+
     try {
       let savedAttractions = [];
 
@@ -236,7 +241,7 @@ function SightseeingResultsScreen() {
       }
 
       navigation.navigate("SightseeingSummary", {
-        itineraryId,
+        itineraryId,tapTime
       });
     } catch (err) {
       console.error(err);
@@ -296,7 +301,7 @@ function SightseeingResultsScreen() {
             </View>
 
             <AppText style={{ marginTop: 6, textAlign: "center" }}>
-              Add {(city ?? "Edinburgh") + " Attractions to Your Itinerary"}
+              Add {(city ?? "City Not Found") + " Attractions to Your Itinerary"}
             </AppText>
 
             <PrimaryButton onPress={handleNext}>Next</PrimaryButton>

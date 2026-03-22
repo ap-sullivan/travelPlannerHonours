@@ -1,0 +1,721 @@
+[s[999C[999B[6n[u[H[J[?25l[H[J[s[999C[999B[6n[uTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844132K used,   177936K free,     4788K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448164K cached
+400%cpu   9%user   0%nice   9%sys 363%idle   0%iow  19%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+[1m 2702 shell        20   0  10G 4.6M 3.7M R 12.5   0.2   0:00.07 top -n 30 -d 1[m
+28199 u0_a209      10 -10  48G 465M 104M S  3.1  23.5   4:37.48 com.anonymous.t+
+  411 system       -3  -8  11G  12M 5.9M S  3.1   0.5  14:13.63 surfaceflinger
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.00 [kworker/0:1-ev+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:21.85 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+
+29016 u0_a136      20   0  16G  50M  35M S  0.0   2.5   0:00.54 com.google.andr+
+28901 u0_a141      20   0  16G  50M  35M S  0.0   2.5   0:00.43 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844356K used,   177712K free,     4808K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448280K cached
+400%cpu   6%user   0%nice  13%sys 363%idle   1%iow  16%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  5.0  23.5   4:37.49 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.7M 3.7M R  4.0   0.2   0:00.11 top -n 30 -d 1[m
+  965 radio        20   0  16G  60M  37M S  2.0   3.0   0:52.83 com.android.pho+
+  411 system       -3  -8  11G  12M 5.9M S  2.0   0.5  14:13.64 surfaceflinger
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.00 [kworker/0:1-vi+
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:21.85 transport -conf+
+ 1403 u0_a135      20   0  17G  75M  41M S  1.0   3.8   0:34.12 com.google.andr+
+  802 u0_a181      20   0  16G 132M  63M S  1.0   6.6   3:22.67 com.android.sys+
+  559 system       18  -2  21G 156M  77M S  1.0   7.8  21:43.17 system_server
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.28 android.hardwar+
+   32 root         20   0    0    0    0 S  1.0   0.0   0:03.66 [ksoftirqd/2]
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-p+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844828K used,   177240K free,     4820K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448280K cached
+400%cpu  11%user   0%nice  14%sys 355%idle   0%iow  20%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  8.0  23.5   4:37.54 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.8M 3.8M R  3.0   0.2   0:00.15 top -n 30 -d 1[m
+  411 system       -3  -8  11G  12M 5.9M S  3.0   0.5  14:13.66 surfaceflinger
+  559 system       18  -2  21G 156M  77M S  2.0   7.8  21:43.18 system_server
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:21.86 transport -conf+
+28792 shell        20   0  10G 2.5M 2.3M S  1.0   0.1   0:07.21 process-tracker+
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.29 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.01 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-f+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   2 running, 300 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844828K used,   177240K free,     4820K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448280K cached
+400%cpu   8%user   1%nice  13%sys 352%idle   0%iow  25%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+29382 shell        20   0  11G 6.2M 3.8M S  9.0   0.3   0:21.87 transport -conf+
+[1m28199 u0_a209      10 -10  48G 465M 104M R  8.0  23.5   4:37.62 com.anonymous.t+[m
+  411 system       -3  -8  11G  12M 5.9M S  8.0   0.5  14:13.69 surfaceflinger
+[1m 2702 shell        20   0  10G 4.8M 3.8M R  4.0   0.2   0:00.18 top -n 30 -d 1[m
+  559 system       18  -2  21G 156M  77M S  1.0   7.8  21:43.20 system_server
+  380 system       20   0  10G 2.4M 2.3M S  1.0   0.1   3:23.06 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.01 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-p+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1846564K used,   175504K free,     4824K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448284K cached
+400%cpu  17%user  14%nice  10%sys 345%idle   0%iow  14%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S 29.0  23.5   4:37.70 com.anonymous.t+
+  411 system       -3  -8  11G  12M 5.9M S  3.0   0.5  14:13.77 surfaceflinger
+[1m 2702 shell        20   0  10G 4.8M 3.8M R  2.0   0.2   0:00.22 top -n 30 -d 1[m
+  386 system       -3   0  11G 3.6M 2.6M S  2.0   0.1  13:02.30 android.hardwar+
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:21.96 transport -conf+
+ 1037 u0_a144      20   0  17G 160M  95M S  1.0   8.0   3:54.79 com.google.andr+
+  156 root         RT   0    0    0    0 S  1.0   0.0   0:07.53 [sugov:3]
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.01 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-p+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   2 running, 300 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1846788K used,   175280K free,     4824K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448284K cached
+400%cpu  11%user   0%nice  12%sys 362%idle   0%iow  14%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+[1m28199 u0_a209      10 -10  48G 465M 104M R  7.0  23.5   4:37.99 com.anonymous.t+[m
+[1m 2702 shell        20   0  10G 4.8M 3.8M R  3.0   0.2   0:00.24 top -n 30 -d 1[m
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.01 [kworker/0:1-vi+
+  559 system       18  -2  21G 156M  77M S  1.0   7.8  21:43.21 system_server
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:13.80 surfaceflinger
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.32 android.hardwar+
+  380 system       20   0  10G 2.4M 2.3M S  1.0   0.1   3:23.07 android.hardwar+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:21.97 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1825648K used,   196420K free,     4824K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448284K cached
+400%cpu  23%user   0%nice  31%sys 302%idle   0%iow  43%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+ 2884 artd         20   0  11G 6.9M 5.6M S 10.0   0.3   3:03.96 artd
+  559 system       18  -2  21G 156M  77M S 10.0   7.8  21:43.22 system_server
+28199 u0_a209      10 -10  48G 465M 104M S  7.0  23.5   4:38.06 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  4.0   0.2   0:00.27 top -n 30 -d 1[m
+  413 shell        20   0  11G 4.3M 1.8M S  4.0   0.2   1:50.15 adbd --root_sec+
+  411 system       -3  -8  11G  12M 5.9M S  3.0   0.5  14:13.81 surfaceflinger
+29382 shell        20   0  11G 6.2M 3.8M S  2.0   0.3   0:21.97 transport -conf+
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.02 [kworker/0:1-vi+
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.33 android.hardwar+
+  158 logd         30  10  10G 6.6M 3.4M S  1.0   0.3   0:20.58 logd
+  154 root         RT   0    0    0    0 S  1.0   0.0   0:05.17 [sugov:1]
+   61 root         20   0    0    0    0 I  1.0   0.0   0:18.56 [kworker/3:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1825820K used,   196248K free,     4824K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448284K cached
+400%cpu   6%user   0%nice   7%sys 375%idle   0%iow  12%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  6.0  23.5   4:38.13 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  3.0   0.2   0:00.31 top -n 30 -d 1[m
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.03 [kworker/0:1-vi+
+  559 system       18  -2  21G 159M  77M S  1.0   8.0  21:43.32 system_server
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:13.84 surfaceflinger
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.34 android.hardwar+
+  380 system       20   0  10G 2.4M 2.3M S  1.0   0.1   3:23.08 android.hardwar+
+   27 root         20   0    0    0    0 I  1.0   0.0   0:19.36 [kworker/1:0-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:21.99 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1825820K used,   196248K free,     4824K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448284K cached
+400%cpu   7%user   0%nice   8%sys 376%idle   0%iow   8%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  4.0  23.5   4:38.19 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.34 top -n 30 -d 1[m
+  559 system       18  -2  21G 159M  77M S  1.0   8.0  21:43.33 system_server
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:13.85 surfaceflinger
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.35 android.hardwar+
+   15 root         20   0    0    0    0 S  1.0   0.0   1:07.42 [ksoftirqd/0]
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.04 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:21.99 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1825820K used,   196248K free,     4824K buffers
+ Swap:  1516544K total,   810752K used,   705792K free,   448284K cached
+400%cpu   8%user   1%nice   7%sys 375%idle   0%iow   9%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  5.0  23.5   4:38.23 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  4.0   0.2   0:00.35 top -n 30 -d 1[m
+  411 system       -3  -8  11G  12M 5.9M S  2.0   0.5  14:13.86 surfaceflinger
+28792 shell        20   0  10G 2.5M 2.3M S  1.0   0.1   0:07.22 process-tracker+
+  559 system       18  -2  21G 159M  77M S  1.0   8.0  21:43.34 system_server
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.36 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.04 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:21.99 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1826044K used,   196024K free,     4824K buffers
+ Swap:  1516544K total,   817920K used,   698624K free,   448284K cached
+400%cpu   8%user   1%nice  22%sys 352%idle   0%iow  16%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+  559 system       18  -2  21G 159M  77M S 12.0   8.0  21:43.35 system_server
+28199 u0_a209      10 -10  48G 465M 104M S  6.0  23.5   4:38.28 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  2.0   0.2   0:00.39 top -n 30 -d 1[m
+29382 shell        20   0  11G 6.2M 3.8M S  2.0   0.3   0:21.99 transport -conf+
+  411 system       -3  -8  11G  12M 5.9M S  2.0   0.5  14:13.88 surfaceflinger
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.04 [kworker/0:1-vi+
+  413 shell        20   0  11G 4.3M 1.8M S  1.0   0.2   1:50.19 adbd --root_sec+
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.37 android.hardwar+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1826268K used,   195800K free,     4844K buffers
+ Swap:  1516544K total,   817920K used,   698624K free,   448280K cached
+400%cpu  11%user   0%nice   9%sys 361%idle   1%iow  17%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  5.0  23.5   4:38.34 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  4.0   0.2   0:00.41 top -n 30 -d 1[m
+  559 system       18  -2  21G 159M  77M S  2.0   8.0  21:43.47 system_server
+  411 system       -3  -8  11G  12M 5.9M S  2.0   0.5  14:13.90 surfaceflinger
+ 1037 u0_a144      20   0  17G 160M  95M S  1.0   8.0   3:54.80 com.google.andr+
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.38 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.05 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.01 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1826492K used,   195576K free,     4844K buffers
+ Swap:  1516544K total,   817920K used,   698624K free,   448284K cached
+400%cpu   7%user   0%nice   9%sys 369%idle   0%iow  15%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  5.0  23.5   4:38.39 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  3.0   0.1  13:02.39 android.hardwar+
+  411 system       -3  -8  11G  12M 5.9M S  2.0   0.5  14:13.92 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.45 top -n 30 -d 1[m
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.01 transport -conf+
+  559 system       18  -2  21G 159M  77M S  1.0   8.0  21:43.49 system_server
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.05 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-p+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1826964K used,   195104K free,     4844K buffers
+ Swap:  1516544K total,   817920K used,   698624K free,   448284K cached
+400%cpu   7%user   0%nice   8%sys 372%idle   0%iow  13%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  6.0  23.5   4:38.44 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  3.0   0.2   0:00.46 top -n 30 -d 1[m
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:13.94 surfaceflinger
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.42 android.hardwar+
+  380 system       20   0  10G 2.4M 2.3M S  1.0   0.1   3:23.09 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.05 [kworker/0:1-ev+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-f+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.02 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1826964K used,   195104K free,     4844K buffers
+ Swap:  1516544K total,   817920K used,   698624K free,   448284K cached
+400%cpu   8%user   0%nice   9%sys 365%idle   0%iow  17%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S  4.0  23.5   4:38.50 com.anonymous.t+
+  411 system       -3  -8  11G  12M 5.9M S  4.0   0.5  14:13.95 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  3.0   0.2   0:00.49 top -n 30 -d 1[m
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.05 [kworker/0:1-vi+
+  559 system       18  -2  21G 159M  77M S  1.0   8.0  21:43.50 system_server
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.43 android.hardwar+
+  153 root         RT   0    0    0    0 S  1.0   0.0   0:07.26 [sugov:0]
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-f+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.02 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1830240K used,   191828K free,     4868K buffers
+ Swap:  1516544K total,   815872K used,   700672K free,   451276K cached
+400%cpu  20%user   0%nice  13%sys 347%idle   5%iow  14%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+ 1403 u0_a135      20   0  17G  75M  41M S 10.0   3.8   0:34.13 com.google.andr+
+28199 u0_a209      10 -10  48G 465M 104M S  4.0  23.5   4:38.54 com.anonymous.t+
+ 1359 u0_a156      10 -10  17G 132M  71M S  4.0   6.6   0:45.79 com.google.andr+
+  559 system       18  -2  21G 159M  77M S  3.0   8.0  21:43.51 system_server
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.52 top -n 30 -d 1[m
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.02 transport -conf+
+28792 shell        20   0  10G 2.5M 2.3M S  1.0   0.1   0:07.23 process-tracker+
+20107 root         20   0    0    0    0 I  1.0   0.0   0:04.86 [kworker/u8:0-p+
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:13.99 surfaceflinger
+  380 system       20   0  10G 2.4M 2.3M S  1.0   0.1   3:23.10 android.hardwar+
+   26 root         20   0    0    0    0 S  1.0   0.0   0:01.83 [ksoftirqd/1]
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.06 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-f+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1836248K used,   185820K free,     4868K buffers
+ Swap:  1516544K total,   815616K used,   700928K free,   451408K cached
+400%cpu  17%user   1%nice  11%sys 358%idle   0%iow  12%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 465M 104M S 10.0  23.5   4:38.58 com.anonymous.t+
+  559 system       18  -2  21G 159M  77M S  7.0   8.0  21:43.54 system_server
+  371 audioserver  20   0  11G 3.1M 2.8M S  4.0   0.1   0:11.37 android.hardwar+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  2.0   0.2   0:00.53 top -n 30 -d 1[m
+ 2884 artd         20   0  11G 6.8M 5.5M S  2.0   0.3   3:04.06 artd
+  413 shell        20   0  11G 4.3M 1.8M S  2.0   0.2   1:50.20 adbd --root_sec+
+ 2589 root         20   0    0    0    0 I  1.0   0.0   0:01.06 [kworker/0:1-vi+
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.03 transport -conf+
+ 1009 u0_a176      20   0  16G  61M  42M S  1.0   3.0   0:46.99 com.google.andr+
+  802 u0_a181      20   0  16G 132M  63M S  1.0   6.6   3:22.68 com.android.sys+
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:14.00 surfaceflinger
+  405 audioserver  20   0  11G 6.8M 5.7M S  1.0   0.3   0:08.32 audioserver
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.44 android.hardwar+
+   61 root         20   0    0    0    0 I  1.0   0.0   0:18.57 [kworker/3:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-l+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1842800K used,   179268K free,     4868K buffers
+ Swap:  1516544K total,   815616K used,   700928K free,   451492K cached
+400%cpu  44%user  10%nice  30%sys 300%idle   0%iow  16%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 464M 104M S 65.0  23.4   4:38.68 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S 10.0   0.1  13:02.45 android.hardwar+
+  411 system       -3  -8  11G  12M 5.9M S  4.0   0.5  14:14.01 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.55 top -n 30 -d 1[m
+  559 system       18  -2  21G 163M  77M S  1.0   8.2  21:43.61 system_server
+  362 root         20   0  11G 4.2M 3.2M S  1.0   0.2   0:16.13 netd
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.07 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.42 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.04 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1838012K used,   184056K free,     4880K buffers
+ Swap:  1516544K total,   815616K used,   700928K free,   451788K cached
+400%cpu  46%user  22%nice  41%sys 269%idle   1%iow  20%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 472M 104M S 93.0  23.9   4:39.33 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  9.0   0.1  13:02.55 android.hardwar+
+  411 system       -3  -8  11G  12M 5.9M S  5.0   0.5  14:14.05 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.56 top -n 30 -d 1[m
+32748 root         20   0    0    0    0 I  1.0   0.0   0:00.42 [kworker/u8:1-e+
+24400 root         20   0    0    0    0 I  1.0   0.0   0:08.73 [kworker/2:0-vi+
+  371 audioserver  20   0  11G 3.1M 2.8M S  1.0   0.1   0:11.41 android.hardwar+
+   15 root         20   0    0    0    0 S  1.0   0.0   1:07.43 [ksoftirqd/0]
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.07 [kworker/0:1-ev+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.04 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1838012K used,   184056K free,     4880K buffers
+ Swap:  1516544K total,   815616K used,   700928K free,   451788K cached
+400%cpu  10%user   1%nice  18%sys 353%idle   0%iow  17%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 455M 104M S 14.0  23.0   4:40.26 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  5.0   0.1  13:02.64 android.hardwar+
+  411 system       -3  -8  11G  12M 5.9M S  3.0   0.5  14:14.10 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.57 top -n 30 -d 1[m
+  405 audioserver  20   0  11G 6.8M 5.7M S  1.0   0.3   0:08.33 audioserver
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.07 [kworker/0:1-ev+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-p+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.04 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.56 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1838264K used,   183804K free,     4900K buffers
+ Swap:  1516544K total,   815616K used,   700928K free,   452908K cached
+400%cpu   1%user   0%nice   0%sys 398%idle   0%iow   0%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+  559 system       18  -2  21G 163M  77M S  0.2   8.2  21:43.62 system_server
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  0.1   0.2   0:00.58 top -n 30 -d 1[m
+28199 u0_a209      10 -10  48G 454M 104M S  0.1  22.9   4:40.40 com.anonymous.t+
+ 1037 u0_a144      20   0  17G 160M  95M S  0.1   8.0   3:54.81 com.google.andr+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.07 [kworker/0:1-ev+
+ 8037 u0_a140      20   0  17G 120M  59M S  0.0   6.0   0:52.98 com.google.andr+
+  965 radio        20   0  16G  60M  37M S  0.0   3.0   0:52.85 com.android.pho+
+  891 network_sta+ 20   0  16G  49M  29M S  0.0   2.4   0:57.23 com.android.net+
+  787 wifi         20   0  10G 2.5M 2.3M S  0.0   0.1   0:11.87 wpa_supplicant +
+  204 root         20   0    0    0    0 S  0.0   0.0   0:16.32 [jbd2/dm-44-8]
+  158 logd         30  10  10G 6.4M 3.4M S  0.0   0.3   0:20.59 logd
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-b+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+[H[JTasks: 302 total,   3 running, 299 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1841512K used,   180556K free,     4920K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460784K cached
+400%cpu  42%user   2%nice  33%sys 303%idle   2%iow  17%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+[1m28199 u0_a209      10 -10  48G 454M 104M R 55.0  22.9   4:40.42 com.anonymous.t+[m
+  386 system       -3   0  11G 3.6M 2.6M S 10.0   0.1  13:02.69 android.hardwar+
+  802 u0_a181      20   0  16G 132M  63M S  7.0   6.6   3:22.69 com.android.sys+
+  411 system       -3  -8  11G  12M 5.9M S  5.0   0.5  14:14.13 surfaceflinger
+  371 audioserver  20   0  11G 3.1M 2.8M S  5.0   0.1   0:11.42 android.hardwar+
+  559 system       18  -2  21G 163M  77M S  3.0   8.2  21:43.66 system_server
+  405 audioserver  20   0  11G 6.8M 5.7M S  2.0   0.3   0:08.34 audioserver
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.61 top -n 30 -d 1[m
+29223 shell        20   0  10G 3.1M 3.1M S  1.0   0.1   0:02.56 logcat -v long +
+ 1037 u0_a144      20   0  17G 160M  95M S  1.0   8.0   3:54.83 com.google.andr+
+  413 shell        20   0  11G 4.3M 1.8M S  1.0   0.2   1:50.22 adbd --root_sec+
+  358 root         20   0  10G 1.6M 1.6M S  1.0   0.0   0:12.09 dhcpclient -i w+
+   57 root         -2   0    0    0    0 S  1.0   0.0   0:14.09 [erofs_worker/0]
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1843208K used,   178860K free,     4920K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460828K cached
+400%cpu  24%user  11%nice  40%sys 303%idle   0%iow  22%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 450M 104M S 44.0  22.7   4:40.97 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  8.0   0.1  13:02.79 android.hardwar+
+  559 system       18  -2  21G 164M  78M S  4.0   8.3  21:43.69 system_server
+  411 system       -3  -8  11G  12M 5.9M S  3.0   0.5  14:14.18 surfaceflinger
+ 2884 artd         20   0  11G 6.8M 5.5M S  2.0   0.3   3:04.08 artd
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.62 top -n 30 -d 1[m
+  413 shell        20   0  11G 5.3M 1.8M S  1.0   0.2   1:50.23 adbd --root_sec+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-ev+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:01.99 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-p+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.04 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844468K used,   177600K free,     4920K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460828K cached
+400%cpu  14%user   2%nice  19%sys 351%idle   0%iow  13%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 447M 104M S 22.0  22.6   4:41.41 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  7.0   0.1  13:02.87 android.hardwar+
+  411 system       -3  -8  11G  12M 5.9M S  4.0   0.5  14:14.21 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.63 top -n 30 -d 1[m
+ 2295 root         20   0    0    0    0 I  1.0   0.0   0:01.99 [kworker/0:2-ev+
+  371 audioserver  20   0  11G 3.1M 2.8M S  1.0   0.1   0:11.47 android.hardwar+
+   16 root         -2   0    0    0    0 I  1.0   0.0   0:26.63 [rcu_preempt]
+   15 root         20   0    0    0    0 S  1.0   0.0   1:07.44 [ksoftirqd/0]
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-p+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.04 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844468K used,   177600K free,     4920K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460828K cached
+400%cpu   6%user   0%nice   6%sys 380%idle   0%iow   8%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 449M 104M S  3.0  22.7   4:41.63 com.anonymous.t+
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.64 top -n 30 -d 1[m
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.04 transport -conf+
+28792 shell        20   0  10G 2.5M 2.3M S  1.0   0.1   0:07.24 process-tracker+
+  802 u0_a181      20   0  16G 132M  63M S  1.0   6.7   3:22.76 com.android.sys+
+  559 system       18  -2  21G 168M  78M S  1.0   8.4  21:43.73 system_server
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:14.25 surfaceflinger
+  405 audioserver  20   0  11G 9.1M 7.8M S  1.0   0.4   0:08.36 audioserver
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.94 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:02.00 [kworker/0:2-ev+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-p+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844468K used,   177600K free,     4920K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460828K cached
+400%cpu   3%user   0%nice   8%sys 378%idle   0%iow  11%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  2.0   0.2   0:00.65 top -n 30 -d 1[m
+28199 u0_a209      10 -10  48G 449M 104M S  2.0  22.7   4:41.66 com.anonymous.t+
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.05 transport -conf+
+  559 system       18  -2  21G 168M  78M S  1.0   8.4  21:43.74 system_server
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.95 android.hardwar+
+  380 system       20   0  10G 2.4M 2.3M S  1.0   0.1   3:23.11 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:02.00 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-p+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844972K used,   177096K free,     4928K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460848K cached
+400%cpu  24%user   0%nice  15%sys 347%idle   0%iow  13%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 449M 104M S 27.0  22.7   4:41.68 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  3.0   0.1  13:02.96 android.hardwar+
+  411 system       -3  -8  11G  12M 5.9M S  2.0   0.5  14:14.26 surfaceflinger
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  1.0   0.2   0:00.67 top -n 30 -d 1[m
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:02.00 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-p+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.06 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+
+29016 u0_a136      20   0  16G  50M  35M S  0.0   2.5   0:00.54 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1844972K used,   177096K free,     4928K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460848K cached
+400%cpu   7%user   0%nice   5%sys 379%idle   0%iow   9%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+[1m 2702 shell        20   0  10G 4.9M 3.8M R  4.0   0.2   0:00.68 top -n 30 -d 1[m
+28199 u0_a209      10 -10  48G 454M 104M S  3.0  23.0   4:41.95 com.anonymous.t+
+ 2295 root         20   0    0    0    0 I  1.0   0.0   0:02.00 [kworker/0:2-ev+
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:14.28 surfaceflinger
+  386 system       -3   0  11G 3.6M 2.6M S  1.0   0.1  13:02.99 android.hardwar+
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-p+
+29382 shell        20   0  11G 6.2M 3.8M S  0.0   0.3   0:22.06 transport -conf+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+
+29049 u0_a146      20   0  40G  50M  35M S  0.0   2.5   0:00.50 com.android.chr+
+29016 u0_a136      20   0  16G  50M  35M S  0.0   2.5   0:00.54 com.google.andr+[H[JTasks: 302 total,   2 running, 300 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1845224K used,   176844K free,     4932K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460932K cached
+400%cpu   9%user   0%nice   7%sys 374%idle   1%iow   8%irq   1%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 454M 104M S  6.0  23.0   4:41.98 com.anonymous.t+
+ 1009 u0_a176      20   0  16G  61M  42M S  2.0   3.0   0:47.00 com.google.andr+
+  559 system       18  -2  21G 168M  78M S  2.0   8.5  21:43.75 system_server
+[1m 2702 shell        20   0  10G 5.1M 3.8M R  1.0   0.2   0:00.72 top -n 30 -d 1[m
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.06 transport -conf+
+  413 shell        20   0  11G 4.3M 1.8M S  1.0   0.2   1:50.24 adbd --root_sec+
+  411 system       -3  -8  11G  12M 5.9M S  1.0   0.5  14:14.29 surfaceflinger
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+ 2295 root         20   0    0    0    0 I  0.0   0.0   0:02.01 [kworker/0:2-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[H[JTasks: 302 total,   1 running, 301 sleeping,   0 stopped,   0 zombie
+  Mem:  2022068K total,  1846988K used,   175080K free,     4932K buffers
+ Swap:  1516544K total,   815360K used,   701184K free,   460968K cached
+400%cpu  51%user   4%nice  22%sys 309%idle   0%iow  14%irq   0%sirq   0%host
+[7m  PID USER         PR  NI VIRT  RES  SHR S[%CPU] %MEM     TIME+ ARGS            [0m
+28199 u0_a209      10 -10  48G 455M 104M S 62.0  23.0   4:42.04 com.anonymous.t+
+  386 system       -3   0  11G 3.6M 2.6M S  5.0   0.1  13:03.00 android.hardwar+
+ 2295 root         20   0    0    0    0 I  3.0   0.0   0:02.01 [kworker/0:2-vi+
+  411 system       -3  -8  11G  12M 5.9M S  3.0   0.5  14:14.30 surfaceflinger
+  371 audioserver  20   0  11G 3.1M 2.8M S  2.0   0.1   0:11.48 android.hardwar+
+[1m 2702 shell        20   0  10G 5.1M 3.8M R  1.0   0.2   0:00.73 top -n 30 -d 1[m
+29382 shell        20   0  11G 6.2M 3.8M S  1.0   0.3   0:22.07 transport -conf+
+  559 system       18  -2  21G 168M  78M S  1.0   8.5  21:43.77 system_server
+ 2589 root         20   0    0    0    0 I  0.0   0.0   0:01.08 [kworker/0:1-vi+
+ 2533 root          0 -20    0    0    0 I  0.0   0.0   0:00.01 [kworker/u9:0-f+
+ 2445 root         20   0    0    0    0 I  0.0   0.0   0:00.88 [kworker/0:0-vi+
+32749 root          0 -20    0    0    0 I  0.0   0.0   0:00.05 [kworker/u9:2-f+
+32748 root         20   0    0    0    0 I  0.0   0.0   0:00.43 [kworker/u8:1-e+
+31688 u0_a142      20   0  16G  64M  48M S  0.0   3.2   0:00.43 com.android.ven+
+31687 u0_a142      20   0  16G  69M  52M S  0.0   3.4   0:01.00 com.android.ven+
+30983 u0_a145      20   0  17G  63M  45M S  0.0   3.1   0:01.86 com.google.andr+
+30354 root         20   0    0    0    0 I  0.0   0.0   0:00.97 [kworker/u8:2-e+
+29380 shell        20   0  10G 2.5M 2.5M S  0.0   0.1   0:00.00 sh -c /data/loc+
+29223 shell        20   0  10G 3.1M 3.1M S  0.0   0.1   0:02.57 logcat -v long +
+29081 u0_a128      20   0  15G  48M  33M S  0.0   2.4   0:00.17 com.google.andr+[?25h[0m[999H[K[?25h[?25h[0m[999H[K

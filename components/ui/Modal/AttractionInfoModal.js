@@ -123,7 +123,7 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
                 onPress={handleAiInsight}
                 style={({ pressed }) => [
                   style.linkButton,
-                  { backgroundColor: pressed ? "#1565C0" : "#1E90FF", flexDirection: "row", alignItems: "center" },
+                  { backgroundColor: pressed ? Colors.primary700 : Colors.primary600, flexDirection: "row", alignItems: "center" },
                 ]}
               >
                 <Feather name="zap" size={16} color="white" style={{ marginRight: 8 }} />
