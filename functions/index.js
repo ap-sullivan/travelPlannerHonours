@@ -5,8 +5,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const GEMINI_API_KEY_SECRET = "GEMINI_API_KEY_PLANMYSCOT";
 
-
-// Cloud Function to fetch AI insights for missing attraction data
+// function to fetch AI insights for missing attraction data
 exports.getAttractionInsights = onCall(
   { secrets: [GEMINI_API_KEY_SECRET] },
   async (request) => {
@@ -16,7 +15,6 @@ exports.getAttractionInsights = onCall(
     //  validate input
     if (!attractionName) {
       throw new HttpsError(
-        "invalid-argument",
         "The function must be called with an attraction name.",
       );
     }
@@ -26,7 +24,7 @@ exports.getAttractionInsights = onCall(
       const genAI = new GoogleGenerativeAI(process.env[GEMINI_API_KEY_SECRET]);
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       // construct prompt for Gemini
-      const prompt = `Provide a concise, engaging 3-sentence description of the sightseeing attraction "${attractionName}" in ${city || "its local city"}.  Focus on why it's famous and one interesting 'insider' tip for a visitor. Keep the tone helpful and travel oriented.`;
+      const prompt = `Provide a concise, engaging 2 to 3 sentence description of the sightseeing attraction "${attractionName}" in ${city || "its local city"}.  Focus on why you would visit it and give any interesting facts or tips if relevant. Keep the tone helpful and travel oriented.`;
 
       const result = await model.generateContent(prompt);
 
@@ -48,15 +46,13 @@ exports.getAttractionInsights = onCall(
   },
 );
 
-
 // function to get final itinerary from stored data
-
 exports.generateItinerary = onCall(
   { secrets: [GEMINI_API_KEY_SECRET] },
   async (request) => {
     const { destinations } = request.data;
 
-    // Validate
+    // validate input
     if (!destinations || !destinations.length) {
       throw new HttpsError(
         "invalid-argument",
@@ -65,6 +61,7 @@ exports.generateItinerary = onCall(
     }
 
     try {
+      // initialise 
       const genAI = new GoogleGenerativeAI(
         process.env[GEMINI_API_KEY_SECRET]
       );
@@ -73,74 +70,96 @@ exports.generateItinerary = onCall(
         model: "gemini-2.5-flash",
       });
 
-      // ✅ Build structured input for prompt
+      // format inout data for prompt (comes from summary screen build AI input function)
       const formattedData = destinations
-        .map((d, i) => {
+        .map((d) => {
           return `
 City: ${d.name}
 Days: ${d.days}
-
+Season: ${d.season || "Not specified"}
 Hotel:
 ${d.hotel?.name || "Not specified"}
 
 Attractions:
-${d.attractions?.map((a) => `- ${a.name}`).join("\n") || "None selected"}
+${
+  d.attractions?.length
+    ? d.attractions.map((a) => `- ${a.name}`).join("\n")
+    : "None selected"
+}
 `;
         })
         .join("\n---\n");
 
-      // Prompt
+      //construct prompt 
       const prompt = `
 You are a travel planning assistant.
 
-Using the trip data below, create a clear, concise, day-by-day itinerary.
+Using the structured trip data below, create a clear, concise, day-by-day itinerary.
 
 Rules:
-- Organise by day (Day 1, Day 2, etc.)
-- Each day must start with "Day X – City Name"
-- Respect the number of days in each city
-- Group attractions logically by location and flow
-- Start each city's first day with checking into the hotel
-- Mention the hotel naturally in the itinerary
-- Keep each day short and readable (3–5 bullet points max)
-- Do NOT invent attractions — only use the provided ones
-- Make it feel like a real travel plan
+- Strictly follow the number of days for each city
+- Do NOT invent attractions — only use the ones provided
+- If a there are many more days than attractions then create some leisure days with general suggestions (e.g. "Explore local culture, try local cuisine")
+- Spread attractions logically across the days
+- Write each day as a smooth, engaging paragraph (not bullet points)
+- Structure each day naturally (morning to afternoon to evening)
+- Include helpful travel tips where appropriate
+- Keep each day concise but engaging, with a focus on why the attractions are worth visiting
+- Take into consideration the season for any relevant tips (e.g. "Since you're visiting in winter, this museum is a great indoor option")
+
+Return ONLY valid JSON in this format:
+
+[
+  {
+    "day": 1,
+    "city": "Edinburgh",
+    "plan": "A natural flowing paragraph describing the day. ",
+    "accommodation": "Hotel name for the city, if provided, otherwise 'No hotel selected'"
+  }
+]
+
+Do NOT include markdown, explanations, or extra text.
+Do NOT wrap in \`\`\`.
 
 Trip Data:
 ${formattedData}
-
-Output format example:
-
-Day 1 – Edinburgh
-- Check into hotel
-- Visit Edinburgh Castle
-- Walk Royal Mile
-- Dinner in Old Town
-
-Day 2 – Edinburgh
-...
-
-Keep the tone helpful and structured.
-
-Return the itinerary as clean plain text.
-Do not use markdown symbols like **, #, or bullet characters like •.
-Use simple "-" for bullet points only.
 `;
 
+      // gemini call
       const result = await model.generateContent(prompt);
-
-      // log usage data for testing
-      console.log(result.response.usageMetadata);
 
       const response = await result.response;
       const aiText = response.text();
 
+    //  log usage for testing
+      console.log("USAGE:", response.usageMetadata);
+
+      // clean and parse JSON
+      let parsed;
+
+      try {
+        const cleanText = aiText
+          .replace(/```json/g, "")
+          .replace(/```/g, "")
+          .trim();
+
+        parsed = JSON.parse(cleanText);
+      } catch (err) {
+        console.error("JSON PARSE ERROR:", aiText);
+        throw new HttpsError(
+          "internal",
+          "returned invalid JSON format."
+        );
+      }
+
+      // return to app
       return {
         success: true,
-        itinerary: aiText,
+        itinerary: parsed,
       };
     } catch (error) {
       console.error("Gemini Error:", error);
+
       throw new HttpsError(
         "internal",
         "Failed to generate itinerary."

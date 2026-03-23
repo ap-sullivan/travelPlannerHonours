@@ -176,6 +176,7 @@ const buildAIInput = () => {
   return destinations.map((dest) => ({
     name: dest.name,
     days: dest.days,
+    season: dest.season, 
     hotel: groupedHotels[dest.name]?.[0] || null, 
     attractions: (grouped[dest.name] || []).map((a) => ({
       name: a.name, 
