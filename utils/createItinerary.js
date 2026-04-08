@@ -1,3 +1,5 @@
+// util to create a new itinerary document in firestore for a user and return the new itinerary id
+
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -16,3 +18,4 @@ export const createItinerary = async (uid, tripDraft) => {
 
   return docRef.id;
 };
+

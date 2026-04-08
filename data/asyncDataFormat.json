@@ -1,0 +1,60 @@
+{
+    "destinations": [
+        {
+            "id": "1",
+            "name": "ExampleCityA",
+            "days": 2
+        },
+        {
+            "id": "2",
+            "name": "ExampleCityB",
+            "days": 2
+        }
+    ],
+    "attractions": {
+        "ExampleCityA": [
+            {
+                "id": "example-attraction-1",
+                "name": "Example Attraction One",
+                "city": "ExampleCityA",
+                "lat": 0.0000,
+                "lon": 0.0000,
+                "categories": [],
+                "savedAt": 1234567890
+            }
+        ],
+        "ExampleCityB": [
+            {
+                "id": "example-attraction-2",
+                "name": "Example Attraction Two",
+                "city": "ExampleCityB",
+                "lat": 0.0000,
+                "lon": 0.0000,
+                "categories": [],
+                "savedAt": 1234567891
+            }
+        ]
+    },
+    "hotels": {
+        "ExampleCityA": [
+            {
+                "id": "example-hotel-1",
+                "name": "Example Hotel One",
+                "city": "ExampleCityA",
+                "lat": 0.0000,
+                "lon": 0.0000,
+                "savedAt": 1234567892
+            }
+        ],
+        "ExampleCityB": [
+            {
+                "id": "example-hotel-2",
+                "name": "Example Hotel Two",
+                "city": "ExampleCityB",
+                "lat": 0.0000,
+                "lon": 0.0000,
+                "savedAt": 1234567893
+            }
+        ]
+    }
+}

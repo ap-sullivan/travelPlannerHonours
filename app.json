@@ -4,7 +4,12 @@
     "slug": "travelPlanner",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo/logo.png",
+     "splash": {
+      "image": "./assets/logo/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#e7e7e7"
+    },
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
@@ -29,8 +34,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/logo/logo.png",
+        "backgroundColor": "#e7e7e7"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.travelPlanner",

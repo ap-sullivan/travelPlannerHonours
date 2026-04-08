@@ -1,3 +1,5 @@
+// utility function for google sign-in authentication using firebase auth
+
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "./firebase";
@@ -15,7 +17,6 @@ export const signInWithGoogle = async () => {
   await GoogleSignin.signOut();
 
   const result = await GoogleSignin.signIn();
-// console.log("sign-in result:", result);
 
 const idToken = result?.data?.idToken;
 

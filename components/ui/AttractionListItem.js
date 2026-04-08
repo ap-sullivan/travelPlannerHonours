@@ -1,3 +1,5 @@
+// component for displaying an attraction in the search results flatlist
+
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
@@ -65,13 +67,13 @@ const style = StyleSheet.create({
   },
 
   container: {
-    flex: 1, 
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
   },
 
   rowContent: {
-    flex: 1, 
+    flex: 1,
     flexDirection: "row",
     gap: 12,
     alignItems: "center",
@@ -79,20 +81,19 @@ const style = StyleSheet.create({
 
   textContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 
   title: {
     paddingRight: 14,
     fontSize: 15,
-    color: '#000', 
+    color: "#000",
   },
 
   subtitle: {
     fontWeight: "600",
     color: Colors.gray700,
   },
-
 
   indexContainer: {
     width: 20,

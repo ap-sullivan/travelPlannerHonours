@@ -7,8 +7,6 @@ const Colors = {
   primary700: '#1D334C',
   primary800: '#16283D',
   primary900: '#090f17',
-
-  
   
   accent300: '#FFB799',
   accent400: '#FF7A1C',
@@ -18,7 +16,6 @@ const Colors = {
   accent800: '#A63400',
   accent900: '#702200',
   
-
   gray100: '#F9FAFB',
   gray200: '#E5E8ED',
   gray300: '#CED4DF',
@@ -28,7 +25,6 @@ const Colors = {
   gray700: '#5B667A',
   gray800: '#2F333B',
   gray900: '#121418',
-
 
   error500: '#C84A4A',
   error600: '#B03B3B',

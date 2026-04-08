@@ -15,6 +15,7 @@ import DestinationPicker from "../components/forms/DestinationPicker";
 import SeasonPicker from "../components/forms/SeasonPicker";
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import AppText from "../components/ui/textStyles/AppText";
+import { CITY_DESTINATIONS } from "../data/cities";
 import { Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,9 +27,11 @@ import { getAuth } from "firebase/auth";
 
 const MIN_DAYS = 1;
 const MAX_DESTINATIONS = 4;
+const SEASONS = ["Spring", "Summer", "Autumn", "Winter"];
 
 function StartScreen({ navigation }) {
   const [season, setSeason] = useState(null);
+
   const [destinations, setDestinations] = useState([
     { id: "1", name: "", days: 1 },
     { id: "2", name: "", days: 1 },
@@ -71,13 +74,14 @@ function StartScreen({ navigation }) {
     });
   };
 
+  // handles all the logic for starting the planning process for both guest and logged in users
   async function handleStartPlanning() {
 
 
     try {
-      // clears local async to start a new itinerary for guest users 
+      // clears local async to start a new itinerary for guest users
       if (!user) {
-        await resetGuestItinerary(); 
+        await resetGuestItinerary();
       }
       // clean and validate data
       const cleanedDestinations = destinations
@@ -88,15 +92,26 @@ function StartScreen({ navigation }) {
           days: d.days,
         }));
 
+      const invalidDestinations = cleanedDestinations.filter(
+        (d) => !CITY_DESTINATIONS.includes(d.name),
+      );
+
+      if (invalidDestinations.length > 0) {
+        Alert.alert(
+          "Invalid Destination",
+          "Please select a valid destination from the suggestions.",
+        );
+        return;
+      }
+
       // if no destinations after clean give warning
-  
-    if (cleanedDestinations.length === 0) {
-  Alert.alert(
-    "No Destinations",
-    "At least one destination is required to start planning."
-  );
-  return;
-}
+      if (cleanedDestinations.length === 0) {
+        Alert.alert(
+          "No Destinations",
+          "At least one destination is required to start planning.",
+        );
+        return;
+      }
 
       // calculate total days
       const totalDays = cleanedDestinations.reduce(
@@ -216,39 +231,18 @@ function StartScreen({ navigation }) {
               <AppText style={{ marginLeft: 2 }}>
                 When are you planning on travelling?
               </AppText>
+
+              {/* season picker */}
               <View style={style.seasonPickerContainer}>
-                <SeasonPicker
-                  isSelected={season === "Spring"}
-                  onPress={() =>
-                    setSeason(season === "Spring" ? null : "Spring")
-                  }
-                >
-                  Spring
-                </SeasonPicker>
-                <SeasonPicker
-                  isSelected={season === "Summer"}
-                  onPress={() =>
-                    setSeason(season === "Summer" ? null : "Summer")
-                  }
-                >
-                  Summer
-                </SeasonPicker>
-                <SeasonPicker
-                  isSelected={season === "Autumn"}
-                  onPress={() =>
-                    setSeason(season === "Autumn" ? null : "Autumn")
-                  }
-                >
-                  Autumn
-                </SeasonPicker>
-                <SeasonPicker
-                  isSelected={season === "Winter"}
-                  onPress={() =>
-                    setSeason(season === "Winter" ? null : "Winter")
-                  }
-                >
-                  Winter
-                </SeasonPicker>
+                {SEASONS.map((s) => (
+                  <SeasonPicker
+                    key={s}
+                    isSelected={season === s}
+                    onPress={() => setSeason(season === s ? null : s)}
+                  >
+                    {s}
+                  </SeasonPicker>
+                ))}
               </View>
             </View>
 
@@ -257,11 +251,7 @@ function StartScreen({ navigation }) {
                 START PLANNING
               </PrimaryButton>
             </View>
-            {/* <View>
-              <Pressable style={style.logoutButton} onPress={handleLogout}>
-                <Text style={style.logoutText}>Logout (for testing)</Text>
-              </Pressable>
-            </View> */}
+       
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

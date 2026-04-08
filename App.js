@@ -232,10 +232,6 @@ export default function App() {
                 )}
               </Stack.Screen>
             ) : (
-              // <Stack.Screen name="JourneyFlow">
-              //   {(props) => <JourneyFlow {...props} />}
-              // </Stack.Screen>
-
               <Stack.Screen name="MainTabs" component={MainTabs} />
             )}
           </Stack.Navigator>

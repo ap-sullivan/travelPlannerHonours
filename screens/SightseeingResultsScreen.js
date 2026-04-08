@@ -6,6 +6,7 @@ import AppText from "../components/ui/textStyles/AppText";
 import AttractionListItem from "../components/ui/AttractionListItem";
 import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
+import { useInitialiseItinerary } from "../hooks/custom/useInitialiseItinerary";
 import AttractionMap from "../components/ui/maps/AttractionMap";
 import { CITY_META } from "../data/cityMeta";
 import { MUST_SEE_ATTRACTIONS } from "../data/sightseeing/mustSeeAttractions";
@@ -20,7 +21,9 @@ import { auth } from "../utils/firebase";
 function SightseeingResultsScreen() {
   const [city, setCity] = useState(null);
   const { attractions, loading, error } = useAttractions(city ?? "Edinburgh");
+
   const [selectedAttraction, setSelectedAttraction] = useState(null);
+
   const [destinations, setDestinations] = useState([]);
   const [itineraryId, setItineraryId] = useState(null);
 
@@ -28,39 +31,8 @@ function SightseeingResultsScreen() {
 
   const user = auth.currentUser;
 
-  // load selected cities and grab stored ids from async storage on mount
-  useEffect(() => {
-    async function initScreen() {
-      try {
-        // Grab info from storage
-        const [storedId, storedDraft] = await Promise.all([
-          AsyncStorage.getItem("activeItineraryId"),
-          AsyncStorage.getItem("tripDraft"),
-        ]);
-
-        //Set the ID state so handleSaveAttraction knows where to save
-        if (storedId) {
-          setItineraryId(storedId);
-          console.log("Current Itinerary ID:", storedId);
-        }
-
-        // set the destinations and default city
-        if (storedDraft) {
-          const trip = JSON.parse(storedDraft);
-          setDestinations(trip.destinations);
-
-          // Default to first destination if one isn't already set
-          if (trip.destinations.length > 0 && !city) {
-            setCity(trip.destinations[0].name);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to initialize search results:", err);
-      }
-    }
-
-    initScreen();
-  }, []);
+  // load selected cities and grab stored ids from async storage on mount from useInitialiseItinerary custom hook
+  useInitialiseItinerary(setItineraryId, setDestinations, setCity, city);
 
   useEffect(() => {
     console.log(
@@ -174,8 +146,7 @@ function SightseeingResultsScreen() {
         );
         const savedList = existingJson ? JSON.parse(existingJson) : [];
 
-        // check for dupes
-        // TODO: CHECK IF THIS WORKS WHEN USER IS LOGGED IN (WORKS FOR LOCAL)
+        // check for dupes before saving
         if (!savedList.find((item) => item.id === attraction.id)) {
           savedList.push({ ...attractionData, savedAt: Date.now() });
           await AsyncStorage.setItem(
@@ -186,11 +157,7 @@ function SightseeingResultsScreen() {
           const verifyAdded = await AsyncStorage.getItem(
             "guestSavedAttractions",
           );
-          console.log(
-            "AsyncStorage after save:",
-            JSON.parse(verifyAdded),
-          );
-
+          console.log("AsyncStorage after save:", JSON.parse(verifyAdded));
         } else {
           // TODO:  change from console log to alert or toast
           console.log("Attraction already saved locally");
@@ -205,10 +172,9 @@ function SightseeingResultsScreen() {
   };
 
   const handleNext = async () => {
-
     // timestamp for UI performance monitoring
-      const tapTime = performance.now(); 
-  console.log("Next button tapped at:", tapTime);
+    const tapTime = performance.now();
+    console.log("Next button tapped at:", tapTime);
 
     try {
       let savedAttractions = [];
@@ -241,7 +207,8 @@ function SightseeingResultsScreen() {
       }
 
       navigation.navigate("SightseeingSummary", {
-        itineraryId,tapTime
+        itineraryId,
+        tapTime,
       });
     } catch (err) {
       console.error(err);
@@ -250,8 +217,10 @@ function SightseeingResultsScreen() {
 
   return (
     <SafeAreaView style={style.container}>
-      {/* */}
-
+      
+        {/* TODO: add in function that centres the map to this location when row is selected */}
+      
+      
       <FlatList
         data={numberedAttractions}
         keyExtractor={(item) => item.id}
@@ -265,9 +234,7 @@ function SightseeingResultsScreen() {
             subtitle={item.subtitle}
             onPressInfo={() => openDetails(item)}
             onPressAdd={() => handleSaveAttraction(item)}
-            onPressRow={() => {
-              // TODO:  add in function that centres the map to this location when row is selected
-            }}
+            onPressRow={() => {}}
           />
         )}
         ListHeaderComponent={
@@ -301,7 +268,8 @@ function SightseeingResultsScreen() {
             </View>
 
             <AppText style={{ marginTop: 6, textAlign: "center" }}>
-              Add {(city ?? "City Not Found") + " Attractions to Your Itinerary"}
+              Add{" "}
+              {(city ?? "City Not Found") + " Attractions to Your Itinerary"}
             </AppText>
 
             <PrimaryButton onPress={handleNext}>Next</PrimaryButton>
@@ -311,7 +279,9 @@ function SightseeingResultsScreen() {
             )}
 
             {!!error && (
-              <Text style={{ color: "red", marginTop: 8 }}>{error}</Text>
+              <Text style={{ color: "red", marginTop: 8 }}>
+                {typeof error === "string" ? error : error?.message}
+              </Text>
             )}
 
             <View style={{ height: 6 }} />
@@ -319,14 +289,13 @@ function SightseeingResultsScreen() {
         }
         ListEmptyComponent={<AppText>No attractions found.</AppText>}
       />
-
       <AttractionInfoModal
         visible={!!selectedAttraction}
         attraction={selectedAttraction}
         onClose={closeDetails}
       />
     </SafeAreaView>
-  );
+  );r
 }
 export default SightseeingResultsScreen;
 

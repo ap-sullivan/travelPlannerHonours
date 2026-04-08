@@ -1,6 +1,3 @@
-
-
-
 import { useEffect, useState } from "react";
 import Colors from "../../../constants/Colors";
 import {
@@ -16,14 +13,14 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { fetchWikiSmart } from "../../../utils/wiki";
-import {functions} from "../../../utils/firebase";
+import { functions } from "../../../utils/firebase";
 import { httpsCallable } from "firebase/functions";
-import {auth} from "../../../utils/firebase";
+import { auth } from "../../../utils/firebase";
 
 function AttractionInfoModal({ visible, attraction, onClose }) {
   const [wiki, setWiki] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   // AI State
   const [aiInsight, setAiInsight] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
@@ -51,30 +48,30 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
 
   // AI Function Call
   const handleAiInsight = async () => {
-  if (!auth.currentUser) {
-    console.log("User not signed in");
-    alert("Please sign in to use AI");
-    return;
-  }
-
-  setAiLoading(true);
-  try {
-    const getInsights = httpsCallable(functions, "getAttractionInsights");
-    const result = await getInsights({
-      city: attraction?.city || "Scotland",
-      attractionName: attraction?.name,
-    });
-
-    if (result.data.success) {
-      setAiInsight(result.data.insight);
+    if (!auth.currentUser) {
+      console.log("User not signed in");
+      alert("Please sign in to use AI");
+      return;
     }
-  } catch (error) {
-    console.error("AI Insight Error:", error);
-    alert("Failed to fetch AI insights. Make sure you are logged in.");
-  } finally {
-    setAiLoading(false);
-  }
-};
+
+    setAiLoading(true);
+    try {
+      const getInsights = httpsCallable(functions, "getAttractionInsights");
+      const result = await getInsights({
+        city: attraction?.city || "Scotland",
+        attractionName: attraction?.name,
+      });
+
+      if (result.data.success) {
+        setAiInsight(result.data.insight);
+      }
+    } catch (error) {
+      console.error("AI Insight Error:", error);
+      alert("Failed to fetch AI insights. Make sure you are logged in.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -92,17 +89,29 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
             contentContainerStyle={{ alignItems: "center", paddingBottom: 20 }}
             showsVerticalScrollIndicator={false}
           >
-            {loading && <ActivityIndicator size="large" style={{ marginVertical: 20 }} />}
+            {loading && (
+              <ActivityIndicator size="large" style={{ marginVertical: 20 }} />
+            )}
 
             {!loading && wiki && (
               <>
                 {wiki.thumbnail && (
-                  <Image source={wiki.thumbnail} style={style.image} contentFit="cover" transition={200} />
+                  <Image
+                    source={wiki.thumbnail}
+                    style={style.image}
+                    contentFit="cover"
+                    transition={200}
+                  />
                 )}
                 <Text style={style.extract}>{wiki.extract}</Text>
                 {wiki.url && (
-                  <Pressable onPress={() => Linking.openURL(wiki.url)} style={style.linkButton}>
-                    <Text style={style.linkButtonText}>Read more on Wikipedia</Text>
+                  <Pressable
+                    onPress={() => Linking.openURL(wiki.url)}
+                    style={style.linkButton}
+                  >
+                    <Text style={style.linkButtonText}>
+                      Read more on Wikipedia
+                    </Text>
                   </Pressable>
                 )}
               </>
@@ -110,8 +119,12 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
 
             {!loading && !wiki && (
               <View style={{ alignItems: "center" }}>
-                <Text style={style.fallback}>No Wikipedia information found.</Text>
-                <Text style={[style.fallback, { marginBottom: 10, marginTop: 0 }]}>
+                <Text style={style.fallback}>
+                  No Wikipedia information found.
+                </Text>
+                <Text
+                  style={[style.fallback, { marginBottom: 10, marginTop: 0 }]}
+                >
                   Use AI to find out more about this attraction.
                 </Text>
               </View>
@@ -123,10 +136,21 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
                 onPress={handleAiInsight}
                 style={({ pressed }) => [
                   style.linkButton,
-                  { backgroundColor: pressed ? Colors.primary700 : Colors.primary600, flexDirection: "row", alignItems: "center" },
+                  {
+                    backgroundColor: pressed
+                      ? Colors.primary700
+                      : Colors.primary600,
+                    flexDirection: "row",
+                    alignItems: "center",
+                  },
                 ]}
               >
-                <Feather name="zap" size={16} color="white" style={{ marginRight: 8 }} />
+                <Feather
+                  name="zap"
+                  size={16}
+                  color="white"
+                  style={{ marginRight: 8 }}
+                />
                 <Text style={style.linkButtonText}>Generate AI Insights</Text>
               </Pressable>
             )}
@@ -134,11 +158,21 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
             {/* AI Response Area */}
             {(aiLoading || aiInsight) && (
               <View style={style.aiContainer}>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                >
                   <Feather name="zap" size={14} color="#FFD700" />
-                  <Text style={{ fontWeight: "700", marginLeft: 5, color: "#444" }}>AI Insights</Text>
+                  <Text
+                    style={{ fontWeight: "700", marginLeft: 5, color: "#444" }}
+                  >
+                    AI Insights
+                  </Text>
                 </View>
-                
+
                 {aiLoading ? (
                   <ActivityIndicator size="small" color="#1E90FF" />
                 ) : (

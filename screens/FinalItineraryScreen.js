@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Colors from "../constants/Colors";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,7 +11,7 @@ function FinalItineraryScreen({ route }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Your AI Itinerary</Text>
+        <Text style={styles.title}>Your Final Itinerary</Text>
 
         {itinerary?.length ? (
           itinerary.map((day) => (
@@ -36,7 +37,7 @@ function FinalItineraryScreen({ route }) {
             </View>
           ))
         ) : (
-          <Text>No itinerary generated.</Text>
+          <Text>No itinerary generated</Text>
         )}
 
       </ScrollView>
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 14,
     borderRadius: 12,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: Colors.background,
   },
 
   dayTitle: {

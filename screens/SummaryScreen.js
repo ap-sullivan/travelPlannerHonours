@@ -9,12 +9,14 @@ import {
   Image,
   Dimensions,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { useState, useEffect, useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Feather } from "@expo/vector-icons";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Colors from "../constants/Colors";
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
 import Carousel from "react-native-reanimated-carousel";
@@ -48,7 +50,6 @@ function SummaryScreen({ route }) {
       console.log(`Render latency: ${latency.toFixed(1)} ms`);
     }
   }, [tapTime]);
-
 
   // data loading for accom and attractions
   useEffect(() => {
@@ -88,7 +89,7 @@ function SummaryScreen({ route }) {
     loadData();
   }, [user, itineraryId]);
 
-//  group attractions by city for UI
+  //  group attractions by city for UI
   const grouped = useMemo(() => {
     return attractions.reduce((acc, item) => {
       if (!acc[item.city]) acc[item.city] = [];
@@ -97,7 +98,7 @@ function SummaryScreen({ route }) {
     }, {});
   }, [attractions]);
 
-// group hotels by city for UI
+  // group hotels by city for UI
   const groupedHotels = useMemo(() => {
     return hotels.reduce((acc, item) => {
       if (!acc[item.city]) acc[item.city] = [];
@@ -115,10 +116,9 @@ function SummaryScreen({ route }) {
     return dest ? dest.days : null;
   };
 
-  // fetch hero images using Unsplash hook 
+  // fetch hero images using Unsplash hook
   const { heroImages, loadingImages } = useCityImages(destinations, grouped);
   const width = Dimensions.get("window").width;
-
 
   // handlers for removing attraction
   const handleRemoveAttraction = async (id) => {
@@ -133,7 +133,7 @@ function SummaryScreen({ route }) {
         const updated = list.filter((a) => a.id !== id);
         await AsyncStorage.setItem(
           "guestSavedAttractions",
-          JSON.stringify(updated)
+          JSON.stringify(updated),
         );
 
         setAttractions(updated);
@@ -157,10 +157,7 @@ function SummaryScreen({ route }) {
 
         const updated = list.filter((a) => a.id !== id);
 
-        await AsyncStorage.setItem(
-          "guestSavedHotels",
-          JSON.stringify(updated)
-        );
+        await AsyncStorage.setItem("guestSavedHotels", JSON.stringify(updated));
 
         setHotels(updated);
       }
@@ -171,50 +168,51 @@ function SummaryScreen({ route }) {
     }
   };
 
-  //  build input for AI screen based on current attractions, hotels, and destinations from state
-const buildAIInput = () => {
-  return destinations.map((dest) => ({
-    name: dest.name,
-    days: dest.days,
-    season: dest.season, 
-    hotel: groupedHotels[dest.name]?.[0] || null, 
-    attractions: (grouped[dest.name] || []).map((a) => ({
-      name: a.name, 
-    })),
-  }));
-};
+  //  build input for AI screen based on current attractions, hotels and destinations from state
+  const buildAIInput = () => {
+    return destinations.map((dest) => ({
+      name: dest.name,
+      days: dest.days,
+      season: dest.season,
+      hotel: groupedHotels[dest.name]?.[0] || null,
+      attractions: (grouped[dest.name] || []).map((a) => ({
+        name: a.name,
+      })),
+    }));
+  };
 
   // handler for Generate AI Itinerary button
 
   const handleGenerateAI = async () => {
-  try {
-    const data = buildAIInput();
+    try {
+      const data = buildAIInput();
 
-    const generateFn = httpsCallable(functions, "generateItinerary");
+      const generateFn = httpsCallable(functions, "generateItinerary");
 
-    setLoadingAI(true);
+      setLoadingAI(true);
 
-    const response = await generateFn({
-      destinations: data,
-    });
+      const response = await generateFn({
+        destinations: data,
+      });
 
-    setLoadingAI(false);
+      setLoadingAI(false);
 
-    const itineraryText = response.data.itinerary;
+      const itineraryText = response.data.itinerary;
 
-    //  pass to next screen
-    navigation.navigate("FinalItineraryScreen", {
-      itinerary: itineraryText,
-    });
-
-  } catch (err) {
-    console.error(err);
-    Alert.alert("Error", "Failed to generate itinerary");
-  }
-};
+      //  pass to next screen
+      navigation.navigate("FinalItineraryScreen", {
+        itinerary: itineraryText,
+      });
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Failed to generate itinerary");
+    }
+  };
 
   return (
+
     <SafeAreaView style={style.container}>
+
       {loadingImages && <ActivityIndicator size="large" />}
 
       {heroImages.length > 0 && (
@@ -258,9 +256,10 @@ const buildAIInput = () => {
             {/* hotels */}
             {groupedHotels[city]?.length > 0 && (
               <>
-              <View style={style.hotelTitle}>
-               <MaterialIcons name="hotel" size={20 } color="black" /> <Text style={style.sectionSubtitle}>Stay </Text>
-              </View>
+                <View style={style.hotelTitle}>
+                  <MaterialIcons name="hotel" size={20} color="black" />
+                  <Text style={style.sectionSubtitle}>Stay </Text>
+                </View>
 
                 {groupedHotels[city].map((hotel) => (
                   <View key={hotel.id} style={style.itemRow}>
@@ -284,12 +283,10 @@ const buildAIInput = () => {
           </View>
         ))}
 
-       
         <PrimaryButton style={{ marginTop: 24 }} onPress={handleGenerateAI}>
           {/* GENERATE ITINERARY <Feather name="zap" size={18} color="white" /> */}
-            {loadingAI ? "Generating..." : "GENERATE ITINERARY"}
+          {loadingAI ? "Generating..." : "GENERATE ITINERARY"}
         </PrimaryButton>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -323,7 +320,6 @@ const style = StyleSheet.create({
     gap: 6,
     marginTop: 16,
     marginBottom: 4,
-
   },
 
   sectionSubtitle: {

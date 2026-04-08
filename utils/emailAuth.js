@@ -1,3 +1,5 @@
+// utility function for email authentication using firebase auth - includes sign up and sign in functions
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

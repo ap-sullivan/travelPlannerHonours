@@ -1,4 +1,4 @@
-// Mock API-style data: suburbs / areas mapped to cities
+// suburbs / areas mapped to cities
 export const RAW_DESTINATIONS = [
   // Edinburgh
   { suburb: "Leith", city: "Edinburgh" },

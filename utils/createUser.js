@@ -1,3 +1,4 @@
+// utility function to create a user document in Firestore after successful authentication
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
