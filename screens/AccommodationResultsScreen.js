@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CityPicker from "../components/ui/buttons/CityPicker";
 import AppText from "../components/ui/textStyles/AppText";
 import HotelListItem from "../components/ui/HotelListItem";
+import { processHotels } from "../utils/hotelDataProcessing";
 import { useHotels } from "../hooks/geoapify/useHotels";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PrimaryButton from "../components/ui/buttons/PrimaryButton";
@@ -53,75 +54,26 @@ function AccommodationResultsScreen() {
   // mapbox logics
   const activeCity = city ?? "Edinburgh";
   const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
+    const mapCenter = [cityMeta.lon, cityMeta.lat];
+  const mapZoom = cityMeta.mapboxZoom;
 
-  // bring in favopourite hotels
+   // TODO: remove 4* minimum
+  const { hotels = [], loading, error } = useHotels(city ?? "", 4);
+
+  // bring in favourite hotels
   const favouriteHotels = useMemo(() => {
     return FAVOURITE_HOTELS[activeCity] ?? [];
   }, [activeCity]);
 
-  // normalise data for map and list
-  const normalisedFavouriteHotels = useMemo(() => {
-    return favouriteHotels.map((item) => ({
-      id: item.id,
-      name: item.name,
-      subtitle: "App Favourite",
-      lat: item.lat,
-      lon: item.lon,
-      categories: ["favourite"],
-      isFavourite: true,
-    }));
-  }, [favouriteHotels]);
+  const { list: numberedHotels, geojson: hotelsGeoJSON } = useMemo(() => {
+  return processHotels({
+    hotels,
+    favouriteHotels,
+  });
+}, [hotels, favouriteHotels]);
 
-  // TODO: remove 4* minimum
-  const { hotels = [], loading, error } = useHotels(city ?? "", 4);
 
-  // filter to remove dupes
 
-  const filteredGeoapifyHotels = useMemo(() => {
-    if (!hotels || !hotels.length) return []; // <-- wait for hotels to exist
-
-    const favouriteHotelNames = new Set(
-      normalisedFavouriteHotels.map((a) => a.name.toLowerCase()),
-    );
-
-    return hotels.filter((a) => !favouriteHotelNames.has(a.name.toLowerCase()));
-  }, [hotels, normalisedFavouriteHotels]);
-
-  const mergedHotels = useMemo(() => {
-    return [...normalisedFavouriteHotels, ...filteredGeoapifyHotels];
-  }, [normalisedFavouriteHotels, filteredGeoapifyHotels]);
-
-  // set numbers for list/map refs
-  const numberedHotels = useMemo(() => {
-    return mergedHotels.map((item, index) => ({
-      ...item,
-      displayIndex: index + 1,
-    }));
-  }, [mergedHotels]);
-
-  // convert hotels to geojson for map
-  const hotelsGeoJSON = useMemo(() => {
-    return {
-      type: "FeatureCollection",
-      features: numberedHotels.map((item) => ({
-        type: "Feature",
-        id: item.id,
-        properties: {
-          name: item.name,
-          subtitle: item.subtitle,
-          categories: item.categories,
-          index: item.displayIndex,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [item.lon, item.lat],
-        },
-      })),
-    };
-  }, [numberedHotels]);
-
-  const mapCenter = [cityMeta.lon, cityMeta.lat];
-  const mapZoom = cityMeta.mapboxZoom;
 
   const handleSaveHotel = async (hotel) => {
     if (!itineraryId) return;

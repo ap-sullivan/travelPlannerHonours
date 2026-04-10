@@ -5,6 +5,7 @@ import CityPicker from "../components/ui/buttons/CityPicker";
 import AppText from "../components/ui/textStyles/AppText";
 import AttractionListItem from "../components/ui/AttractionListItem";
 import AttractionInfoModal from "../components/ui/Modal/AttractionInfoModal";
+import { processAttractions } from "../utils/attractionDataProcessing";
 import { useAttractions } from "../hooks/geoapify/useAttractions";
 import { useInitialiseItinerary } from "../hooks/custom/useInitialiseItinerary";
 import AttractionMap from "../components/ui/maps/AttractionMap";
@@ -41,72 +42,24 @@ function SightseeingResultsScreen() {
     );
   }, [destinations]);
 
+  // mapbox logics
   const activeCity = city ?? "Edinburgh";
   const cityMeta = CITY_META[activeCity] ?? CITY_META["Edinburgh"];
+  const mapCenter = [cityMeta.lon, cityMeta.lat];
+  const mapZoom = cityMeta.mapboxZoom;
 
   // bring in must see attraction list
   const mustSeeForCity = useMemo(() => {
     return MUST_SEE_ATTRACTIONS[activeCity] ?? [];
   }, [activeCity]);
 
-  const normalisedMustSee = useMemo(() => {
-    return mustSeeForCity.map((item) => ({
-      id: item.id,
-      name: item.name,
-      subtitle: "Must see",
-      lat: item.lat,
-      lon: item.lon,
-      categories: ["must_see"],
-      wikidata: item.wikidata,
-      isMustSee: true,
-    }));
-  }, [mustSeeForCity]);
-
-  // filter geapify to remove dupes
-  const filteredGeoapifyAttractions = useMemo(() => {
-    const mustSeeNames = new Set(
-      normalisedMustSee.map((a) => a.name.toLowerCase()),
-    );
-
-    return attractions.filter((a) => !mustSeeNames.has(a.name.toLowerCase()));
-  }, [attractions, normalisedMustSee]);
-
-  // then merge list
-  const mergedAttractions = useMemo(() => {
-    return [...normalisedMustSee, ...filteredGeoapifyAttractions];
-  }, [normalisedMustSee, filteredGeoapifyAttractions]);
-
-  // set numbers for list/map refs
-  const numberedAttractions = useMemo(() => {
-    return mergedAttractions.map((item, index) => ({
-      ...item,
-      displayIndex: index + 1,
-    }));
-  }, [mergedAttractions]);
-
-  // convert attractions to geojson for map
-  const attractionsGeoJSON = useMemo(() => {
-    return {
-      type: "FeatureCollection",
-      features: numberedAttractions.map((item) => ({
-        type: "Feature",
-        id: item.id,
-        properties: {
-          name: item.name,
-          subtitle: item.subtitle,
-          categories: item.categories,
-          index: item.displayIndex,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [item.lon, item.lat],
-        },
-      })),
-    };
-  }, [numberedAttractions]);
-
-  const mapCenter = [cityMeta.lon, cityMeta.lat];
-  const mapZoom = cityMeta.mapboxZoom;
+  const { list: numberedAttractions, geojson: attractionsGeoJSON } =
+    useMemo(() => {
+      return processAttractions({
+        attractions,
+        mustSeeForCity,
+      });
+    }, [attractions, mustSeeForCity]);
 
   //   attraction open modal
   function openDetails(attraction) {
@@ -217,10 +170,8 @@ function SightseeingResultsScreen() {
 
   return (
     <SafeAreaView style={style.container}>
-      
-        {/* TODO: add in function that centres the map to this location when row is selected */}
-      
-      
+      {/* TODO: add in function that centres the map to this location when row is selected */}
+
       <FlatList
         data={numberedAttractions}
         keyExtractor={(item) => item.id}
@@ -295,7 +246,7 @@ function SightseeingResultsScreen() {
         onClose={closeDetails}
       />
     </SafeAreaView>
-  );r
+  );
 }
 export default SightseeingResultsScreen;
 

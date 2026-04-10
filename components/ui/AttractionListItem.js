@@ -40,7 +40,6 @@ function AttractionListItem({
 
         <Pressable
           onPress={() => {
-            console.log("PLUS ICON PRESSED", title);
             onPressAdd && onPressAdd();
           }}
           hitSlop={8}

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { fetchWikiSmart } from "../../../utils/wiki";
+import { fetchWiki } from "../../../api/wikipedia/fetchWiki";
 import { functions } from "../../../utils/firebase";
 import { httpsCallable } from "firebase/functions";
 import { auth } from "../../../utils/firebase";
@@ -32,9 +32,11 @@ function AttractionInfoModal({ visible, attraction, onClose }) {
     let isMounted = true;
     setLoading(true);
     setWiki(null);
-    setAiInsight(""); // Reset AI response when modal opens for a new attraction
 
-    fetchWikiSmart(attraction).then((data) => {
+     // reset AI response when modal opens for a new attraction
+    setAiInsight("");
+
+    fetchWiki(attraction).then((data) => {
       if (isMounted) {
         setWiki(data);
         setLoading(false);

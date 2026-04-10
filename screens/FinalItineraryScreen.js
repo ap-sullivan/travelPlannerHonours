@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Colors from "../constants/Colors";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,30 +16,21 @@ function FinalItineraryScreen({ route }) {
         {itinerary?.length ? (
           itinerary.map((day) => (
             <View key={day.day} style={styles.card}>
-              
-            
               <Text style={styles.dayTitle}>
                 Day {day.day} – {day.city}
               </Text>
 
-            
               <Text style={styles.plan}>{day.plan}</Text>
 
               <View style={styles.hotelTitle}>
-              <MaterialIcons name="hotel" size={20 } color="black" /> <Text style={styles.accommodation}>
-                 {day.accommodation}
-              </Text>
+                <MaterialIcons name="hotel" size={20} color="black" />
+                <Text style={styles.accommodation}>{day.accommodation}</Text>
               </View>
-
-
-
-
             </View>
           ))
         ) : (
           <Text>No itinerary generated</Text>
         )}
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -73,13 +64,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
-    hotelTitle: {
+  hotelTitle: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
     marginTop: 16,
     marginBottom: 4,
-
   },
 
   plan: {

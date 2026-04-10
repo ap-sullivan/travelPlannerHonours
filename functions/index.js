@@ -56,41 +56,39 @@ exports.generateItinerary = onCall(
     if (!destinations || !destinations.length) {
       throw new HttpsError(
         "invalid-argument",
-        "Destinations data is required."
+        "Destinations data is required.",
       );
     }
 
     try {
-      // initialise 
-      const genAI = new GoogleGenerativeAI(
-        process.env[GEMINI_API_KEY_SECRET]
-      );
+      // initialise
+      const genAI = new GoogleGenerativeAI(process.env[GEMINI_API_KEY_SECRET]);
 
       const model = genAI.getGenerativeModel({
         model: "gemini-2.5-flash",
       });
 
-      // format inout data for prompt (comes from summary screen build AI input function)
+      // format input data for prompt (comes from summary screen build AI input function)
       const formattedData = destinations
         .map((d) => {
           return `
-City: ${d.name}
-Days: ${d.days}
-Season: ${d.season || "Not specified"}
-Hotel:
-${d.hotel?.name || "Not specified"}
+        City: ${d.name}
+        Days: ${d.days}
+        Season: ${d.season || "Not specified"}
+        Hotel:
+        ${d.hotel?.name || "Not specified"}
 
-Attractions:
-${
-  d.attractions?.length
-    ? d.attractions.map((a) => `- ${a.name}`).join("\n")
-    : "None selected"
-}
-`;
-        })
-        .join("\n---\n");
+        Attractions:
+        ${
+          d.attractions?.length
+            ? d.attractions.map((a) => `- ${a.name}`).join("\n")
+            : "None selected"
+        }
+        `;
+                })
+                .join("\n---\n");
 
-      //construct prompt 
+      //construct prompt
       const prompt = `
 You are a travel planning assistant.
 
@@ -121,7 +119,7 @@ Return ONLY valid JSON in this format:
 Do NOT include markdown, explanations, or extra text.
 Do NOT wrap in \`\`\`.
 
-Trip Data:
+Use this trip Data:
 ${formattedData}
 `;
 
@@ -131,7 +129,7 @@ ${formattedData}
       const response = await result.response;
       const aiText = response.text();
 
-    //  log usage for testing
+      //  log usage for testing
       console.log("USAGE:", response.usageMetadata);
 
       // clean and parse JSON
@@ -146,10 +144,7 @@ ${formattedData}
         parsed = JSON.parse(cleanText);
       } catch (err) {
         console.error("JSON PARSE ERROR:", aiText);
-        throw new HttpsError(
-          "internal",
-          "returned invalid JSON format."
-        );
+        throw new HttpsError("internal", "returned invalid JSON format.");
       }
 
       // return to app
@@ -160,10 +155,7 @@ ${formattedData}
     } catch (error) {
       console.error("Gemini Error:", error);
 
-      throw new HttpsError(
-        "internal",
-        "Failed to generate itinerary."
-      );
+      throw new HttpsError("internal", "Failed to generate itinerary.");
     }
-  }
+  },
 );

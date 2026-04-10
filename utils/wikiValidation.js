@@ -44,6 +44,7 @@ function getDistanceMeters(lat1, lon1, lat2, lon2) {
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+
 export function isCoordMismatch(pageCoords, attractionCoords) {
   if (!pageCoords || !attractionCoords) return true;
 
