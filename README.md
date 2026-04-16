@@ -45,5 +45,7 @@
 ### Environment Variables 
 
 An .env file will need to be added with the keys given externally
+To access AI features the functions need to be deployed
+Run firebase deploy --only functions in CLI from the root folder to deploy these
 
 
