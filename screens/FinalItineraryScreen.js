@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
   },
 
   card: {
+    backgroundColor: Colors.background,
     marginBottom: 16,
     padding: 14,
     borderRadius: 12,
-    backgroundColor: Colors.background,
   },
 
   dayTitle: {
