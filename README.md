@@ -9,7 +9,6 @@
     <img src="./screenshots/3.png" width="220" />
 </p>
 <br>
-<br>
 <p align="center">
   <img src="./screenshots/4.png" width="220" />
     &nbsp;&nbsp;&nbsp;
@@ -17,8 +16,6 @@
     &nbsp;&nbsp;&nbsp;
     <img src="./screenshots/6.png" width="220" />
 </p>
-
-<br>
 <br>
 <p align="center">
   <img src="./screenshots/7.png" width="220" />
@@ -27,7 +24,6 @@
     &nbsp;&nbsp;&nbsp;
     <img src="./screenshots/9.png" width="220" />
 </p>
-<br>
 <br>
 <br>
 
